@@ -1,4 +1,8 @@
 {
+  "title": "VELO — Scan, Restock, Repeat",
+  "icons": {
+    "icon": "/favicon.svg?v=velo-yellow-1"
+  },
   "description": "A polished website experience with refined visuals and smooth animations that helps visitors explore content more easily and enjoyably.",
   "robots": {
     "index": false

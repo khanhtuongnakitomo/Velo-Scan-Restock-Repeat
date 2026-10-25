@@ -6,7 +6,7 @@ This repository contains a presentation website and design materials. The store 
 
 ## Run the frontend
 
-The toolchain is declared in `.mise.toml`: Node.js 22 and pnpm 10.34.3. Git LFS is required for the image and document types tracked by `.gitattributes`.
+The toolchain is declared in `.mise.toml`: Node.js 22 and pnpm 10.34.3. Git LFS is used for reference images and documents. Runtime images under `public/assets/` are stored directly in Git so static deployments can serve them without Git LFS retrieval.
 
 From this repository's root:
 
