@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 · Editorial Paper — Velo by Team BaCayKiem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000000; --ink-soft:#3A3A3A; --paper:#FFFFFF;
+  --yellow:#FBDD65; --pastel:#FFF9A3; --cream:#FFFDD6;
+  --sans:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{overflow-x:clip}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:40px}
+.mono{font-family:var(--mono);letter-spacing:.03em}
+.mlabel{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;border-radius:2px;padding:11px 22px;cursor:pointer;border:1px solid var(--ink);transition:background .15s ease,color .15s ease}
+.btn--fill{background:var(--yellow);color:var(--ink);border-color:var(--ink)}
+.btn--fill:hover{background:var(--ink);color:var(--yellow)}
+.btn--ghost{background:transparent;color:var(--ink)}
+.btn--ghost:hover{background:var(--ink);color:var(--cream)}
+
+/* one orchestrated load moment (hero only) */
+@media (prefers-reduced-motion: no-preference){
+  .hero-left > *{opacity:0;transform:translateY(8px);animation:rise 440ms ease forwards}
+  .hero-left > *:nth-child(2){animation-delay:70ms}
+  .hero-left > *:nth-child(3){animation-delay:140ms}
+  .hero-left > *:nth-child(4){animation-delay:210ms}
+  @keyframes rise{to{opacity:1;transform:none}}
+}
+
+/* nav — hairline, cream */
+.nav{position:sticky;top:0;z-index:40;background:var(--cream);border-bottom:1px solid var(--ink)}
+.nav__in{max-width:1200px;margin-inline:auto;padding:0 40px;height:68px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.02em}
+.brand img{width:24px;height:24px;object-fit:contain}
+.nav__links{display:flex;gap:24px;font-size:15px;color:var(--ink-soft)}
+.nav__links a:hover{color:var(--ink);text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:3px;text-underline-offset:5px}
+.nav__right{margin-left:auto;display:flex;align-items:center;gap:18px}
+.nav__right .btn{padding:9px 16px;font-size:13px}
+
+/* hero — 60/40, left edge, tight display */
+.hero{border-bottom:1px solid var(--ink)}
+.hero__grid{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:start;padding-block:88px 72px}
+h1{font-size:clamp(2.7rem,5.6vw,4.4rem);font-weight:500;letter-spacing:-.045em;line-height:1.04}
+h1 .hl{background:var(--yellow);padding:0 .08em}
+.hero-left .kicker{margin-bottom:26px;display:block}
+.hero-left p.body{margin-top:22px;font-size:18px;color:var(--ink-soft);max-width:44ch}
+.cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero-right{border-left:1px solid var(--ink);padding-left:40px;display:flex;flex-direction:column;gap:0}
+.meta{padding:14px 0;border-bottom:1px solid rgba(0,0,0,.14);display:flex;justify-content:space-between;gap:16px;font-size:14px}
+.meta:last-child{border-bottom:0}
+.meta .mlabel{font-size:11px}
+.meta b{font-weight:500}
+
+/* sections — numbered (real sequence), hairline-separated */
+section{border-bottom:1px solid var(--ink);padding:72px 0}
+.sec-head{display:grid;grid-template-columns:220px 1fr;gap:40px;margin-bottom:44px}
+.sec-head .mlabel{padding-top:8px}
+h2{font-size:clamp(1.9rem,3.6vw,2.9rem);font-weight:500;letter-spacing:-.04em;line-height:1.06}
+h2 .hl{background:var(--yellow);padding:0 .08em}
+.sec-head p{color:var(--ink-soft);margin-top:12px;max-width:56ch;font-size:17px}
+
+/* feature list — yellow left bar replaces bullets (signature rationing) */
+.flist{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+.fitem{padding:22px 0 22px 20px;border-left:2px solid var(--yellow);border-bottom:1px solid rgba(0,0,0,.14)}
+.fitem h3{font-size:19px;font-weight:500;letter-spacing:-.02em}
+.fitem .mlabel{display:block;margin-bottom:6px;font-size:11px}
+.fitem p{font-size:15.5px;color:var(--ink-soft);margin-top:6px;max-width:52ch}
+
+/* terminal band — full-bleed black, oversized moment */
+.band{background:var(--ink);color:var(--cream);border-bottom:1px solid var(--ink)}
+.band .wrap{padding:72px 40px}
+.band .giant{font-size:clamp(2.6rem,7vw,5.6rem);font-weight:500;letter-spacing:-.05em;line-height:.98;max-width:12ch}
+.band .giant em{font-style:normal;color:var(--yellow)}
+.band .sub{margin-top:18px;color:rgba(255,255,255,.66);max-width:52ch;font-size:17px}
+.code{margin-top:40px;background:var(--ink);border:1px solid var(--ink-soft);border-radius:2px;max-width:680px}
+.code .bar{display:flex;gap:7px;padding:10px 14px;border-bottom:1px solid var(--ink-soft)}
+.code .bar i{width:9px;height:9px;border-radius:50%;background:var(--ink-soft)}
+.code .bar i:nth-child(2){background:var(--yellow)}
+.code pre{font-family:var(--mono);font-size:13px;line-height:1.9;padding:18px 20px;color:rgba(255,255,255,.85);overflow-x:auto}
+.code .k{color:var(--yellow)}
+.code .c{color:rgba(255,255,255,.4)}
+
+/* pull-quote — structural, hairline top+bottom */
+.pull{padding:56px 0}
+.pull p{font-size:clamp(1.5rem,3.2vw,2.4rem);font-weight:500;letter-spacing:-.035em;line-height:1.15;max-width:24ch}
+.pull .mlabel{display:block;margin-top:16px}
+
+/* FAQ — border is the affordance */
+details{border-bottom:1px solid var(--ink)}
+details:first-of-type{border-top:1px solid var(--ink)}
+summary{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 4px;font-size:17px;font-weight:500;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);font-size:20px;color:var(--ink)}
+details[open] summary::after{content:"–"}
+details .ans{padding:0 4px 22px;color:var(--ink-soft);max-width:64ch;font-size:15.5px}
+
+/* timeline — ruler ticks (signature) */
+.ruler{position:relative;height:56px;border-bottom:1px solid var(--ink);margin-bottom:8px;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.25) 0 1px,transparent 1px 12px)}
+.ruler .tick{position:absolute;bottom:0;width:2px;height:26px;background:var(--yellow);outline:1px solid var(--ink)}
+.ruler .tick span{position:absolute;bottom:30px;left:-8px;font-family:var(--mono);font-size:11px;color:var(--ink);white-space:nowrap}
+.rounds{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.round h3{font-size:20px;font-weight:500;letter-spacing:-.02em;margin-bottom:6px}
+.round .mlabel{display:block;margin-bottom:4px;font-size:11px}
+.round p{font-size:15px;color:var(--ink-soft)}
+
+footer{padding:56px 0 32px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+footer h4{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+footer li{list-style:none;font-size:14.5px;margin-top:6px}
+footer a:hover{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:3px;text-underline-offset:4px}
+.foot-base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:44px;padding-top:18px;border-top:1px solid var(--ink);font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+
+@media (max-width:1000px){
+  .hero__grid{grid-template-columns:1fr}
+  .hero-right{border-left:0;padding-left:0;border-top:1px solid var(--ink);padding-top:8px}
+  .sec-head{grid-template-columns:1fr;gap:8px}
+  .flist{grid-template-columns:1fr}
+  .nav__links{display:none}
+  .foot-grid{grid-template-columns:1fr}
+  .rounds{grid-template-columns:1fr;gap:24px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__in">
+    <a class="brand" href="#"><img src="../assets/Logo.png" alt=""><span>Velo</span></a>
+    <div class="nav__links"><a href="#product">Product</a><a href="#approach">Approach</a><a href="#timeline">Timeline</a><a href="#team">Team</a></div>
+    <div class="nav__right"><a class="mono" href="#timeline" style="font-size:12px">PROPOSAL ↗</a><a class="btn btn--fill" href="#product">Explore</a></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero-left">
+      <span class="kicker mlabel">Team BaCayKiem — Netcompany IT Consultant Challenge 2026</span>
+      <h1>Technology should remove the <span class="hl">friction</span>.</h1>
+      <p class="body"><strong>Velo</strong> is a human-centric store &amp; warehouse assistant that empowers the store clerk first, then scales across the Nordics. 100% local AI. Zero data leaves the building.</p>
+      <div class="cta"><a class="btn btn--fill" href="#product">Explore Velo</a><a class="btn btn--ghost" href="#approach">Our approach</a></div>
+    </div>
+    <aside class="hero-right">
+      <div class="meta"><span class="mlabel">Team</span><b>BaCayKiem</b></div>
+      <div class="meta"><span class="mlabel">Project</span><b>Velo</b></div>
+      <div class="meta"><span class="mlabel">Markets</span><b>Denmark — Norway — Sweden</b></div>
+      <div class="meta"><span class="mlabel">Inference</span><b>On-premise only</b></div>
+      <div class="meta"><span class="mlabel">Status</span><b>Round 1 — Proposal</b></div>
+    </aside>
+  </div>
+</header>
+
+<section id="product">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mlabel">01 / The product</span>
+      <div>
+        <h2>One assistant. Four zones. <span class="hl">Zero</span> guesswork.</h2>
+        <p>The clerk scans a standard 1D barcode; Velo does the searching, sorting and remembering. The human always has final say.</p>
+      </div>
+    </div>
+    <div class="flist">
+      <div class="fitem"><span class="mlabel">Zone A → B</span><h3>Assisted receiving &amp; put-away</h3><p>Scan the pallet, get a suggested bay, scan the rack to confirm. Batch expiry logged in one tap — no paper checklists at the dock.</p></div>
+      <div class="fitem"><span class="mlabel">Zone D → B → C</span><h3>Checkout-to-refill loop</h3><p>A POS sale drops shelf stock below threshold and the clerk's phone gets one clear task: oldest batch first, exact bay, exact quantity.</p></div>
+      <div class="fitem"><span class="mlabel">Zone C</span><h3>Local RAG copilot</h3><p>Stock locations, curing times, TEK17 fire rules — answered in under two seconds from on-premise models. Nothing sent to any cloud.</p></div>
+      <div class="fitem"><span class="mlabel">Network</span><h3>Store-first, network-next</h3><p>Every accurate store becomes a node. When a bay runs dry, the assistant drafts a cross-store transfer for one-click manager approval.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="band" id="approach">
+  <div class="wrap">
+    <p class="giant">One store, then <em>the map</em>.</p>
+    <p class="sub">Nobody re-engineers 300 stores on day one. We prove operational clarity inside a single store — then let the network grow out of it. Empower (months 1–3, DK + NO pilots), Connect (months 4–6, regional goods network), Deliver (months 6–12, Sweden fulfilment with scanned pick confirmation).</p>
+    <div class="code">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <pre><span class="c">$ velo deploy --mode sovereign --cloud none</span>
+<span class="k">✓</span> ollama runtime ......... local GPU, 0 external calls
+<span class="k">✓</span> pgvector .............. 30,412 SKUs · 3 building codes
+<span class="k">✓</span> pos_webhook ........... refill loop armed (WS)
+<span class="c"># nothing leaves the building</span></pre>
+    </div>
+  </div>
+</div>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mlabel">02 / Timeline</span>
+      <div><h2>Three rounds to a working product.</h2></div>
+    </div>
+    <div class="ruler">
+      <span class="tick" style="left:8%"><span>R1</span></span>
+      <span class="tick" style="left:46%"><span>R2</span></span>
+      <span class="tick" style="left:84%"><span>R3</span></span>
+    </div>
+    <div class="rounds">
+      <div class="round"><span class="mlabel">Due 26 Oct 2026 · 22:00</span><h3>Discover</h3><p>Ten slides: the prioritised problem, the MVP, the rollout across three markets.</p></div>
+      <div class="round"><span class="mlabel">02 – 09 Nov 2026</span><h3>Build-a-thon</h3><p>Seven days to a working MVP: barcode flows, live POS simulation, local RAG copilot.</p></div>
+      <div class="round"><span class="mlabel">16 – 21 Nov 2026 · Netcompany HCMC</span><h3>Live finale</h3><p>Two minutes on stage: scan, refill, ask, transfer — the whole store in motion.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mlabel">03 / Team</span>
+      <div><h2>Three builders, three zones.</h2></div>
+    </div>
+    <div class="flist">
+      <div class="fitem"><span class="mlabel">M.01 — Zone: floor UX</span><h3>Frontend &amp; Barcode UX</h3><p>Clerk mobile assistant, camera scanner for EAN-13 / Code-128, the interactive zone map.</p></div>
+      <div class="fitem"><span class="mlabel">M.02 — Zone: event loop</span><h3>Backend &amp; Real-time Events</h3><p>FastAPI core, PostgreSQL schema, POS simulator and the WebSocket refill engine.</p></div>
+    </div>
+    <div class="flist" style="margin-top:0">
+      <div class="fitem"><span class="mlabel">M.03 — Zone: local AI</span><h3>Local AI &amp; Security</h3><p>Ollama + pgvector RAG pipeline, FEFO organizer, sovereign deployment on-premise.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pull" style="border-bottom:1px solid var(--ink)">
+  <div class="wrap">
+    <p>"Empower the store clerk first. Scale across the Nordics next."</p>
+    <span class="mlabel">— Velo, the one-sentence strategy</span>
+  </div>
+</section>
+
+<section style="border-bottom:1px solid var(--ink)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mlabel">04 / Questions</span>
+      <div><h2>Fair questions, straight answers.</h2></div>
+    </div>
+    <details><summary>Why start with the store clerk, not the delivery fleet?</summary><p class="ans">Because every downstream system — transfers, fulfilment, delivery — consumes inventory truth created at the shelf and the bay. Fix the source first and the network scales itself; do it later and you automate chaos.</p></details>
+    <details><summary>Is local AI actually fast enough?</summary><p class="ans">Quantized 3B–7B models on a single on-premise GPU answer grounded questions in under two seconds via RAG. The workflow loop (scans, thresholds, tasks) doesn't even touch the LLM — it's deterministic logic, so the store keeps running even if the GPU naps.</p></details>
+    <details><summary>What about the legacy infrared scanners?</summary><p class="ans">Retired. A ruggedized smartphone with camera scanning (EAN-13 / Code-128 at &lt;150ms) replaces $1,500–$2,200 terminals plus 20% annual maintenance contracts — a &gt;75% cut in hardware spend.</p></details>
+    <details><summary>How do three markets stay different?</summary><p class="ans">One core, local configuration. Denmark starts with paperless receiving, Norway with standardized zone workflows, Sweden connects fulfilment last. Same platform, three rollout clocks.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><a class="brand" href="#"><img src="../assets/LogoName.png" alt="Velo" style="height:30px;width:auto"></a><p style="font-size:14.5px;color:var(--ink-soft);margin-top:14px;max-width:34ch">Project Velo by Team BaCayKiem — human-centric retail technology, built in Ho Chi Minh City for the Nordics.</p></div>
+      <div><h4>Contact</h4><li><a href="mailto:hello@velo.team">hello@velo.team</a></li><h4 style="margin-top:20px">Competition</h4><li>Netcompany IT Consultant Challenge 2026</li><li>with Code MeLy</li></div>
+      <div><h4>Navigate</h4><li><a href="#product">Product</a></li><li><a href="#approach">Approach</a></li><li><a href="#timeline">Timeline</a></li><li><a href="#team">Team</a></li></div>
+    </div>
+    <div class="foot-base"><span>© <span id="y">2026</span> TEAM BACAYKIEM</span><span>100% LOCAL AI — NOTHING LEAVES THE BUILDING</span></div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;io.unobserve(el);
+    const t=+el.dataset.c,p=el.dataset.p||'',s=el.dataset.s||'',t0=performance.now(),d=600;
+    (function tick(now){const r=Math.min((now-t0)/d,1),v=Math.round(t*(1-Math.pow(1-r,3)));
+      el.textContent=p+v+s;if(r<1)requestAnimationFrame(tick)})(t0);
+  }),{threshold:.6});
+  document.querySelectorAll('[data-c]').forEach(el=>io.observe(el));
+}
+</script>
+</body>
+</html>

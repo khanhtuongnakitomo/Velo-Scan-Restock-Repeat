@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velo — Style Exploration Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Inter:wght@400;600&family=IBM+Plex+Sans:wght@500&family=JetBrains+Mono:wght@400;500&family=Space+Mono:wght@700&family=Instrument+Sans:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000000; --ink-soft:#3A3A3A; --paper:#FFFFFF;
+  --yellow:#FFF9A3; --yellow-deep:#FBDD65; --cream:#FFFDD6;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1400px;margin-inline:auto;padding-inline:clamp(20px,4vw,48px)}
+header{border-bottom:1px solid var(--ink);background-image:linear-gradient(to right,rgba(0,0,0,.04) 1px,transparent 1px);background-size:calc(100%/12) 100%}
+.top{display:flex;align-items:center;gap:16px;padding:20px 0}
+.top img{height:22px;width:auto;object-fit:contain}
+.top span{font-weight:800;letter-spacing:.08em;font-stretch:118%}
+.top a.back{margin-left:auto;font-size:.85rem;font-weight:600;border:1px solid var(--ink);padding:8px 16px}
+.top a.back:hover{background:var(--ink);color:var(--paper)}
+.hero{padding:64px 0 56px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.kicker i{width:8px;height:8px;background:var(--yellow);display:inline-block}
+h1{font-size:clamp(2.6rem,7vw,6rem);font-weight:800;font-stretch:122%;text-transform:uppercase;line-height:.95;letter-spacing:-.02em;margin-top:16px}
+.hero p{max-width:62ch;margin-top:20px;font-size:1.05rem;color:var(--ink-soft)}
+.hero p b{color:var(--ink)}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--ink);border-left:1px solid var(--ink);margin-bottom:64px}
+.variant{border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:28px;display:flex;flex-direction:column;gap:14px;transition:background-color 160ms ease}
+.variant:hover{background:var(--cream)}
+.vhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.vnum{font-size:1.5rem;font-weight:800;font-stretch:120%}
+.vnum.on{background:var(--yellow);padding:0 .15em}
+.vsrc{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--ink);padding:4px 8px;white-space:nowrap}
+.variant h2{font-size:1.45rem;font-weight:700;letter-spacing:-.01em}
+.variant p{font-size:.95rem;color:var(--ink-soft)}
+.spec{margin-top:auto;display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(0,0,0,.12);flex-wrap:wrap}
+.spec .lbl{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+.spec .demo{margin-left:auto}
+.open{font-size:.9rem;font-weight:700;border:1px solid var(--ink);padding:9px 16px;transition:background-color 160ms ease,color 160ms ease}
+.open:hover{background:var(--ink);color:var(--paper)}
+
+/* live specimens — each rendered in its own variant's component language */
+.sp1 .btn{font-family:'Inter',sans-serif;font-weight:600;font-size:.85rem;background:var(--ink);color:var(--paper);border-radius:0;padding:8px 18px}
+.sp1 .card{border:1px solid var(--ink);border-radius:0;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:.7rem}
+.sp2 .btn{font-family:'IBM Plex Sans',sans-serif;font-weight:500;font-size:.85rem;background:var(--yellow-deep);border-radius:0;padding:9px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.sp2 .card{border:1px solid rgba(0,0,0,.09);border-radius:0;padding:10px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:.7rem;box-shadow:0 8px 8px -4px rgba(0,0,0,.05),0 16px 16px -8px rgba(0,0,0,.05)}
+.sp3 .btn{font-family:'Inter',sans-serif;font-weight:500;font-size:.85rem;background:var(--paper);color:var(--ink);border-radius:0;padding:8px 16px}
+.sp3 .card{border:1px solid rgba(255,255,255,.25);background:var(--ink);color:var(--paper);border-radius:0;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:.7rem}
+.sp3 .card i{width:8px;height:8px;background:var(--yellow-deep);display:inline-block;margin-right:6px}
+.sp4 .btn{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:.85rem;background:var(--yellow-deep);border-radius:0;padding:8px 16px;border:1px solid var(--ink)}
+.sp4 .card{border:1px solid var(--ink);border-left:3px solid var(--yellow-deep);border-radius:0;padding:10px 14px;font-family:'Instrument Sans',sans-serif;font-size:.7rem}
+.spmain .btn{font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;background:var(--yellow-deep);border:2px solid var(--ink-soft);border-radius:0;padding:8px 16px}
+.spmain .card{border:2px solid var(--ink-soft);border-radius:0;padding:10px 14px;font-family:'Space Mono',monospace;font-size:.7rem;background:var(--paper)}
+
+.note{border:1px solid var(--ink);background:var(--yellow);padding:20px 24px;margin-bottom:64px;font-size:.95rem}
+.note b{font-weight:700}
+footer{border-top:1px solid var(--ink);padding:28px 0 48px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--ink-soft)}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <img src="../assets/Logo.png" alt=""><span>VELO</span>
+      <a class="back" href="../index.html">← Main site</a>
+    </div>
+    <div class="hero">
+      <p class="kicker"><i></i>Team BaCayKiem — style exploration archive</p>
+      <h1>One winner.<br>Four runners-up.</h1>
+      <p><b>04 Notebook Mono won the pick</b> and now ships as the main site — sharp corners, hairline borders, Space Mono, cream canvas, #FFF9A3 as the primary tint. These four runners-up are kept for reference, each keeping its reference's structural DNA while color stays strictly ours: <b>#000000</b> · <b>#3A3A3A</b> · <b>#FFFFFF</b> · <b>#FBDD65</b> · <b>#FFF9A3</b> · <b>#FFFDD6</b>.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <a class="variant" href="01-timescale.html">
+      <div class="vhead"><span class="vnum">01</span><span class="vsrc">Ref: Timescale</span></div>
+      <h2>Blueprint</h2>
+      <p>Engineering drawing on graph paper. Inter + JetBrains Mono dual system, square cards with hairline borders, flat CTAs, dot-grid canvas. Signature: the annotated zone-map figure.</p>
+      <div class="spec sp1"><span class="lbl">Specimen</span><span class="card">ZONE A → B ✓</span><span class="btn demo">Explore</span></div>
+    </a>
+
+    <a class="variant" href="02-buddy.html">
+      <div class="vhead"><span class="vnum">02</span><span class="vsrc">Ref: Buddy Works</span></div>
+      <h2>Graph Paper Soft</h2>
+      <p>Sharp and friendly. IBM Plex Sans/Mono, square cards with soft layered shadows, flat CTAs, grid-paper canvas. Signature: the fanned feature cards + black band with cream pull-quote.</p>
+      <div class="spec sp2"><span class="lbl">Specimen</span><span class="card">Soft card, sharp corners</span><span class="btn demo">Explore</span></div>
+    </a>
+
+    <a class="variant" href="03-dovetail.html">
+      <div class="vhead"><span class="vnum">03</span><span class="vsrc">Ref: Dovetail</span></div>
+      <h2>Midnight Console</h2>
+      <p>Dark command center. Near-black canvas, luminance-stepped surfaces, Inter + JetBrains Mono, square corners, yellow only as functional data punctuation. Signature: the live Velo task console.</p>
+      <div class="spec sp3"><span class="lbl">Specimen</span><span class="card"><i></i>REFILL DUE</span><span class="btn demo">Explore</span></div>
+    </a>
+
+    <a class="variant" href="05-relace.html">
+      <div class="vhead"><span class="vnum">04</span><span class="vsrc">Ref: Relace</span></div>
+      <h2>Editorial Paper</h2>
+      <p>Warm editorial. Instrument Sans with −0.05em display tracking, JetBrains Mono chrome, hairlines instead of shadows, 2px radii, left-aligned everything. Signature: the ruler-tick timeline + black terminal band.</p>
+      <div class="spec sp4"><span class="lbl">Specimen</span><span class="card">Feature with yellow bar</span><span class="btn demo">Explore</span></div>
+    </a>
+
+    <a class="variant" href="../index.html">
+      <div class="vhead"><span class="vnum on">★</span><span class="vsrc">Main site — shipped</span></div>
+      <h2>Notebook Mono</h2>
+      <p>The winner. Space Mono everywhere, cream canvas, 2px charcoal borders, square everything, pastel #FFF9A3 as the primary band tint. Signature: the clerk console with the live task queue.</p>
+      <div class="spec spmain"><span class="lbl">Specimen</span><span class="card">2 REFILLS DUE!</span><span class="btn demo">EXPLORE</span></div>
+    </a>
+
+  </div>
+
+  <div class="note">
+    <b>designHACK check (distinctive-look + motion-polish):</b> every page declares ONE direction with one signature element — no mixing mid-screen. Motion budget: one orchestrated hero-load moment, everything else is user-triggered feedback ≤180ms; counters and marquees honor <b>prefers-reduced-motion</b>. Zero border-radius, zero offset shadows, no gradients, no glassmorphism — the anti-slop pass was applied to every page including the winner.
+  </div>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 Team BaCayKiem — Project Velo</span>
+  <span>Netcompany IT Consultant Challenge 2026 · with Code MeLy</span>
+</footer>
+</body>
+</html>

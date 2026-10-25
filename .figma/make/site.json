@@ -1,0 +1,10 @@
+{
+  "description": "A polished website experience with refined visuals and smooth animations that helps visitors explore content more easily and enjoyably.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

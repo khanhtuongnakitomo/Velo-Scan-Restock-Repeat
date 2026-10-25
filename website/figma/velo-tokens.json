@@ -1,0 +1,69 @@
+{
+  "tokenSetOrder": ["global"],
+  "global": {
+    "color": {
+      "ink": { "value": "#000000", "type": "color", "description": "Terminal band, code windows only" },
+      "charcoal": { "value": "#3A3A3A", "type": "color", "description": "ALL text + ALL borders on light surfaces" },
+      "paper": { "value": "#FFFFFF", "type": "color", "description": "Cards, nav, footer band" },
+      "yellow": { "value": "#FFF9A3", "type": "color", "description": "PRIMARY tint — bands, highlight blocks, markers, hovers" },
+      "yellow-deep": { "value": "#FBDD65", "type": "color", "description": "SECONDARY accent — CTA fills, live badge, quote card, signals" },
+      "cream": { "value": "#FFFDD6", "type": "color", "description": "Page canvas" },
+      "white-14": { "value": "rgba(255,255,255,0.14)", "type": "color", "description": "Chart track / dim cell on dark" },
+      "white-28": { "value": "rgba(255,255,255,0.28)", "type": "color", "description": "Card border on dark" },
+      "white-72": { "value": "rgba(255,255,255,0.72)", "type": "color", "description": "Secondary text on dark" }
+    },
+    "alias": {
+      "bg-canvas": { "value": "{color.cream}", "type": "color" },
+      "bg-band-primary": { "value": "{color.yellow}", "type": "color" },
+      "bg-card": { "value": "{color.paper}", "type": "color" },
+      "bg-dark": { "value": "{color.ink}", "type": "color" },
+      "text-body": { "value": "{color.charcoal}", "type": "color" },
+      "text-heading": { "value": "{color.charcoal}", "type": "color" },
+      "border-default": { "value": "{color.charcoal}", "type": "color" },
+      "accent-action": { "value": "{color.yellow-deep}", "type": "color" },
+      "accent-brand": { "value": "{color.yellow}", "type": "color" }
+    },
+    "typography": {
+      "display-hero": { "value": { "fontFamily": "Space Mono", "fontWeight": 400, "fontSize": "54px", "lineHeight": "1.18", "letterSpacing": "0.02em", "textCase": "uppercase" }, "type": "typography", "description": "Keywords: 700 weight on #FFF9A3 block" },
+      "display-h2": { "value": { "fontFamily": "Space Mono", "fontWeight": 400, "fontSize": "37px", "lineHeight": "1.2", "letterSpacing": "0.02em", "textCase": "uppercase" }, "type": "typography" },
+      "title-card": { "value": { "fontFamily": "Space Mono", "fontWeight": 700, "fontSize": "15.5px", "lineHeight": "1.3", "textCase": "uppercase" }, "type": "typography" },
+      "body": { "value": { "fontFamily": "Space Mono", "fontWeight": 400, "fontSize": "15px", "lineHeight": "1.65", "letterSpacing": "0.02em" }, "type": "typography" },
+      "body-sm": { "value": { "fontFamily": "Space Mono", "fontWeight": 400, "fontSize": "13.5px", "lineHeight": "1.7" }, "type": "typography" },
+      "label": { "value": { "fontFamily": "Space Mono", "fontWeight": 700, "fontSize": "12px", "lineHeight": "1.4", "letterSpacing": "0.08em", "textCase": "uppercase" }, "type": "typography" },
+      "label-chip": { "value": { "fontFamily": "Space Mono", "fontWeight": 700, "fontSize": "11px", "lineHeight": "1.4", "letterSpacing": "0.08em", "textCase": "uppercase" }, "type": "typography" },
+      "source": { "value": { "fontFamily": "Space Mono", "fontWeight": 700, "fontSize": "12px", "lineHeight": "1.4", "letterSpacing": "0.08em", "textCase": "uppercase" }, "type": "typography" },
+      "terminal": { "value": { "fontFamily": "Space Mono", "fontWeight": 400, "fontSize": "13px", "lineHeight": "1.9" }, "type": "typography" }
+    },
+    "spacing": {
+      "1": { "value": "4", "type": "spacing" },
+      "2": { "value": "8", "type": "spacing" },
+      "3": { "value": "12", "type": "spacing" },
+      "4": { "value": "16", "type": "spacing" },
+      "5": { "value": "20", "type": "spacing" },
+      "6": { "value": "24", "type": "spacing" },
+      "7": { "value": "28", "type": "spacing" },
+      "8": { "value": "32", "type": "spacing" },
+      "11": { "value": "44", "type": "spacing" },
+      "12": { "value": "48", "type": "spacing" },
+      "18": { "value": "72", "type": "spacing" }
+    },
+    "radius": {
+      "none": { "value": "0", "type": "borderRadius", "description": "Anti-slop contract: square everything" }
+    },
+    "border": {
+      "default": { "value": { "color": "#3A3A3A", "width": "2px", "style": "solid" }, "type": "border" },
+      "hairline-dark": { "value": { "color": "rgba(255,255,255,0.28)", "width": "1px", "style": "solid" }, "type": "border" },
+      "rule": { "value": { "color": "#3A3A3A", "width": "2px", "style": "solid" }, "type": "border", "description": "Section divider" }
+    },
+    "shadow": {
+      "none": { "value": "none", "type": "boxShadow", "description": "Shadows forbidden — borders are the elevation" }
+    },
+    "dimension": {
+      "page-max": { "value": "1200px", "type": "sizing" },
+      "gutter": { "value": "24px", "type": "sizing" },
+      "nav-height": { "value": "62px", "type": "sizing" },
+      "donut-size": { "value": "176px", "type": "sizing" },
+      "ring-size": { "value": "170px", "type": "sizing" }
+    }
+  }
+}
