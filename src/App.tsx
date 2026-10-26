@@ -77,6 +77,20 @@ export default function App() {
       a.addEventListener('mouseenter', () => moveInk(a))
       a.addEventListener('mouseleave', () => moveInk(active))
     })
+
+    // Mobile menu.
+    const toggle = r.querySelector<HTMLButtonElement>('#navToggle')
+    const menu = r.querySelector<HTMLElement>('#navLinks')
+    const setMenu = (open: boolean) => {
+      menu?.classList.toggle('open', open)
+      toggle?.setAttribute('aria-expanded', String(open))
+      toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
+    }
+    const onToggle = () => setMenu(!menu?.classList.contains('open'))
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenu(false)
+    toggle?.addEventListener('click', onToggle)
+    navLinks.forEach((a) => a.addEventListener('click', () => setMenu(false)))
+    addEventListener('keydown', onKey)
     const onScroll = () => {
       const h = document.documentElement
       if (bar) bar.style.width = `${(h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) * 100}%`
@@ -96,6 +110,8 @@ export default function App() {
     return () => {
       io.disconnect()
       removeEventListener('scroll', onScroll)
+      removeEventListener('keydown', onKey)
+      toggle?.removeEventListener('click', onToggle)
     }
   }, [])
 

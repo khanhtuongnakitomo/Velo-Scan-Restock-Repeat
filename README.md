@@ -41,8 +41,7 @@ Keep these paths together at the repository root. The folders below provide supp
 - `docs/challenge/` — original competition brief PDF. It includes a confidentiality notice; review it before sharing the brief.
 - `docs/proposals/` — VELO proposal and the ten-slide proposal blueprint.
 - `design/` — current visual direction, design rules, and tokens.
-- `assets/brand/` — original logo files previously loose in the workspace root. Runtime copies remain in `public/assets/`.
-- `website/` — earlier standalone HTML website, brand sheet, visual variants, and Figma import materials. It is preserved separately from the current React source.
+- `website/` — earlier standalone HTML website, brand sheet, visual variants, and Figma import materials. It is preserved separately from the current React source. Its `website/assets/` logos match `public/assets/` because `website/serve.py` only serves the `website/` folder.
 - `designHACK/` — supplied frontend and motion design toolkit, templates, and reference material. These files are reference resources, not installed agent skills or runtime dependencies.
 
 To view the standalone reference website, run `python website/serve.py` from the repository root, then open `http://localhost:8321`. Its Figma snapshot builder reads `website/index.html`, rather than the current React landing page.

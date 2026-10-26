@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFDD6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>VELO — Try the clerk app</title>
+<link rel="icon" type="image/png" href="../assets/Logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="velo-ui.css">
+<style>
+  html,body{min-height:100%}
+  .app-wrap{min-height:100vh;display:grid;grid-template-columns:minmax(0,440px) auto;gap:72px;align-items:center;justify-content:center;padding:40px}
+  .app-intro h1{font-size:34px;line-height:1.15;font-weight:400;text-transform:uppercase;color:var(--ink);margin:16px 0 14px}
+  .app-intro h1 b{background:var(--yellow);font-weight:700;padding:0 6px}
+  .app-intro p{font-size:14px;line-height:1.65}
+  .app-intro ol{margin-top:20px;border:var(--line);background:var(--paper)}
+  .app-intro li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px 14px;font-size:13px;line-height:1.5}
+  .app-intro li+li{border-top:var(--line)}
+  .app-intro li b{color:var(--ink)}
+  .app-intro .app-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .app-intro .app-links a{text-decoration:none;width:auto}
+  .app-back{display:none}
+  .app-intro .app-url{margin-top:18px;font-size:12px;line-height:1.6}
+  .app-intro .app-url code{display:inline-block;margin-top:4px;padding:2px 6px;background:var(--paper);border:2px solid var(--ink-soft);color:var(--ink);word-break:break-all}
+  .app-device{transform-origin:center}
+
+  #screen.no-anim .v-in{animation:none}
+  .ph-main.is-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .chat{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+
+  /* overlays inside the phone screen */
+  .ov-push{top:58px;cursor:pointer}
+  .ov-toast{position:absolute;z-index:40;left:14px;right:14px;top:112px;padding:11px 14px;background:var(--ink);color:var(--paper);font-size:12px;line-height:1.45;pointer-events:none;animation:v-drop .3s both}
+  .ov-toast b{color:var(--yellow-deep)}
+  .ov-scrim{position:absolute;inset:0;z-index:45;background:rgba(0,0,0,.45);animation:v-fade .2s both}
+  .ov-sheet{position:absolute;z-index:50;left:0;right:0;bottom:0;max-height:82%;overflow-y:auto;padding:18px 16px calc(18px + var(--safe-b,0px));background:var(--paper);border-top:2px solid var(--ink);animation:v-up .28s cubic-bezier(.2,.8,.2,1) both}
+  .ov-sheet h3{font-size:17px;line-height:1.25;color:var(--ink);margin:8px 0 8px}
+  .ov-sheet p{font-size:12.5px;line-height:1.55}
+  .ov-sheet .kv{margin-top:12px}
+  .ov-sheet .v-btn+.v-btn{margin-top:8px}
+  .ov-sheet__hd{display:flex;justify-content:space-between;align-items:center}
+  .ov-sheet__x{width:32px;height:32px;border:var(--line);font-weight:700;color:var(--ink)}
+  .ov-sheet__acts{margin-top:16px}
+  @keyframes v-up{from{transform:translateY(100%)}to{transform:none}}
+  @keyframes v-fade{from{opacity:0}to{opacity:1}}
+
+  /* ask */
+  .sugg{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+  .sugg button{align-self:flex-start;text-align:left;font-size:11.5px;line-height:1.45;padding:8px 10px;border:2px dashed var(--ink-soft);background:var(--paper);color:var(--ink)}
+  .sugg button:active{background:var(--yellow)}
+  .ph-input form{display:contents}
+  .ph-input input{width:100%;min-height:42px;border:var(--line);padding:9px 10px;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border-radius:0;-webkit-appearance:none}
+  .ph-input input:focus{outline:2px solid var(--ink);outline-offset:-2px}
+  .ph-input button{height:42px;background:var(--yellow-deep);border:var(--line);font-weight:700;font-size:16px;color:var(--ink)}
+
+  /* map */
+  .map-z{border:2px dashed var(--ink-soft);padding:10px;margin-top:12px;background:var(--paper)}
+  .map-z:first-of-type{margin-top:0}
+  .map-z__hd{display:flex;justify-content:space-between;margin-bottom:8px;font-size:10px;font-weight:700;letter-spacing:.08em}
+  .map-g{display:grid;gap:5px}
+  .map-g--6{grid-template-columns:repeat(6,1fr)}
+  .map-g--3{grid-template-columns:repeat(3,1fr)}
+  .map-c{position:relative;min-height:40px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:4px 5px;border:2px solid var(--ink-soft);background:var(--paper);font-size:9.5px;font-weight:700;color:var(--ink-soft);text-align:left}
+  .map-c em{font-style:normal;font-size:8.5px;font-weight:400}
+  .map-c.is-task{background:var(--yellow-deep);border-color:var(--ink);color:var(--ink)}
+  .map-c.is-task::after{content:"";position:absolute;border:2px solid var(--ink);animation:v-ring 1.4s ease-out infinite}
+  .map-c.is-alert{background:var(--ink);border-color:var(--ink);color:var(--yellow-deep)}
+  .map-c.is-fefo::before{content:"";position:absolute;right:3px;top:3px;width:6px;height:6px;background:var(--ink)}
+  .map-c.is-alert.is-fefo::before{background:var(--yellow-deep)}
+  .map-c.is-me{outline:3px solid var(--ink);outline-offset:-6px}
+  .map-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:9.5px;font-weight:700;letter-spacing:.06em}
+  .map-legend span{display:flex;align-items:center;gap:5px}
+  .map-legend i{width:11px;height:11px;border:2px solid var(--ink-soft)}
+
+  /* phone sized screens: the app takes the whole viewport */
+  @media (max-width:560px){
+    html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+    body{display:flex;flex-direction:column}
+    .app-wrap{display:block;flex:1;min-height:0;padding:0}
+    .app-intro{display:none}
+    .app-back{display:flex;align-items:center;flex:none;height:calc(44px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 16px 0;background:var(--paper);border-bottom:2px solid var(--ink);color:var(--ink);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+    .app-device{height:100%;transform:none!important}
+    .phone{width:100%;height:100%;padding:0;border-radius:0;background:var(--cream)}
+    .ph-screen{width:100%;height:100%;border-radius:0;--safe-b:env(safe-area-inset-bottom)}
+    .ph-status,.ph-home{display:none}
+    .ph-top{padding-top:10px}
+    .ph-tabs{padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+    .ph-tab{padding-top:10px}
+    .ov-push{top:calc(8px + env(safe-area-inset-top))}
+    .ov-toast{top:calc(62px + env(safe-area-inset-top))}
+    .ph-cam{min-height:260px}
+  }
+  @media (max-width:560px) and (max-height:700px){
+    .ph-hello p,.ph-stats{display:none}
+    .cam-label{transform:rotate(-3deg) scale(.88)}
+  }
+</style>
+</head>
+<body>
+<a class="app-back" href="/">← Website</a>
+<main class="app-wrap">
+  <section class="app-intro">
+    <span class="v-chip v-chip--pastel">Try it · clerk app</span>
+    <h1>One shift as <b>Mads</b>, store clerk</h1>
+    <p>This is the phone app a store clerk uses. Everything is tappable. On a phone it opens full-screen, like a real app.</p>
+    <ol>
+      <li><b>01</b><span><b>Receive a pallet.</b> Tap "Start receiving", scan the label and put it away in the bay Velo suggests.</span></li>
+      <li><b>02</b><span><b>Trigger a sale.</b> Tap "Simulate a checkout" (or the MK button). A refill task arrives on the phone.</span></li>
+      <li><b>03</b><span><b>Refill the shelf.</b> Follow the task: exact bay, batch and quantity.</span></li>
+      <li><b>04</b><span><b>Ask the copilot</b> on the Ask tab, or explore the store on the Map tab.</span></li>
+    </ol>
+    <div class="app-links">
+      <a class="v-btn v-btn--sm" href="/">← Website</a>
+      <a class="v-btn v-btn--sm" href="index.html">Watch the demo</a>
+      <button class="v-btn v-btn--sm" id="resetBtn">Reset</button>
+    </div>
+    <p class="app-url">Open it on your phone (same Wi-Fi):<br><code id="appUrl"></code></p>
+  </section>
+  <div class="app-device" id="device"><div class="phone"><div class="ph-screen" id="screen"></div></div></div>
+</main>
+
+<script src="velo-ui.js"></script>
+<script>
+(function () {
+  'use strict'
+
+  const { phone, shell, taskList, LOGO } = VeloUI
+  const screen = document.getElementById('screen')
+
+  const fresh = () => ({
+    view: 'tasks', scan: 'aim', put: 'suggest', refill: 'task',
+    received: false, refillOpen: false, refillDone: false, fefoDone: false, mortarDone: false,
+    push: false, sheet: null, toast: '', chat: [], thinking: false,
+  })
+  let S = fresh()
+  let lastKey = ''
+  let toastTimer = 0, pushTimer = 0
+
+  /* ---------- tasks ---------- */
+  function taskRows() {
+    const rows = []
+    if (S.refillOpen && !S.refillDone) rows.push({ n: 'R', title: 'Refill Aisle 2 · screws', sub: '20 boxes from C-03 · after a checkout', tag: 'REFILL', act: 'open-refill' })
+    rows.push(S.received
+      ? { n: '01', title: 'Receive PO-88213', sub: 'Put away in B-04', tag: 'DONE', st: 'done' }
+      : { n: '01', title: 'Receive PO-88213', sub: 'Dock 2 · truck 07:20 · 24 cartons', tag: 'DOCK', act: 'start' })
+    if (S.refillDone) rows.push({ n: 'R', title: 'Refill Aisle 2 · screws', sub: '20 boxes from C-03 · 4 m 12 s', tag: 'DONE', st: 'done' })
+    rows.push(S.fefoDone
+      ? { n: '02', title: 'FEFO: rotate SikaFlex #388', sub: 'Moved to the front of Aisle 7', tag: 'DONE', st: 'done' }
+      : { n: '02', title: 'FEFO: rotate SikaFlex #388', sub: 'Bay B-04 · expires in 14 days', tag: 'FEFO', act: 'task:fefo' })
+    rows.push(S.mortarDone
+      ? { n: '03', title: 'Move mortar M5 #77 to front', sub: 'On the Aisle 4 front shelf', tag: 'DONE', st: 'done' }
+      : { n: '03', title: 'Move mortar M5 #77 to front', sub: 'Bay B-02 → Aisle 4 · 9 days left', tag: 'FEFO', act: 'task:mortar' })
+    const first = rows.find((r) => r.st !== 'done')
+    if (first) { first.st = 'now'; first.tag = 'NOW' }
+    return { rows, first, done: rows.filter((r) => r.st === 'done').length }
+  }
+
+  const ctaLabel = { start: 'Start receiving →', 'open-refill': 'Start refill →', 'task:fefo': 'Start FEFO rotation →', 'task:mortar': 'Move the mortar →' }
+
+  function tasksView() {
+    const { rows, first, done } = taskRows()
+    const left = rows.length - done
+    const hello = done === 0
+      ? `<h2>Good morning, <b>Mads</b></h2><p>Your action guide, sorted by urgency. Velo planned the route; you decide the order.</p>`
+      : `<h2>${left ? 'Keep going,' : 'All done,'} <b>Mads</b></h2><p>Every task came from a scan or a sale. Nothing was typed into a desktop terminal.</p>`
+    return shell({
+      time: '', zone: S.refillOpen && !S.refillDone ? 'ZONE B · REFILL' : 'ZONE A · DOCK 2', tab: 'tasks',
+      main: `<div class="ph-pad">
+          <div class="ph-hello v-in"><small>MON 26 OCT · SHIFT 07:00–15:00</small>${hello}</div>
+          ${done ? `<div class="ph-stats v-in v-in-2"><div><b>${done}</b><span>DONE</span></div><div><b>${left}</b><span>LEFT</span></div><div><b>0</b><span>PAPER FORMS</span></div></div>` : ''}
+          ${taskList(rows)}
+        </div>
+        <div class="ph-cta v-in v-in-5">
+          ${first ? `<button class="v-btn v-btn--fill" data-act="${first.act}">${ctaLabel[first.act]}</button>` : ''}
+          ${S.refillOpen && !S.refillDone ? '' : `<button class="v-btn v-btn--link" data-act="pos">${S.refillDone ? 'Simulate another checkout (demo)' : 'Simulate a checkout on Lane 2 (demo)'}</button>`}
+        </div>`,
+    })
+  }
+
+  /* ---------- ask ---------- */
+  const QA = [
+    { q: 'Where are the extra pallets of 15 mm fire-rated gypsum, and does it meet TEK17 fire wall rules?', re: /gyps|tek|fire|brann|plate/i,
+      a: () => `<div class="ans"><span class="v-lbl">STOCK &amp; LOCATION</span><p><b>4</b> on the front shelf, Aisle 5. <b>32 pallets</b> in Bay D-01. Batch #204 expires first, in 45 days.</p></div>
+        <div class="ans"><span class="v-lbl">TECHNICAL ANSWER</span><p>Yes. It meets TEK17 REI 60 fire resistance when installed in double layers.</p></div>
+        <div class="src"><span class="v-chip">GYPROC DATASHEET · P.4</span><span class="v-chip">TEK17 · CH. 11</span><span class="v-chip">STOCK · LIVE</span></div>` },
+    { q: 'Where is SikaFlex-11FC, and which batch should go first?', re: /sika|sealant|fug|silicone/i,
+      a: () => `<div class="ans"><span class="v-lbl">STOCK &amp; LOCATION</span><p><b>12</b> on the front shelf, Aisle 7. <b>${S.received ? 48 : 24} cartons</b> in Bay B-04.</p></div>
+        <div class="ans"><span class="v-lbl">FEFO</span><p>${S.fefoDone ? 'Batch #388 is already at the front. Sell it before #412.' : 'Sell batch <b>#388</b> first. It expires in 14 days; #412 is good until March 2027.'}</p></div>
+        <div class="src"><span class="v-chip">STOCK · LIVE</span><span class="v-chip">BATCH LOG</span></div>` },
+    { q: 'What is running low in my zones right now?', re: /low|refill|empty|stock|lager|run/i,
+      a: () => `<div class="ans"><span class="v-lbl">LOW STOCK</span><p>${S.refillOpen && !S.refillDone
+          ? '<b>Aisle 2 decking screws: 3 left</b>, below the minimum of 10. Your refill task is open: 20 boxes from C-03.'
+          : S.refillDone ? 'Aisle 2 is back to 23. <b>Bay C-03 is at 60</b>, below safety stock; a restock order is waiting for Ingrid.' : 'Nothing below minimum on the shelves right now. <b>Aisle 5 gypsum</b> is the closest, at 4 left.'}</p></div>
+        <div class="src"><span class="v-chip">STOCK · LIVE</span><span class="v-chip">POS · TODAY</span></div>` },
+  ]
+
+  function askView() {
+    let chat = `<div class="msg msg--ai v-in"><span class="msg__who">VELO COPILOT</span>Ask about stock, locations or product specs. Answers come from this store's data and documents, on the local server.</div>`
+    for (const m of S.chat) {
+      chat += m.me
+        ? `<div class="msg msg--me"><span class="msg__who">MADS K.</span>${escapeHtml(m.me)}</div>`
+        : `<div class="msg msg--ai is-wide"><span class="msg__who">VELO COPILOT · ${m.t} S</span>${m.ai}<div class="ans-meta">ON-PREMISE · 0 EXTERNAL CALLS</div></div>`
+    }
+    if (S.thinking) chat += `<div class="msg msg--ai think"><span class="v-dots"><i></i><i></i><i></i></span>Searching live stock and 2,140 local documents…</div>`
+    const asked = new Set(S.chat.filter((m) => m.qi !== undefined).map((m) => m.qi))
+    const sugg = QA.map((x, i) => (asked.has(i) ? '' : `<button data-act="q:${i}">${x.q}</button>`)).join('')
+    if (!S.thinking && sugg) chat += `<div class="sugg"><span class="v-lbl">TRY ASKING</span>${sugg}</div>`
+    return shell({
+      time: '', zone: 'ZONE C · FLOOR', tab: 'ask',
+      main: `<div class="chat" id="chat">${chat}</div>
+        <div class="ph-input"><form id="askForm"><input id="askInput" type="text" enterkeyhint="send" autocomplete="off" placeholder="Ask the copilot…" aria-label="Ask the copilot"><button type="submit" aria-label="Send">→</button></form></div>`,
+    })
+  }
+
+  function ask(text, qi) {
+    if (S.thinking || !text.trim()) return
+    if (qi === undefined) qi = QA.findIndex((x) => x.re.test(text))
+    S.chat.push({ me: text, qi: qi >= 0 ? qi : undefined })
+    S.thinking = true
+    render()
+    setTimeout(() => {
+      S.thinking = false
+      S.chat.push(qi >= 0
+        ? { ai: QA[qi].a(), t: (1.2 + Math.random() * 0.6).toFixed(1) }
+        : { ai: '<div class="ans"><p>This demo answers a few sample questions about stock, batches and product rules. Try one of the suggestions below.</p></div>', t: '0.4' })
+      render()
+    }, 1300)
+  }
+
+  /* ---------- map ---------- */
+  const BAYS = {
+    'B-04': () => ({ t: 'Bay B-04 · SikaFlex-11FC', p: `${S.received ? '48' : '24'} cartons in two batches. #388 sits in front and expires in 14 days.`, kv: [['BATCHES', S.received ? '#388 · #412' : '#388'], ['NEXT', S.fefoDone ? 'NONE' : 'ROTATE #388']], act: S.fefoDone ? null : ['task:fefo', 'Start FEFO rotation'] }),
+    'B-02': () => ({ t: 'Bay B-02 · Mortar M5 25 kg', p: 'Batch #77 expires in 9 days. Velo suggests moving it to the Aisle 4 front shelf.', kv: [['ON PALLET', '40 BAGS'], ['NEXT', S.mortarDone ? 'NONE' : 'MOVE 10']], act: S.mortarDone ? null : ['task:mortar', 'Move the mortar'] }),
+    'C-03': () => ({ t: 'Bay C-03 · Decking screws 4.5×50', p: S.refillDone ? 'Down to 60 boxes after the Aisle 2 refill, below safety stock of 80. A restock order is waiting for manager approval.' : 'Oldest batch #401 is picked first for every shelf refill.', kv: [['BOXES', S.refillDone ? '60' : '80'], ['SAFETY STOCK', '80']], act: S.refillOpen && !S.refillDone ? ['open-refill', 'Open refill task'] : null }),
+    'C-05': () => ({ t: 'Bay C-05 · Tile grout CG2', p: 'Batch #19 expires in 12 days. Already in Sofie\u2019s action guide for Zone C.', kv: [['BAGS', '26'], ['OWNER', 'SOFIE L.']] }),
+    'D-01': () => ({ t: 'Bay D-01 · Gypsum 15 mm fire-rated', p: '32 pallets. Batch #204 expires first, in 45 days.', kv: [['PALLETS', '32'], ['FRONT', 'AISLE 5 · 4']] }),
+    'A-2': () => ({ t: 'Aisle 2 · fasteners', p: S.refillOpen && !S.refillDone ? 'Decking screws are at 3, below the minimum of 10.' : 'Decking screws at ' + (S.refillDone ? 23 : 18) + ', above the minimum of 10.', kv: [['SCREWS', S.refillOpen && !S.refillDone ? '3 / 10' : (S.refillDone ? '23' : '18') + ' / 10'], ['ZONE', 'C']], act: S.refillOpen && !S.refillDone ? ['open-refill', 'Open refill task'] : null }),
+  }
+
+  function mapView() {
+    const cls = (id) => {
+      const c = []
+      if ((id === 'B-04' && !S.fefoDone) || (id === 'B-02' && !S.mortarDone) || (id === 'C-03' && S.refillOpen && !S.refillDone) || (id === 'D-2' && !S.received)) c.push('is-task')
+      if (id === 'A-2' && S.refillOpen && !S.refillDone) c.push('is-alert')
+      if (['B-04', 'B-02', 'C-05'].includes(id)) c.push('is-fefo')
+      if (id === (S.refillOpen && !S.refillDone ? 'C-03' : S.refillDone ? 'A-2' : S.received ? 'B-04' : 'D-2')) c.push('is-me')
+      return c.map((x) => ' ' + x).join('')
+    }
+    const note = { 'B-04': S.received ? '48 CTN' : '24 CTN', 'C-03': S.refillDone ? '60' : '80', 'A-2': S.refillOpen && !S.refillDone ? '3/10' : '', 'D-2': S.received ? '' : 'TRUCK' }
+    const c = (id, label) => `<button class="map-c${cls(id)}" data-act="bay:${id}">${label}${note[id] ? `<em>${note[id]}</em>` : ''}</button>`
+    let bays = ''
+    for (const r of 'ABCD') for (let n = 1; n <= 6; n++) bays += c(`${r}-0${n}`, `${r}-0${n}`)
+    return shell({
+      time: '', zone: 'ODENSE 014', tab: 'map',
+      main: `<div class="ph-pad">
+          <div class="map-z v-in"><div class="map-z__hd"><span>A · DOCK</span><span>3 DOORS</span></div><div class="map-g map-g--3">${[1, 2, 3].map((n) => c(`D-${n}`, `DOOR ${n}`)).join('')}</div></div>
+          <div class="map-z v-in v-in-2"><div class="map-z__hd"><span>B · BACK WAREHOUSE</span><span>TAP A BAY</span></div><div class="map-g map-g--6">${bays}</div></div>
+          <div class="map-z v-in v-in-3"><div class="map-z__hd"><span>C · FRONT FLOOR</span><span>6 AISLES</span></div><div class="map-g map-g--3">${[1, 2, 3, 4, 5, 6].map((n) => c(`A-${n}`, `AISLE ${n}`)).join('')}</div></div>
+          <div class="map-legend v-in v-in-4"><span><i style="background:var(--yellow-deep);border-color:var(--ink)"></i>YOUR TASK</span><span><i style="background:var(--ink);border-color:var(--ink)"></i>BELOW MIN</span><span><i style="outline:2px solid var(--ink);outline-offset:-5px"></i>YOU ARE HERE</span></div>
+        </div>`,
+    })
+  }
+
+  /* ---------- views ---------- */
+  function view() {
+    switch (S.view) {
+      case 'scan':
+        return S.received
+          ? phone('scan', S.scan === 'lookup' ? 'lookup' : 'aim', { lookup: true, tapHint: true, stored: 48, hint: 'ANY LABEL' })
+          : phone('scan', S.scan, { tapHint: true, next: true, back: true })
+      case 'putaway': return phone('putaway', S.put, { next: true, back: true })
+      case 'refill': return phone('refill', S.refill, { next: true, back: true })
+      case 'ask': return askView()
+      case 'map': return mapView()
+      default: return tasksView()
+    }
+  }
+
+  function overlays() {
+    let h = ''
+    if (S.push) h += `<div class="ph-push ov-push" data-act="open-refill"><img src="${LOGO}" alt=""><div><small><span>VELO · REFILL</span><span>NOW</span></small><b>Aisle 2 needs a refill</b><p>Decking screws: 3 left after a checkout on Lane 2. Tap to open.</p></div></div>`
+    if (S.toast) h += `<div class="ov-toast" role="status">${S.toast}</div>`
+    if (S.sheet) h += `<div class="ov-scrim" data-act="close"></div><div class="ov-sheet" role="dialog" aria-modal="true">${sheetHtml()}</div>`
+    return h
+  }
+
+  function sheetHtml() {
+    const x = '<button class="ov-sheet__x" data-act="close" aria-label="Close">✕</button>'
+    if (S.sheet === 'menu') {
+      return `<div class="ov-sheet__hd"><span class="v-lbl">MADS K. · CLERK · ODENSE 014</span>${x}</div>
+        <h3>Demo controls</h3><p>These buttons stand in for things that happen elsewhere in the store.</p>
+        <div class="ov-sheet__acts">
+          <button class="v-btn v-btn--fill" data-act="pos"${S.refillOpen && !S.refillDone ? ' disabled' : ''}>Simulate a checkout on Lane 2</button>
+          <button class="v-btn" data-act="reset">Reset the shift</button>
+          <a class="v-btn" href="index.html" style="text-decoration:none">Watch the full demo</a>
+          <a class="v-btn" href="/" style="text-decoration:none">Back to the website</a>
+        </div>`
+    }
+    if (S.sheet.task) {
+      const t = { fefo: { h: 'Rotate SikaFlex batch #388', p: 'Move 6 cartons of batch #388 from Bay B-04 to the front of Aisle 7, so they sell before the new batch #412.', kv: [['FROM', 'B-04'], ['TO', 'AISLE 7 FRONT'], ['QTY', '6 CTN'], ['EXPIRES', '14 DAYS']] },
+        mortar: { h: 'Move mortar M5 batch #77', p: 'Batch #77 expires in 9 days. Move 10 bags from Bay B-02 to the Aisle 4 front shelf.', kv: [['FROM', 'B-02'], ['TO', 'AISLE 4 FRONT'], ['QTY', '10 BAGS'], ['EXPIRES', '9 DAYS']] } }[S.sheet.task]
+      return `<div class="ov-sheet__hd"><span class="v-chip v-chip--deep">FEFO · FIRST EXPIRED, FIRST OUT</span>${x}</div>
+        <h3>${t.h}</h3><p>${t.p}</p>
+        <dl class="kv">${t.kv.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        <div class="ov-sheet__acts"><button class="v-btn v-btn--fill" data-act="done:${S.sheet.task}">Scan batch to confirm</button><button class="v-btn v-btn--link" data-act="close">Later</button></div>`
+    }
+    if (S.sheet.bay) {
+      const b = BAYS[S.sheet.bay] ? BAYS[S.sheet.bay]() : { t: label(S.sheet.bay), p: 'No open tasks here. Stock levels are above minimum.', kv: [['TASKS', '0'], ['LAST SCAN', 'TODAY']] }
+      return `<div class="ov-sheet__hd"><span class="v-lbl">STORE MAP · LIVE</span>${x}</div>
+        <h3>${b.t}</h3><p>${b.p}</p>
+        <dl class="kv">${b.kv.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        ${b.act ? `<div class="ov-sheet__acts"><button class="v-btn v-btn--fill" data-act="${b.act[0]}">${b.act[1]} →</button></div>` : ''}`
+    }
+    return ''
+  }
+
+  const label = (id) => (id.startsWith('A-') ? `Aisle ${id.slice(2)}` : id.startsWith('D-') ? `Dock door ${id.slice(2)}` : `Bay ${id}`)
+  const escapeHtml = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+
+  /* ---------- render ---------- */
+  function render() {
+    const key = S.view + ':' + (S.view === 'scan' ? S.scan : S.view === 'putaway' ? S.put : S.view === 'refill' ? S.refill : '')
+    const same = key === lastKey
+    const main = screen.querySelector('.ph-main'), chat = screen.querySelector('#chat')
+    const keep = same && main ? main.scrollTop : 0
+    screen.classList.toggle('no-anim', same)
+    screen.innerHTML = view() + overlays()
+    lastKey = key
+    const m = screen.querySelector('.ph-main')
+    if (m && S.view !== 'ask') { m.classList.add('is-scroll'); m.scrollTop = keep }
+    const c = screen.querySelector('#chat')
+    if (c) c.scrollTop = c.scrollHeight
+    const t = screen.querySelector('.ph-status b')
+    if (t) t.textContent = new Date().toTimeString().slice(0, 5)
+    const f = screen.querySelector('#askForm')
+    if (f) f.addEventListener('submit', (e) => { e.preventDefault(); const i = f.querySelector('input'); ask(i.value); })
+  }
+
+  function toast(msg) {
+    S.toast = msg
+    clearTimeout(toastTimer)
+    toastTimer = setTimeout(() => { S.toast = ''; render() }, 2600)
+  }
+
+  function go(viewName) {
+    S.view = viewName
+    S.sheet = null
+  }
+
+  /* ---------- actions ---------- */
+  function act(a) {
+    const [k, v] = a.split(':')
+    switch (k) {
+      case 'start': go('scan'); S.scan = 'aim'; break
+      case 'scan':
+        if (S.received) { S.scan = 'lookup' } else { S.scan = 'detected' }
+        navigator.vibrate?.(40)
+        break
+      case 'rescan': S.scan = 'aim'; break
+      case 'suggest': go('putaway'); S.put = 'suggest'; break
+      case 'confirm': S.put = 'confirmed'; S.received = true; S.scan = 'aim'; navigator.vibrate?.(40); toast('<b>Code-128 read.</b> B-04 confirmed. The whole store sees it now.'); break
+      case 'other-bay': toast('In the real app you can scan <b>any bay</b>. Velo logs your choice; the human has final say.'); break
+      case 'home': go('tasks'); break
+      case 'back': go(S.view === 'putaway' && S.put !== 'confirmed' ? 'scan' : 'tasks'); break
+      case 'pos':
+        if (S.refillOpen && !S.refillDone) break
+        S.refillOpen = true; S.refillDone = false; S.refill = 'task'; S.push = true; S.sheet = null; S.toast = ''
+        navigator.vibrate?.([60, 40, 60])
+        clearTimeout(pushTimer)
+        pushTimer = setTimeout(() => { S.push = false; render() }, 7000)
+        break
+      case 'open-refill': S.push = false; go('refill'); break
+      case 'pick': S.refill = 'picking'; navigator.vibrate?.(40); toast('<b>Bay C-03 + EAN-13 read.</b> Batch #401 confirmed.'); break
+      case 'restock': S.refill = 'done'; S.refillDone = true; break
+      case 'handover': toast('In the real app this hands the task to <b>Sofie L.</b> in one tap.'); break
+      case 'task': S.sheet = { task: v }; break
+      case 'done':
+        if (v === 'fefo') S.fefoDone = true
+        if (v === 'mortar') S.mortarDone = true
+        S.sheet = null; navigator.vibrate?.(40); toast('<b>Batch scanned.</b> Task complete.')
+        break
+      case 'bay': S.sheet = { bay: v }; break
+      case 'q': ask(QA[+v].q, +v); return
+      case 'menu': S.sheet = 'menu'; break
+      case 'close': S.sheet = null; break
+      case 'reset': reset(); return
+    }
+    render()
+  }
+
+  function reset() {
+    clearTimeout(toastTimer); clearTimeout(pushTimer)
+    S = fresh(); lastKey = ''
+    render()
+  }
+
+  screen.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-tab],[data-act]')
+    if (!t || !screen.contains(t) || t.disabled) return
+    if (t.dataset.tab) {
+      const tab = t.dataset.tab
+      if (tab === 'scan') { go('scan'); if (S.received) S.scan = 'aim' }
+      else go(tab)
+      render()
+      return
+    }
+    act(t.dataset.act)
+  })
+  screen.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-act][role=button]')) { e.preventDefault(); act(e.target.dataset.act) }
+  })
+  document.getElementById('resetBtn').addEventListener('click', reset)
+  const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:'
+  document.getElementById('appUrl').textContent = local
+    ? 'http://<Network address from pnpm dev>' + (location.port ? '' : ':8443') + '/demo/app.html'
+    : location.href.split('#')[0]
+
+  const device = document.getElementById('device')
+  function fit() {
+    if (innerWidth <= 560) { device.style.transform = ''; return }
+    const k = Math.min(1, (innerHeight - 48) / 868)
+    device.style.transform = `scale(${k})`
+  }
+  addEventListener('resize', fit)
+  fit()
+  render()
+})()
+</script>
+</body>
+</html>

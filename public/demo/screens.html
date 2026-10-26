@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VELO — UI screens</title>
+<link rel="icon" type="image/png" href="../assets/Logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="velo-ui.css">
+<style>
+  body{padding:48px 56px 80px;min-width:1560px}
+  .bd-head{display:flex;align-items:flex-end;gap:24px;padding-bottom:20px;border-bottom:var(--line);margin-bottom:36px}
+  .bd-head h1{font-size:34px;font-weight:400;text-transform:uppercase;color:var(--ink)}
+  .bd-head h1 b{background:var(--yellow);font-weight:700;padding:0 6px}
+  .bd-head p{font-size:13px;line-height:1.6;max-width:62ch;margin-left:auto}
+  .bd-head a{color:var(--ink);font-weight:700}
+  .bd-h2{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0 0 20px;color:var(--ink)}
+  .row{display:flex;flex-wrap:wrap;gap:40px 36px;margin-bottom:56px}
+  figure{display:flex;flex-direction:column;gap:12px}
+  figcaption{display:flex;gap:8px;align-items:center;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  figcaption a{color:inherit}
+  .dashes{display:flex;flex-direction:column;gap:48px}
+  .solo{padding:40px;min-width:0;display:grid;place-items:center;min-height:100vh}
+  .solo .bd-head,.solo .bd-h2,.solo figcaption{display:none}
+  .solo .row,.solo .dashes{margin:0}
+</style>
+</head>
+<body>
+<header class="bd-head">
+  <h1>Velo <b>UI screens</b></h1>
+  <p>Every state used in the <a href="index.html">demo process</a>. Click a caption to open that screen alone on a clean page. Add <code>&amp;bg=paper</code> or <code>&amp;bg=none</code> to change the background. All data is illustrative.</p>
+</header>
+
+<h2 class="bd-h2">Clerk phone app</h2>
+<div class="row" id="phones"></div>
+
+<h2 class="bd-h2">Store hub dashboard</h2>
+<div class="dashes" id="dashes"></div>
+
+<script src="velo-ui.js"></script>
+<script>
+(function () {
+  'use strict'
+  const PHONES = [
+    ['tasks', 'plan', '01 · Morning action guide'],
+    ['scan', 'aim', '02 · Scan · aiming'],
+    ['scan', 'detected', '02 · Scan · detected'],
+    ['scan', 'lookup', '02 · Scan · stock lookup'],
+    ['putaway', 'suggest', '03 · Put-away · AI suggestion'],
+    ['putaway', 'confirmed', '03 · Put-away · confirmed'],
+    ['refill', 'notify', '03 · Refill · push notification'],
+    ['refill', 'task', '03 · Refill · task'],
+    ['refill', 'picking', '03 · Refill · pick confirmed'],
+    ['refill', 'done', '03 · Refill · complete'],
+    ['ask', 'typing', '03 · Copilot · question'],
+    ['ask', 'thinking', '03 · Copilot · searching'],
+    ['ask', 'answered', '03 · Copilot · answer'],
+    ['tasks', 'after', '↻ · Shift so far'],
+  ]
+  const DASHES = [
+    ['idle', '01 · Store hub · start of shift'],
+    ['received', '03 · Put-away lands on the map'],
+    ['pos', '03 · POS sale triggers refill'],
+    ['refilled', '03 · Refill done · approval needed'],
+    ['approved', '03 · Restock order approved'],
+  ]
+
+  const params = new URLSearchParams(location.search)
+  const only = params.get('only')
+  const bg = { paper: 'var(--paper)', none: 'transparent' }[params.get('bg')]
+  if (bg) document.documentElement.style.background = document.body.style.background = bg
+
+  const link = (id, label) => `<figcaption><a href="?only=${id}">${label}</a></figcaption>`
+
+  document.getElementById('phones').innerHTML = PHONES
+    .map(([s, st, label]) => ({ id: `phone-${s}-${st}`, s, st, label }))
+    .filter((p) => !only || p.id === only)
+    .map((p) => `<figure id="${p.id}"><div class="phone"><div class="ph-screen">${VeloUI.phone(p.s, p.st)}</div></div>${link(p.id, p.label)}</figure>`)
+    .join('')
+
+  document.getElementById('dashes').innerHTML = DASHES
+    .map(([st, label]) => ({ id: `dash-${st}`, st, label }))
+    .filter((d) => !only || d.id === only)
+    .map((d) => `<figure id="${d.id}"><div class="db">${VeloUI.dash(d.st)}</div>${link(d.id, d.label)}</figure>`)
+    .join('')
+
+  if (only) document.body.classList.add('solo')
+})()
+</script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VELO — Demo process</title>
+<link rel="icon" type="image/png" href="../assets/Logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="velo-ui.css">
+<style>
+  html,body{height:100%;overflow:hidden}
+  .stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--cream);overflow:hidden}
+
+  .st-top{position:absolute;left:0;right:0;top:0;height:84px;display:flex;align-items:center;gap:20px;padding:0 56px;border-bottom:var(--line);background:var(--paper);z-index:5}
+  .st-brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;letter-spacing:.04em;color:var(--ink);text-decoration:none}
+  .st-brand img{width:34px;height:34px;object-fit:contain}
+  .st-title{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-right:auto}
+  .st-top .v-chip{font-size:11px}
+
+  .st-cap{position:absolute;left:56px;top:124px;width:470px;bottom:118px;display:flex;flex-direction:column}
+  .cap-num{font-size:104px;line-height:1;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+  .cap-stage{display:block;margin:8px 0 18px;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .cap-zone{align-self:flex-start;font-size:12px}
+  .cap-num,.cap-title,.cap-text{font-family:'Space Grotesk',system-ui,sans-serif}
+  .cap-num{letter-spacing:-.04em}
+  .cap-title{margin:22px 0 16px;font-size:48px;line-height:1.02;font-weight:700;letter-spacing:-.025em;text-transform:uppercase;color:var(--ink)}
+  .cap-text{font-size:21px;line-height:1.5;color:var(--ink)}
+  .cap-anim > *{animation:v-rise .55s cubic-bezier(.2,.7,.2,1) both}
+  .cap-anim > :nth-child(2){animation-delay:.05s}.cap-anim > :nth-child(3){animation-delay:.1s}.cap-anim > :nth-child(4){animation-delay:.15s}.cap-anim > :nth-child(5){animation-delay:.2s}
+  .loop{margin-top:auto;border:var(--line);background:var(--paper)}
+  .loop li{display:grid;grid-template-columns:56px 1fr;align-items:center;padding:12px 16px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background-color .4s}
+  .loop li+li{border-top:var(--line)}
+  .loop li b{font-size:20px;color:var(--ink)}
+  .loop li.on{background:var(--yellow-deep);color:var(--ink)}
+
+  .st-devs{position:absolute;left:566px;top:108px;width:1320px;height:880px}
+  .dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s ease,filter .6s ease,z-index 0s .35s}
+  .stage[data-focus=phone] .dev--phone{transform:translate(830px,6px) scale(1);z-index:3}
+  .stage[data-focus=phone] .dev--dash{transform:translate(0,170px) scale(.62);opacity:.35;filter:blur(1.5px) grayscale(.4);z-index:1}
+  .stage[data-focus=dash] .dev--dash{transform:translate(0,46px) scale(.86);z-index:3}
+  .stage[data-focus=dash] .dev--phone{transform:translate(1104px,236px) scale(.56);opacity:.45;filter:blur(1px) grayscale(.4);z-index:1}
+  .stage[data-focus=both] .dev--dash{transform:translate(0,160px) scale(.64);z-index:2}
+  .stage[data-focus=both] .dev--phone{transform:translate(944px,24px) scale(.96);z-index:3}
+  .dev--dash .db{position:relative}
+  .stage.is-instant .dev{transition:none}
+
+  .st-ctl{position:absolute;left:0;right:0;bottom:0;height:84px;display:flex;align-items:center;gap:14px;padding:0 56px;border-top:var(--line);background:var(--paper);z-index:5;transition:transform .3s}
+  .st-ctl .v-btn{width:auto;padding:9px 14px;font-size:12px;text-decoration:none}
+  /* Stays full size when the 1920 stage is scaled down on a phone. */
+  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 14px;background:var(--yellow);border:2px solid var(--ink);color:var(--ink);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+  @media (max-width:1100px){.site-back{display:inline-flex}}
+  .st-ctl #play{min-width:112px}
+  .dots{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin:0 10px}
+  .dots button{position:relative;height:30px;border:var(--line);background:var(--cream);overflow:hidden;font-size:10px;font-weight:700;letter-spacing:.06em;text-align:left;padding:0 8px;white-space:nowrap;text-overflow:ellipsis}
+  .dots button span{position:relative;z-index:1}
+  .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--yellow-deep)}
+  .dots button.is-past i{width:100%;background:var(--yellow)}
+  .st-count{font-size:13px;font-weight:700;min-width:70px;text-align:right;color:var(--ink)}
+  .st-hint{font-size:10px;font-weight:700;letter-spacing:.06em}
+  .stage.is-clean .st-ctl{transform:translateY(100%)}
+  .stage.is-clean .st-demo{visibility:hidden}
+</style>
+</head>
+<body>
+<a class="site-back" href="/">← Website</a>
+<div class="stage" id="stage" data-focus="dash">
+  <header class="st-top">
+    <a class="st-brand" href="/" aria-label="Back to the website"><img src="../assets/Logo.png" alt=""><span>VELO</span></a>
+    <span class="st-title">How Velo works · the scan-to-AI decision loop</span>
+    <span class="v-chip">IT Consultant Challenge 2026</span>
+    <span class="v-chip v-chip--pastel st-demo">Demo data</span>
+  </header>
+
+  <aside class="st-cap">
+    <div id="cap">
+      <div class="cap-num" id="capNum">01</div>
+      <span class="cap-stage" id="capStage"></span>
+      <span class="v-chip v-chip--pastel cap-zone" id="capZone"></span>
+      <h1 class="cap-title" id="capTitle"></h1>
+      <p class="cap-text" id="capText"></p>
+    </div>
+    <ol class="loop" id="loop">
+      <li data-step="1"><b>01</b>Centralize · one source of truth</li>
+      <li data-step="2"><b>02</b>Scan to identify · 1D barcode</li>
+      <li data-step="3"><b>03</b>AI assists decisions · 4 zones</li>
+    </ol>
+  </aside>
+
+  <div class="st-devs">
+    <div class="dev dev--dash"><div class="db" id="dash"></div></div>
+    <div class="dev dev--phone"><div class="phone"><div class="ph-screen" id="phone"></div></div></div>
+  </div>
+
+  <footer class="st-ctl">
+    <a class="v-btn" href="/">← Website</a>
+    <button class="v-btn" id="prev" aria-label="Previous step">←</button>
+    <button class="v-btn v-btn--fill" id="play">❚❚ Pause</button>
+    <button class="v-btn" id="next" aria-label="Next step">→</button>
+    <div class="dots" id="dots"></div>
+    <span class="st-count" id="count"></span>
+    <span class="st-hint">SPACE · ← → · E END · H HIDE</span>
+  </footer>
+</div>
+
+<script src="velo-ui.js"></script>
+<script>
+(function () {
+  'use strict'
+
+  const STAGES = { 1: 'Centralize', 2: 'Scan to identify', 3: 'AI assists decisions' }
+
+  // phone: [screen, state] · dash: state · tap / dtap: selector tapped on the phone / dashboard
+  const SCENES = [
+    { step: 1, short: 'HUB', zone: 'All zones · store hub', title: 'One source of truth', focus: 'dash', dur: 5000,
+      text: 'ERP orders, bay locations, batch expiry dates, live POS checkouts and technical manuals land in one local store hub.',
+      beats: [{ t: 0, dash: 'idle', phone: ['tasks', 'plan'] }] },
+    { step: 1, short: 'SHIFT', zone: 'Shift start · 07:02', title: 'A plan, not a clipboard', focus: 'phone', dur: 4800,
+      text: 'Velo hands Mads a morning action guide sorted by urgency. Velo plans the route; Mads decides the order.',
+      beats: [{ t: 0, phone: ['tasks', 'plan'] }, { t: 2800, tap: '[data-tap=start]' }] },
+    { step: 2, short: 'SCAN', zone: 'Zone A · receiving dock', title: 'Scan the pallet', focus: 'phone', dur: 5200,
+      text: 'The phone camera reads the EAN-13 label already on the pallet. SKU, batch and expiry in 142 ms. No relabeling and no $1,800 infrared gun.',
+      beats: [{ t: 0, phone: ['scan', 'aim'] }, { t: 1600, phone: ['scan', 'detected'] }] },
+    { step: 3, short: 'PUT-AWAY', zone: 'Zone A → B · put-away', title: 'Velo suggests the bay', focus: 'phone', dur: 6200,
+      text: 'Local AI picks Bay B-04: front-accessible, same SKU already there, 38 m away. Mads scans the bay label to confirm, or picks another. The human has final say.',
+      beats: [{ t: 0, phone: ['putaway', 'suggest'] }, { t: 2800, tap: '[data-tap=confirm]' }, { t: 3300, phone: ['putaway', 'confirmed'] }] },
+    { step: 3, short: 'MAP', zone: 'Store hub · live', title: 'The whole store sees it', focus: 'dash', dur: 5200,
+      text: 'The scan updates the zone map instantly. FEFO keeps the older batch #388 in front of the new delivery, so it sells first.',
+      beats: [{ t: 0, dash: 'received' }] },
+    { step: 3, short: 'POS', zone: 'Zone D · POS checkout', title: 'A sale triggers the refill', focus: 'dash', dur: 5500,
+      text: '10:14. A contractor buys 15 boxes of decking screws. Aisle 2 drops to 3, below its minimum of 10. Velo creates one refill task.',
+      beats: [{ t: 0, dash: 'pos' }] },
+    { step: 3, short: 'REFILL', zone: 'Zone B → C · refill', title: 'One clear task', focus: 'phone', dur: 7400,
+      text: 'Exact bay, exact batch, exact quantity. Mads walks straight to C-03, scans to confirm the pick and restocks Aisle 2.',
+      beats: [{ t: 0, phone: ['refill', 'notify'] }, { t: 1600, phone: ['refill', 'task'] }, { t: 3200, tap: '[data-tap=pick]' },
+        { t: 3700, phone: ['refill', 'picking'] }, { t: 5200, phone: ['refill', 'done'] }] },
+    { step: 3, short: 'APPROVE', zone: 'Store hub · manager', title: 'Approve, don\u2019t chase', focus: 'dash', dur: 6000,
+      text: 'Aisle 2 is back to 23. Bay C-03 fell below safety stock, so Velo drafted a restock order. Ingrid approves it in one click.',
+      beats: [{ t: 0, dash: 'refilled' }, { t: 2800, dtap: '[data-tap=approve]' }, { t: 3300, dash: 'approved' }] },
+    { step: 3, short: 'ASK', zone: 'Zone C · front floor', title: 'Ask, get an answer', focus: 'phone', dur: 7800,
+      text: 'A contractor asks about fire-rated gypsum. The local RAG copilot answers from live stock and supplier datasheets in 1.6 s. Nothing leaves the building.',
+      beats: [{ t: 0, phone: ['ask', 'typing'] }, { t: 1600, phone: ['ask', 'thinking'] }, { t: 2800, phone: ['ask', 'answered'] }] },
+    { step: 0, short: 'LOOP', zone: 'The loop', title: 'Scan. Restock. Repeat.', focus: 'both', dur: 6000,
+      text: 'Every scan feeds the hub. Every hub event becomes one clear task on a phone. Velo recommends; people confirm.',
+      beats: [{ t: 0, dash: 'approved', phone: ['tasks', 'after'] }] },
+  ]
+
+  const $ = (id) => document.getElementById(id)
+  const stage = $('stage'), phoneEl = $('phone'), dashEl = $('dash'), cap = $('cap'), playBtn = $('play')
+  const params = new URLSearchParams(location.search)
+  const n = SCENES.length
+
+  let idx = 0, elapsed = 0, playing = !params.has('paused'), last = performance.now()
+  let fired = new Set(), shown = { phone: '', dash: '' }
+
+  function stateAt(i, t) {
+    let phone = null, dash = null
+    for (let k = 0; k <= i; k++) for (const b of SCENES[k].beats) {
+      if (k === i && b.t > t) continue
+      if (b.phone) phone = b.phone
+      if (b.dash) dash = b.dash
+    }
+    return { phone, dash }
+  }
+
+  function render(t) {
+    const s = stateAt(idx, t)
+    const pk = s.phone.join('/')
+    if (pk !== shown.phone) { phoneEl.innerHTML = VeloUI.phone(s.phone[0], s.phone[1]); shown.phone = pk }
+    if (s.dash !== shown.dash) { dashEl.innerHTML = VeloUI.dash(s.dash); shown.dash = s.dash }
+  }
+
+  function tap(root, sel) {
+    const el = root.querySelector(sel)
+    if (!el) return
+    const rr = root.getBoundingClientRect(), er = el.getBoundingClientRect()
+    const k = root.offsetWidth / rr.width
+    const fx = document.createElement('span')
+    fx.className = 'v-tap'
+    fx.style.left = (er.left - rr.left + er.width / 2) * k + 'px'
+    fx.style.top = (er.top - rr.top + er.height / 2) * k + 'px'
+    root.appendChild(fx)
+    setTimeout(() => fx.remove(), 800)
+  }
+
+  function caption() {
+    const s = SCENES[idx]
+    $('capNum').textContent = s.step ? '0' + s.step : '↻'
+    $('capStage').textContent = s.step ? STAGES[s.step] : 'The full loop'
+    $('capZone').textContent = s.zone
+    $('capTitle').textContent = s.title
+    $('capText').textContent = s.text
+    cap.classList.remove('cap-anim'); void cap.offsetWidth; cap.classList.add('cap-anim')
+    document.querySelectorAll('#loop li').forEach((li) => li.classList.toggle('on', s.step === 0 || +li.dataset.step === s.step))
+    $('count').textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0')
+  }
+
+  function go(i, atEnd) {
+    idx = (i + n) % n
+    const s = SCENES[idx]
+    elapsed = atEnd ? s.dur - 1 : 0
+    fired = new Set(s.beats.map((b, j) => (b.t <= elapsed && (b.tap || b.dtap) ? j : -1)).filter((j) => j >= 0))
+    stage.dataset.focus = s.focus
+    caption()
+    render(elapsed)
+    dots()
+    history.replaceState(null, '', location.search + '#' + (idx + 1))
+  }
+
+  function dots() {
+    const p = Math.min(1, elapsed / SCENES[idx].dur)
+    document.querySelectorAll('#dots button').forEach((b, j) => {
+      b.classList.toggle('is-past', j < idx)
+      b.querySelector('i').style.width = j === idx ? p * 100 + '%' : ''
+    })
+  }
+
+  function setPlaying(v) {
+    playing = v
+    playBtn.textContent = v ? '❚❚ Pause' : '▶ Play'
+  }
+
+  function frame(now) {
+    const dt = Math.min(now - last, 100)
+    last = now
+    if (playing) {
+      elapsed += dt
+      const s = SCENES[idx]
+      s.beats.forEach((b, j) => {
+        if ((b.tap || b.dtap) && b.t <= elapsed && !fired.has(j)) {
+          fired.add(j)
+          b.tap ? tap(phoneEl, b.tap) : tap(dashEl, b.dtap)
+        }
+      })
+      render(elapsed)
+      if (elapsed >= s.dur) go(idx + 1)
+      else dots()
+    }
+    requestAnimationFrame(frame)
+  }
+
+  function fit() {
+    const k = Math.min(innerWidth / 1920, innerHeight / 1080)
+    stage.style.transform = `translate(-50%,-50%) scale(${k})`
+  }
+
+  $('dots').innerHTML = SCENES.map((s, j) => `<button title="${s.title}"><i></i><span>${String(j + 1).padStart(2, '0')} ${s.short}</span></button>`).join('')
+  document.querySelectorAll('#dots button').forEach((b, j) => b.addEventListener('click', () => go(j)))
+  $('prev').addEventListener('click', () => go(idx - 1))
+  $('next').addEventListener('click', () => go(idx + 1))
+  playBtn.addEventListener('click', () => setPlaying(!playing))
+  addEventListener('keydown', (e) => {
+    if (e.key === ' ') { e.preventDefault(); setPlaying(!playing) }
+    else if (e.key === 'ArrowRight') go(idx + 1)
+    else if (e.key === 'ArrowLeft') go(idx - 1)
+    else if (e.key === 'Home') go(0)
+    else if (e.key === 'e' || e.key === 'E') { setPlaying(false); go(idx, true) }
+    else if (e.key === 'h' || e.key === 'H') stage.classList.toggle('is-clean')
+  })
+  addEventListener('resize', fit)
+
+  fit()
+  setPlaying(playing)
+  stage.classList.add('is-instant')
+  go((parseInt(location.hash.slice(1), 10) || 1) - 1)
+  requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.remove('is-instant')))
+  requestAnimationFrame(frame)
+})()
+</script>
+</body>
+</html>

@@ -4,11 +4,11 @@
 
 <nav class="nav" aria-label="Main">
   <div class="nav__in nav__in--fx">
-    <a class="brand" href="#top"><img src="/assets/Logo.png" alt=""><span>VELO</span></a>
-    <div class="nav__links" id="navLinks"><a href="#product"><small>01</small>Product</a><a href="#rollout"><small>02</small>Rollout</a><a href="#local-ai"><small>03</small>Stack</a><a href="#timeline"><small>04</small>Timeline</a><a href="#team"><small>05</small>Team</a><a href="#faq"><small>06</small>FAQ</a><span class="nav__ink" aria-hidden="true"></span></div>
+    <a class="brand" href="#top" aria-label="Velo"><img class="nav__logo" src="/assets/LogoName.png" alt="Velo" width="1672" height="941"></a>
+    <div class="nav__links" id="navLinks"><a href="#product"><small>01</small>Product</a><a href="#rollout"><small>02</small>Plan</a><a href="#local-ai"><small>03</small>Tech</a><a href="#timeline"><small>04</small>Timeline</a><a href="#team"><small>05</small>Team</a><a href="#faq"><small>06</small>FAQ</a><span class="nav__ink" aria-hidden="true"></span></div>
     <div class="nav__right">
-      <a class="btn btn--sm" href="#timeline">PROPOSAL</a>
-      <a class="btn btn--sm btn--fill" href="#product">EXPLORE <span class="btn__arr">→</span></a>
+      <a class="btn btn--sm btn--ghost" href="/demo/index.html">WATCH DEMO</a>
+      <a class="btn btn--sm btn--fill" href="/demo/app.html">TRY IT <span class="btn__arr">→</span></a>
       <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     </div>
   </div>
@@ -37,19 +37,33 @@
     <div class="wrap">
       <span class="kicker"><i class="kicker__dot"></i>Netcompany IT Consultant Challenge 2026<i class="kicker__cur"></i></span>
       <div class="crew">
-        <a class="crew__name" href="#product" aria-label="Velo"><img class="crew__mark" src="/assets/Logo.png" alt=""><i aria-hidden="true" style="--i:0">V</i><i aria-hidden="true" style="--i:1">e</i><i aria-hidden="true" style="--i:2">l</i><i aria-hidden="true" style="--i:3">o</i></a>
+        <a class="crew__name crew__name--asset" href="#product" aria-label="Velo">
+          <svg class="crew__wordmark" viewBox="80 220 1540 530" aria-hidden="true" focusable="false">
+            <defs>
+              <image id="velo-wordmark-art" href="/assets/LogoName.png" width="1672" height="941"/>
+              <clipPath id="velo-mark-clip"><path d="M80 220H750V390L660 450V750H80Z"/></clipPath>
+              <clipPath id="velo-e-clip"><path d="M750 220H1085V750H660V450L750 390Z"/></clipPath>
+              <clipPath id="velo-l-clip"><path d="M1085 220H1202V750H1085Z"/></clipPath>
+              <clipPath id="velo-o-clip"><path d="M1202 220H1620V750H1202Z"/></clipPath>
+            </defs>
+            <g class="crew__piece crew__piece--mark"><g clip-path="url(#velo-mark-clip)"><use href="#velo-wordmark-art"/></g></g>
+            <g class="crew__piece crew__piece--e"><g clip-path="url(#velo-e-clip)"><use href="#velo-wordmark-art"/></g></g>
+            <g class="crew__piece crew__piece--l"><g clip-path="url(#velo-l-clip)"><use href="#velo-wordmark-art"/></g></g>
+            <g class="crew__piece crew__piece--o"><g clip-path="url(#velo-o-clip)"><use href="#velo-wordmark-art"/></g></g>
+          </svg>
+        </a>
       </div>
       <h1>Technology should remove the <b class="fx-friction" data-text="friction"><span class="fx-letters"><i style="--i:0">f</i><i style="--i:1">r</i><i style="--i:2">i</i><i style="--i:3">c</i><i style="--i:4">t</i><i style="--i:5">i</i><i style="--i:6">o</i><i style="--i:7">n</i></span><svg class="fx-scribble" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M2 12 C 30 4, 50 18, 80 10 S 130 4, 160 12 S 190 16, 198 8"/></svg></b>.</h1>
-      <p class="lead">Scan an item. <b>Velo</b> tells the clerk where it goes and what to do next.</p>
+      <p class="lead"><b>Velo</b> is a phone app for staff in building-supply stores. Scan a product and it tells you where it goes, what to refill and how to answer the customer.</p>
       <div class="cta">
         <a class="btn btn--fill btn--hero" href="#product">SEE HOW IT WORKS <span class="btn__arr">→</span></a>
         <a class="btn btn--hero2" href="#team">MEET THE TEAM <span class="btn__arr">↓</span></a>
       </div>
       <div class="zones zones--hero zones--flow">
-        <span class="chip"><em>A</em>Scan the pallet</span>
-        <span class="chip chip--pastel"><em>B</em>Get the bay</span>
-        <span class="chip"><em>C</em>Ask, get an answer</span>
-        <span class="chip chip--deep"><em>D</em>A sale triggers the refill</span>
+        <span class="chip"><em>A</em>Scan the delivery</span>
+        <span class="chip chip--pastel"><em>B</em>Velo says where it goes</span>
+        <span class="chip"><em>C</em>Ask any product question</span>
+        <span class="chip chip--deep"><em>D</em>A sale triggers a refill</span>
       </div>
     </div>
   </header>
@@ -57,38 +71,38 @@
   <!-- ============ MARQUEE (signature band) ============ -->
   <div class="marquee" aria-hidden="true">
     <div class="mq-track">
-      <div class="mq-seq"><span>Receiving</span><i></i><span>Put-away</span><i></i><span>FEFO rotation</span><i></i><span>Shelf refill</span><i></i><span>Local RAG</span><i></i><span>Zone mapping</span><i></i></div>
-      <div class="mq-seq"><span>Receiving</span><i></i><span>Put-away</span><i></i><span>FEFO rotation</span><i></i><span>Shelf refill</span><i></i><span>Local RAG</span><i></i><span>Zone mapping</span><i></i></div>
+      <div class="mq-seq"><span>Check in deliveries</span><i></i><span>Store it in the right place</span><i></i><span>Sell older stock first</span><i></i><span>Keep shelves full</span><i></i><span>Answers in seconds</span><i></i><span>Live store map</span><i></i></div>
+      <div class="mq-seq"><span>Check in deliveries</span><i></i><span>Store it in the right place</span><i></i><span>Sell older stock first</span><i></i><span>Keep shelves full</span><i></i><span>Answers in seconds</span><i></i><span>Live store map</span><i></i></div>
     </div>
   </div>
 
   <!-- ============ STATS ============ -->
   <div class="stats" id="stats" role="list">
-    <div class="stat" role="listitem"><span class="sq"></span><b data-c="300" data-s="+">0+</b><span>Nordic branches in scope</span></div>
-    <div class="stat" role="listitem"><span class="sq"></span><b data-c="4" data-pad="2">0</b><span>Store zones, one workflow</span></div>
-    <div class="stat" role="listitem"><span class="sq"></span><b data-c="100" data-s="%">0%</b><span>Local on-premise AI</span></div>
-    <div class="stat" role="listitem"><span class="sq"></span><b data-c="75" data-p="&gt;" data-s="%">&gt;0%</b><span>Scanner hardware cost cut</span></div>
+    <div class="stat" role="listitem"><span class="sq"></span><b data-c="300" data-s="+">0+</b><span>Stores in Denmark, Norway and Sweden</span></div>
+    <div class="stat" role="listitem"><span class="sq"></span><b data-c="4" data-pad="2">0</b><span>Areas of the store, one simple app</span></div>
+    <div class="stat" role="listitem"><span class="sq"></span><b data-c="100" data-s="%">0%</b><span>Of company data stays in-house</span></div>
+    <div class="stat" role="listitem"><span class="sq"></span><b data-c="75" data-p="&gt;" data-s="%">&gt;0%</b><span>Cheaper than today's scanner guns</span></div>
   </div>
 
   <!-- ============ PAIN CHARTS ============ -->
   <section class="pain" id="pain">
     <div class="wrap">
-      <span class="eyebrow">// 00 — THE PAIN, IN NUMBERS</span>
-      <h2 style="margin-top:12px">The cost of <b>friction</b>, measured.</h2>
-      <p class="sub">Dollars, hours, margin, people — independent research on what our clerks live every shift. This is the problem Velo is built to erase.</p>
+      <span class="eyebrow">// 00 — THE PROBLEM</span>
+      <h2 style="margin-top:12px">What goes <b>wrong</b> in stores today</h2>
+      <p class="sub">Staff lose hours searching, shelves sit empty while stock waits in the back room, and products expire before anyone sells them. Independent research puts numbers on it.</p>
       <div class="pain-grid">
 
         <div class="pcard">
-          <span class="pcard__title">The global bill</span>
+          <span class="pcard__title">Money lost to messy stock</span>
           <div class="pcard__viz fig">
             <b class="fig-num" data-c="1.73" data-dec="2" data-p="$" data-s="T">$0T</b>
           </div>
-          <p class="pcard__label">lost to inventory distortion worldwide, every single year — and <b data-c="70" data-s="%">0%</b> of retailers are hit weekly, backroom vs shelf.</p>
+          <p class="pcard__label">lost by retailers worldwide every year because they don't know exactly what they have or where it is. <b data-c="70" data-s="%">0%</b> of retailers face this problem every week.</p>
           <span class="pcard__src">SOURCE · <b>IHL, "THE END OF GOOD ENOUGH", DEC 2025</b></span>
         </div>
 
         <div class="pcard">
-          <span class="pcard__title">The margin trap</span>
+          <span class="pcard__title">Waste eats the profit</span>
           <div class="pcard__viz donut-wrap">
             <div class="donut" aria-hidden="true">
               <svg viewBox="0 0 200 200">
@@ -96,7 +110,7 @@
                 <circle class="d-margin" cx="100" cy="100" r="70"/>
                 <circle class="d-waste" cx="100" cy="100" r="70"/>
               </svg>
-              <div class="donut__center"><b>4.5%</b><span>TO WASTE</span></div>
+              <div class="donut__center"><b>4.5%</b><span>WASTED</span></div>
             </div>
             <div class="donut__legend" aria-hidden="true">
               <span class="lg" style="--c:var(--yellow-deep)">WASTE<b>4.5%</b></span>
@@ -104,22 +118,22 @@
               <span class="lg" style="--c:rgba(255,255,255,.14)">OTHER COSTS<b>88.6%</b></span>
             </div>
           </div>
-          <p class="pcard__label">Per 100 of revenue: construction retail keeps <b>6.9</b> as profit and writes off <b>4.5</b> to expired cement and aged sealants. The waste slice is nearly the <b>entire profit slice</b>.</p>
+          <p class="pcard__label">Out of every 100 kroner in sales, a building-supply store keeps about <b>6.9</b> as profit and throws away <b>4.5</b> in expired cement, paint and sealant. Waste costs <b>almost as much as the store earns</b>.</p>
           <span class="pcard__src">SOURCE · <b>STARK GROUP ANNUAL REPORT 2024/25 · BCG NORDIC 2025</b></span>
         </div>
 
         <div class="pcard">
-          <span class="pcard__title">The walking clock</span>
+          <span class="pcard__title">Time spent walking</span>
           <div class="pcard__viz shift">
             <div class="shift__track"><span class="shift__fill"></span></div>
-            <div class="shift__x"><span>0H</span><b>2.5H WASTED</b><span>8H — ONE SHIFT</span></div>
+            <div class="shift__x"><span>0H</span><b>2.5H LOST</b><span>8H — ONE SHIFT</span></div>
           </div>
-          <p class="pcard__label"><b data-c="2.5" data-dec="1" data-s="H">0H</b> of every shift — about <b data-c="32" data-s="%">0%</b> — is walking, hunting and paperwork. That's <b data-c="550" data-s="H/YR">0H/YR</b> per clerk, per year.</p>
-          <span class="pcard__src">SOURCE · <b>BASELINE ASSUMPTION, STATED</b></span>
+          <p class="pcard__label"><b data-c="2.5" data-dec="1" data-s="H">0H</b> of every 8-hour shift, about <b data-c="32" data-s="%">0%</b>, goes to walking, searching and paperwork. That adds up to <b data-c="550" data-s="H">0H</b> a year for each employee.</p>
+          <span class="pcard__src">SOURCE · <b>OUR ESTIMATE, EXPLAINED IN THE PROPOSAL</b></span>
         </div>
 
         <div class="pcard">
-          <span class="pcard__title">Frontline friction</span>
+          <span class="pcard__title">Staff without answers</span>
           <div class="pcard__viz ring">
             <svg viewBox="0 0 150 150" aria-hidden="true">
               <circle class="track" cx="75" cy="75" r="62"/>
@@ -127,12 +141,12 @@
             </svg>
             <b data-c="88" data-s="%">0%</b>
           </div>
-          <p class="pcard__label">of retail associates can't get timely product or stock information on the floor.</p>
+          <p class="pcard__label">of store staff struggle to find product or stock information quickly while they are helping a customer.</p>
           <span class="pcard__src">SOURCE · <b>ZEBRA SHOPPER STUDY, NOV 2025</b></span>
         </div>
 
       </div>
-      <p class="pain-note">BASELINE ASSUMPTIONS · <b>300 BRANCHES</b> · <b>~2.5H/DAY</b> CLERK WALKING TIME · <b>EAN-13 + CODE-128</b> UNIVERSAL, ZERO RELABELING</p>
+      <p class="pain-note">OUR STARTING POINT · <b>300 STORES</b> · <b>~2.5 HOURS A DAY</b> LOST TO WALKING · WORKS WITH <b>THE BARCODES ALREADY ON PRODUCTS</b></p>
     </div>
   </section>
 
@@ -140,15 +154,15 @@
   <section id="product" class="band">
     <div class="wrap">
       <div class="sec-head">
-        <span class="eyebrow">// 01 — THE PRODUCT</span>
-        <h2>One assistant. Four zones. <b>Zero</b> guesswork.</h2>
-        <p>The clerk scans a standard 1D barcode; Velo does the searching, sorting and remembering. The human always has final say — Velo organizes, recommends and alerts, never acts alone.</p>
+        <span class="eyebrow">// 01 — WHAT VELO DOES</span>
+        <h2>One app. Four jobs. <b>Zero</b> guesswork.</h2>
+        <p>Staff scan the barcode that is already on every product. Velo remembers where things are, what is running low and what expires soon, then tells the person what to do next. People always make the final call. Velo only suggests.</p>
       </div>
       <div class="zgrid">
-        <article class="zcard"><div class="zcard__top"><span class="zcard__n">01</span><span class="tag">ZONE A→B</span></div><h3>Assisted receiving &amp; put-away</h3><p>Scan the pallet, get a suggested bay, scan the rack to confirm. Batch expiry logged in one tap — no paper checklists at the dock.</p><div class="zcard__step"><i></i>SCAN → BAY → CONFIRM</div></article>
-        <article class="zcard"><div class="zcard__top"><span class="zcard__n">02</span><span class="tag">ZONE D→C</span></div><h3>Checkout-to-refill loop</h3><p>A POS sale drops shelf stock below threshold; the clerk&#39;s phone gets one clear task: oldest batch first, exact bay, exact quantity.</p><div class="zcard__step"><i></i>SALE → TASK → REFILL</div></article>
-        <article class="zcard"><div class="zcard__top"><span class="zcard__n">03</span><span class="tag">ZONE C</span></div><h3>Local RAG copilot</h3><p>Stock, curing times, TEK17 fire rules — answered in under two seconds, fully on-premise. Nothing sent to any cloud.</p><div class="zcard__step"><i></i>ASK → ANSWER &lt; 2S</div></article>
-        <article class="zcard"><div class="zcard__top"><span class="zcard__n">04</span><span class="tag">NETWORK</span></div><h3>Store-first, network-next</h3><p>Cross-store transfers drafted automatically when a bay runs dry — one-click manager approval.</p><div class="zcard__step"><i></i>DRAFT → APPROVE → MOVE</div></article>
+        <article class="zcard"><div class="zcard__top"><span class="zcard__n">01</span><span class="tag">DELIVERIES</span></div><h3>Check in deliveries, store them right</h3><p>Scan the pallet when the truck arrives. Velo suggests the best spot in the back room and records the expiry date. No paper forms at the loading dock.</p><div class="zcard__step"><i></i>SCAN → SPOT → DONE</div></article>
+        <article class="zcard"><div class="zcard__top"><span class="zcard__n">02</span><span class="tag">SHELVES</span></div><h3>No more empty shelves</h3><p>When customers buy the last few items, a staff phone gets one clear job: which box, from where, and how many. The oldest stock goes out first, so less is thrown away.</p><div class="zcard__step"><i></i>SALE → TASK → REFILLED</div></article>
+        <article class="zcard"><div class="zcard__top"><span class="zcard__n">03</span><span class="tag">CUSTOMERS</span></div><h3>Answers in seconds</h3><p>Staff can ask "Is this board approved for a fire wall?" or "Where is the extra stock?" and get an answer in under two seconds, based on the store's own product sheets and building rules.</p><div class="zcard__step"><i></i>ASK → ANSWER IN &lt; 2S</div></article>
+        <article class="zcard"><div class="zcard__top"><span class="zcard__n">04</span><span class="tag">LATER · ALL STORES</span></div><h3>Stores help each other</h3><p>When one store runs out, Velo finds the item in a nearby store and prepares a transfer. The manager approves it with one click.</p><div class="zcard__step"><i></i>FIND → APPROVE → MOVE</div></article>
       </div>
     </div>
   </section>
@@ -157,19 +171,19 @@
   <section id="rollout" class="rollout">
     <div class="wrap">
       <div class="sec-head">
-        <span class="eyebrow">// 02 — THE ROLLOUT</span>
-        <h2>One store, <b>then</b> the map.</h2>
-        <p>Nobody re-engineers 300 stores on day one. Prove clarity inside a single store, then let the network grow out of it.</p>
+        <span class="eyebrow">// 02 — THE PLAN</span>
+        <h2>One store <b>first</b>, then all of them.</h2>
+        <p>Changing 300 stores at once is risky. We prove that Velo works in a few pilot stores, then grow step by step.</p>
       </div>
       <ol class="phases">
-        <li class="phase phase--now"><span class="phase__dot">1</span><div class="phase__card"><div class="phase__meta"><span>MONTHS 1–3</span><span class="phase__mk">DK · NO PILOTS</span></div><h3>Empower</h3><p>Barcode receiving, FEFO rotation and the refill loop in pilot stores.</p><ul class="phase__kpi"><li>WASTE −60%</li><li>SHELVES 99%</li></ul></div></li>
-        <li class="phase"><span class="phase__dot">2</span><div class="phase__card"><div class="phase__meta"><span>MONTHS 4–6</span><span class="phase__mk">REGIONAL NETWORK</span></div><h3>Connect</h3><p>Store-to-store transfers when a backroom runs dry — manager approves in one click.</p><ul class="phase__kpi"><li>1-CLICK APPROVAL</li><li>SHARED STOCK</li></ul></div></li>
-        <li class="phase"><span class="phase__dot">3</span><div class="phase__card"><div class="phase__meta"><span>MONTHS 6–12</span><span class="phase__mk">SE · FULFILMENT</span></div><h3>Deliver</h3><p>Trucks dispatch only after a scanned pick confirmation at the loading dock.</p><ul class="phase__kpi"><li>SCAN-TO-DISPATCH</li><li>3 MARKETS</li></ul></div></li>
+        <li class="phase phase--now"><span class="phase__dot">1</span><div class="phase__card"><div class="phase__meta"><span>MONTHS 1–3</span><span class="phase__mk">DENMARK · NORWAY</span></div><h3>Help the staff</h3><p>Barcode check-in, selling older stock first, and automatic refill reminders in a few pilot stores.</p><ul class="phase__kpi"><li>WASTE −60%</li><li>SHELVES 99% FULL</li></ul></div></li>
+        <li class="phase"><span class="phase__dot">2</span><div class="phase__card"><div class="phase__meta"><span>MONTHS 4–6</span><span class="phase__mk">NEARBY STORES</span></div><h3>Connect the stores</h3><p>Stores share stock. When one runs out, a nearby store sends it, and the manager approves in one click.</p><ul class="phase__kpi"><li>1-CLICK APPROVAL</li><li>SHARED STOCK</li></ul></div></li>
+        <li class="phase"><span class="phase__dot">3</span><div class="phase__card"><div class="phase__meta"><span>MONTHS 6–12</span><span class="phase__mk">SWEDEN · DELIVERY</span></div><h3>Deliver to customers</h3><p>Delivery trucks leave only after every item has been scanned, so customers get the right order the first time.</p><ul class="phase__kpi"><li>SCANNED BEFORE IT SHIPS</li><li>3 COUNTRIES</li></ul></div></li>
       </ol>
       <div class="quote">
         <div class="qm">"</div>
-        <p>Empower the store clerk first. Scale across the Nordics next.</p>
-        <footer>— VELO, THE ONE-SENTENCE STRATEGY</footer>
+        <p>Help the store staff first. Then grow across the Nordics.</p>
+        <footer>— OUR STRATEGY IN ONE SENTENCE</footer>
       </div>
     </div>
   </section>
@@ -179,29 +193,29 @@
     <div class="wrap">
       <div class="stack__head">
         <div>
-          <span class="eyebrow">// 03 — THE TECH STACK</span>
-          <h2 style="margin-top:12px">Four layers. <b>All</b> of it local.</h2>
+          <span class="eyebrow">// 03 — HOW IT'S BUILT</span>
+          <h2 style="margin-top:12px">Four building blocks. <b>All</b> in-house.</h2>
         </div>
-        <p class="sub">A deliberately small, open stack. Every layer runs inside Company A&#39;s own network — no external API keys, no proprietary data on the public internet, no cloud outage that can stop a shift.</p>
+        <p class="sub">Everything runs on Company A&#39;s own computers, not on someone else&#39;s cloud. Prices, stock levels and supplier details never leave the company, and stores keep working even if the internet goes down.</p>
       </div>
       <ol class="layers">
-        <li class="layer"><div class="layer__n">L1</div><div class="layer__head"><span class="layer__role">DEVICE</span><h3>Clerk app</h3><div class="layer__chips"><span>Next.js</span><span>PWA</span><span>EAN-13 / Code-128</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>A mobile web app that turns any store smartphone into a guided 1D barcode scanner — receiving, put-away and refill tasks in one place.</p><p class="layer__why"><small>WHY IT&#39;S STRONG</small>Replaces $1,800+ infrared scanner guns with phones clerks already carry. No app-store install, works offline for core scan flows.</p></li>
-        <li class="layer"><div class="layer__n">L2</div><div class="layer__head"><span class="layer__role">CORE</span><h3>Velo hub</h3><div class="layer__chips"><span>FastAPI</span><span>WebSockets</span><span>POS webhook</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>The central service: one source of truth for stock, tasks and bays. A POS sale fires a webhook; the refill engine pushes a task to the right clerk instantly.</p><p class="layer__why"><small>WHY IT&#39;S STRONG</small>Async Python keeps latency low under shift-peak load. Real-time push means no polling, no stale shelves, no paper checklists.</p></li>
-        <li class="layer"><div class="layer__n">L3</div><div class="layer__head"><span class="layer__role">DATA</span><h3>Store data</h3><div class="layer__chips"><span>PostgreSQL</span><span>pgvector</span><span>FEFO batches</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>Relational stock, batches and expiry dates alongside vector embeddings of 30,000+ SKUs and BR18 / TEK17 / BBR building codes.</p><p class="layer__why"><small>WHY IT&#39;S STRONG</small>One database for transactions and semantic search — fewer moving parts, one backup, fully auditable by IT.</p></li>
-        <li class="layer"><div class="layer__n">L4</div><div class="layer__head"><span class="layer__role">INTELLIGENCE</span><h3>Local AI</h3><div class="layer__chips"><span>Ollama / vLLM</span><span>Llama 3.2 · Qwen 2.5</span><span>BGE-M3</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>Quantized open-weight models answer clerk questions with RAG over the store catalog — in under two seconds, on a local GPU.</p><p class="layer__why"><small>WHY IT&#39;S STRONG</small>Zero external calls. Open weights mean no vendor lock-in, no per-token bill, and nothing leaves the building.</p></li>
+        <li class="layer"><div class="layer__n">01</div><div class="layer__head"><span class="layer__role">ON THE PHONE</span><h3>Staff app</h3><div class="layer__chips"><span>Any smartphone</span><span>Nothing to install</span><span>Next.js</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>Turns any store smartphone into a barcode scanner that also tells staff what to do: check in deliveries, put stock away and refill shelves.</p><p class="layer__why"><small>WHY IT MATTERS</small>Replaces scanner guns that cost $1,800 or more each. Staff open it in the phone&#39;s browser, and basic scanning keeps working without Wi-Fi.</p></li>
+        <li class="layer"><div class="layer__n">02</div><div class="layer__head"><span class="layer__role">THE BRAIN</span><h3>Store hub</h3><div class="layer__chips"><span>Instant alerts</span><span>Connected to the tills</span><span>FastAPI</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>The central system that knows what is in stock, where it is and who is doing what. When a till sells something, it sends the right task to the right person straight away.</p><p class="layer__why"><small>WHY IT MATTERS</small>Tasks arrive the moment they are needed, so nobody has to keep checking a screen or a paper list.</p></li>
+        <li class="layer"><div class="layer__n">03</div><div class="layer__head"><span class="layer__role">THE MEMORY</span><h3>Store records</h3><div class="layer__chips"><span>Stock &amp; expiry dates</span><span>Product sheets &amp; rules</span><span>PostgreSQL</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>Keeps track of every product, delivery and expiry date, plus sheets for 30,000+ products and the building rules of Denmark, Norway and Sweden.</p><p class="layer__why"><small>WHY IT MATTERS</small>All store information sits in one place, so it is simple to back up and easy for the IT team to check.</p></li>
+        <li class="layer"><div class="layer__n">04</div><div class="layer__head"><span class="layer__role">THE ASSISTANT</span><h3>In-house AI</h3><div class="layer__chips"><span>Open-source AI</span><span>Answers in &lt; 2s</span><span>Llama · Qwen</span></div></div><p class="layer__what"><small>WHAT IT DOES</small>A free, open-source AI that runs on the company&#39;s own computer. It answers staff questions from the store&#39;s own documents in under two seconds.</p><p class="layer__why"><small>WHY IT MATTERS</small>No data is sent to outside AI services, there is no monthly AI bill, and the company is not locked in to one supplier.</p></li>
       </ol>
       <div class="stack__foot">
         <div class="proofs">
-          <div><b>0</b><span>external API calls</span></div>
-          <div><b>&lt;2s</b><span>answer latency</span></div>
-          <div><b>100%</b><span>human-approved actions</span></div>
+          <div><b>0</b><span>data sent to outside services</span></div>
+          <div><b>&lt;2s</b><span>to answer a question</span></div>
+          <div><b>100%</b><span>of actions confirmed by a person</span></div>
         </div>
         <div class="code">
           <div class="bar"><i></i><i></i><i></i></div>
-          <pre><span class="c">$ velo deploy --mode sovereign --cloud none</span>
-<span class="k">✓</span> ollama runtime ......... local GPU · 0 external calls
-<span class="k">✓</span> pgvector ............... 30,000+ SKUs · BR18 / TEK17 / BBR
-<span class="k">✓</span> pos_webhook ............ refill loop armed (WebSocket)
+          <pre><span class="c">$ velo start --everything-in-house</span>
+<span class="k">✓</span> AI assistant ......... on the company's own computer
+<span class="k">✓</span> Product knowledge .... 30,000+ products · DK / NO / SE rules
+<span class="k">✓</span> Till connection ...... every sale can trigger a refill
 <span class="c"># nothing leaves the building</span></pre>
         </div>
       </div>
@@ -214,12 +228,12 @@
       <div class="sec-head">
         <span class="eyebrow">// 04 — TIMELINE</span>
         <h2>The road to <b>HCMC</b></h2>
-        <p>Three rounds. One working product at the end of it.</p>
+        <p>The competition has three rounds. By the final in Ho Chi Minh City, Velo will be a working product, not just slides.</p>
       </div>
       <div class="grid3">
-        <div class="round"><span class="when now">R1 · DUE 26 OCT 2026, 22:00</span><h3>Discover</h3><p>Ten slides: the prioritised problem, the MVP, the rollout across three markets.</p></div>
-        <div class="round"><span class="when">R2 · 02 – 09 NOV 2026</span><h3>Build-a-thon</h3><p>Seven days to a working MVP: barcode flows, live POS simulation, local RAG copilot.</p></div>
-        <div class="round"><span class="when">R3 · 16 – 21 NOV 2026 · HCMC</span><h3>Live finale</h3><p>Two minutes on stage: scan, refill, ask, transfer — the whole store in motion.</p></div>
+        <div class="round"><span class="when now">R1 · DUE 26 OCT 2026, 22:00</span><h3>Explain the idea</h3><p>Ten slides: the problem we chose, our solution and how we would roll it out across three countries.</p></div>
+        <div class="round"><span class="when">R2 · 02 – 09 NOV 2026</span><h3>Build it</h3><p>Seven days to build a working first version: barcode scanning, simulated till sales and the question assistant.</p></div>
+        <div class="round"><span class="when">R3 · 16 – 21 NOV 2026 · HCMC</span><h3>Show it live</h3><p>Two minutes on stage to show the whole store working: scan, refill, ask a question, share stock.</p></div>
       </div>
     </div>
   </section>
@@ -230,13 +244,13 @@
       <div class="sec-head team-head">
         <span class="eyebrow">// 05 — THE TEAM</span>
         <h2>Team <b>BaCayKiem</b></h2>
-        <p><em>Ba Cây Kiếm</em> means “three swords” in Vietnamese: three builders from Ho Chi Minh City, each one sharpened on a different layer of Velo. Floor UX, the core platform and the local AI.</p>
+        <p><em>Ba Cây Kiếm</em> means “three swords” in Vietnamese. We are three builders from Ho Chi Minh City, and each of us owns one part of Velo: the app staff use, the system behind it, and the AI assistant.</p>
         <ul class="team-facts"><li><b>3</b>builders</li><li><b>1</b>product</li><li><b>HCMC</b>home base</li><li><b>ITCC</b>2026</li></ul>
       </div>
       <div class="grid3 team-grid">
-        <article class="card member"><figure class="member__ph"><img src="/assets/team/khoa.jpg" alt="Portrait of Vi Tuan Khoa" loading="lazy" style="object-position:50% 22%"><span class="member__id">M.01</span></figure><div class="member__body"><small class="member__zone">ZONE: FLOOR UX</small><h3>Vi Tuan Khoa</h3><span class="member__role">Frontend Software Developer</span><p><b>Frontend &amp; Barcode UX.</b> Clerk mobile assistant, camera scanner for EAN-13 / Code-128, the interactive zone map.</p></div></article>
-        <article class="card member member--lead"><figure class="member__ph"><img src="/assets/team/tuong.jpg" alt="Portrait of Huynh Khanh Tuong" loading="lazy" style="object-position:48% 18%"><span class="member__id">M.02</span></figure><div class="member__body"><small class="member__zone">ZONE: CORE + AI</small><h3>Huynh Khanh Tuong</h3><span class="member__role">Software Engineer · Applied AI</span><p><b>Applied AI in software.</b> FastAPI core, PostgreSQL schema and the WebSocket refill engine — wiring local models into the product the clerk actually uses.</p></div></article>
-        <article class="card member"><figure class="member__ph"><img src="/assets/team/dang.jpg" alt="Portrait of Thai Trong Dang" loading="lazy" style="object-position:50% 28%"><span class="member__id">M.03</span></figure><div class="member__body"><small class="member__zone">ZONE: LOCAL AI</small><h3>Thai Trong Dang</h3><span class="member__role">AI Engineer</span><p><b>Local AI &amp; Security.</b> Ollama + pgvector RAG pipeline, FEFO organizer, sovereign deployment on-premise.</p></div></article>
+        <article class="card member"><figure class="member__ph"><img src="/assets/team/khoa.jpg" alt="Portrait of Vi Tuan Khoa" loading="lazy" style="object-position:50% 22%"><span class="member__id">M.01</span></figure><div class="member__body"><small class="member__zone">OWNS: THE APP</small><h3>Vi Tuan Khoa</h3><span class="member__role">Frontend Software Developer</span><p><b>Designs and builds the staff app.</b> The screens staff tap every day, the camera barcode scanner and the live store map.</p></div></article>
+        <article class="card member member--lead"><figure class="member__ph"><img src="/assets/team/tuong.jpg" alt="Portrait of Huynh Khanh Tuong" loading="lazy" style="object-position:48% 18%"><span class="member__id">M.02</span></figure><div class="member__body"><small class="member__zone">OWNS: THE SYSTEM + AI</small><h3>Huynh Khanh Tuong</h3><span class="member__role">Software Engineer · Applied AI</span><p><b>Builds the system behind the app.</b> Stock records, instant refill alerts, and connecting the AI to the tools staff actually use.</p></div></article>
+        <article class="card member"><figure class="member__ph"><img src="/assets/team/dang.jpg" alt="Portrait of Thai Trong Dang" loading="lazy" style="object-position:50% 28%"><span class="member__id">M.03</span></figure><div class="member__body"><small class="member__zone">OWNS: THE AI ASSISTANT</small><h3>Thai Trong Dang</h3><span class="member__role">AI Engineer</span><p><b>Builds the AI assistant and keeps data safe.</b> The question assistant, the planner that sends older stock out first, and running everything on the company&#39;s own computers.</p></div></article>
       </div>
     </div>
   </section>
@@ -249,20 +263,28 @@
         <h2>Fair questions, <b>straight</b> answers</h2>
       </div>
       <details>
-        <summary>Why start with the store clerk, not the delivery fleet?</summary>
-        <p class="ans">Every downstream system — transfers, fulfilment, delivery — consumes inventory truth created at the shelf and the bay. Fix the source first and the network scales itself; automate later and you automate chaos.</p>
+        <summary>What is Velo, in one sentence?</summary>
+        <p class="ans">A phone app that helps staff in building-supply stores check in deliveries, keep shelves full, sell older stock first and answer customer questions, all by scanning the barcodes already on the products.</p>
       </details>
       <details>
-        <summary>Is local AI actually fast enough?</summary>
-        <p class="ans">Quantized 3B–7B models on a single on-premise GPU answer grounded questions in under two seconds via RAG. The workflow loop — scans, thresholds, tasks — is deterministic logic that doesn't touch the LLM, so the store keeps running even if the GPU naps.</p>
+        <summary>Why start with store staff instead of delivery trucks?</summary>
+        <p class="ans">Every delivery, transfer and online order depends on knowing exactly what is on the shelf and in the back room. Staff create that information every time they move stock. Get it right inside the store first; otherwise you only automate the mess.</p>
       </details>
       <details>
-        <summary>What happens to the legacy infrared scanners?</summary>
-        <p class="ans">Retired. A ruggedized smartphone with camera scanning (EAN-13 / Code-128 at under 150ms) replaces $1,500–$2,200 terminals plus 20% annual maintenance contracts — a cut of more than 75% in hardware spend.</p>
+        <summary>Does the AI make decisions on its own?</summary>
+        <p class="ans">No. Velo suggests and reminds, and a person confirms every action with a scan or a tap. It never changes stock numbers, throws anything away or places an order by itself.</p>
       </details>
       <details>
-        <summary>How do three markets stay different?</summary>
-        <p class="ans">One core, local configuration. Denmark starts with paperless receiving, Norway with standardized zone workflows, Sweden connects fulfilment last. Same platform, three rollout clocks.</p>
+        <summary>Is an AI running inside the company fast enough?</summary>
+        <p class="ans">Yes. A small open-source AI on one in-house computer answers questions in under two seconds. The everyday work (scans, refill alerts, task lists) does not depend on the AI at all, so stores keep running even if the AI is switched off.</p>
+      </details>
+      <details>
+        <summary>What happens to the old scanner guns?</summary>
+        <p class="ans">They are replaced by ordinary rugged smartphones that scan with the camera. A scanner gun costs $1,500–$2,200 plus about 20% a year in maintenance, so hardware costs drop by more than 75%.</p>
+      </details>
+      <details>
+        <summary>How does one system work in three different countries?</summary>
+        <p class="ans">One system, set up for each country. Denmark starts with paper-free deliveries, Norway with one standard way of organising stores, and Sweden adds home delivery last.</p>
       </details>
     </div>
   </section>
@@ -270,12 +292,12 @@
 </main>
 
 <!-- ============ FOOTER ============ -->
-<footer>
+<footer class="site-foot">
   <div class="wrap">
     <div class="foot-grid">
       <div>
         <a class="brand" href="#top"><img src="/assets/LogoName-white.png" alt="Velo" class="foot-logo"></a>
-        <p style="font-size:13px;margin-top:12px;max-width:36ch">Velo by Team BaCayKiem — human-centric retail technology, built in Ho Chi Minh City for the Nordics.</p>
+        <p style="margin-top:12px;max-width:36ch">Velo by Team BaCayKiem: a simple store assistant for building-supply staff, built in Ho Chi Minh City for the Nordics.</p>
       </div>
       <div>
         <h4>CONTACT</h4>
@@ -286,20 +308,21 @@
       </div>
       <div>
         <h4>NAVIGATE</h4>
-        <li><a href="#product">Product</a><a href="#rollout">Rollout</a></li>
-        <li><a href="#local-ai">Local AI</a></li>
+        <li><a href="#product">What Velo does</a></li>
+        <li><a href="#rollout">The plan</a></li>
+        <li><a href="#local-ai">How it's built</a></li>
         <li><a href="#timeline">Timeline</a></li>
         <li><a href="#team">Team</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="/demo/app.html">Try the app</a></li>
         <li><a href="brand.html">Brand assets</a></li>
       </div>
     </div>
     <div class="foot-base">
       <span>© <span id="y">2026</span> TEAM BACAYKIEM</span>
-      <span>100% LOCAL AI — NOTHING LEAVES THE BUILDING</span>
+      <span>100% IN-HOUSE AI · NOTHING LEAVES THE BUILDING</span>
       <a href="#top" style="font-weight:700">BACK TO TOP ↑</a>
     </div>
   </div>
 </footer>
-
 
