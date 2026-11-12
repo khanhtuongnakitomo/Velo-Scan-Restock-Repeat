@@ -1,9 +1,9 @@
 {
-  "title": "VELO — Scan, Restock, Repeat",
+  "title": "VELO — Receive. Verify. Record.",
   "icons": {
     "icon": "/assets/Logo.png?v=velo-logo-2"
   },
-  "description": "A polished website experience with refined visuals and smooth animations that helps visitors explore content more easily and enjoyably.",
+  "description": "VELO by Team DNKTV: AI-assisted goods receiving for Vietnamese warehouses. Every delivery verified, every discrepancy evidenced, every item recorded.",
   "robots": {
     "index": false
   },

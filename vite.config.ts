@@ -5,6 +5,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import siteConfiguration from './.figma/make/site.json'
+import { annotatePlugin } from './scripts/annotate-plugin'
 
 
 // Vite config — https://vitejs.dev/config/
@@ -26,6 +27,7 @@ react(),
       figmaReactRefreshBoundaryFallback(),
       figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
       figmaLinkedPackageSourcemaps(),
+      annotatePlugin(),
     ],
     resolve: {
       alias: {
@@ -41,6 +43,7 @@ react(),
       watch: {
         ignored: [
           '**/.figma/**',
+          '**/.omp/**',
 ],
       },
     },

@@ -3,88 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Velo — Brand Assets</title>
-<meta name="description" content="Official Velo logo assets and palette. Team BaCayKiem.">
-<meta name="theme-color" content="#FBDD65">
+<title>VELO — Brand Assets</title>
+<meta name="description" content="Official Velo logo assets and palette. Team DNKTV. Pure white canvas, violet and mint accents.">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="/assets/Logo.png?v=velo-logo-2">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/motion.css">
+<script src="/motion.js" defer></script>
 <style>
-:root{
-  --ink:#000000; --ink-soft:#3A3A3A; --paper:#FFFFFF;
-  --yellow:#FFF9A3; --yellow-deep:#FBDD65; --cream:#FFFDD6;
-  --mono:'Space Mono',ui-monospace,Menlo,Consolas,monospace;
-}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:clip}
-body{font-family:var(--mono);background:var(--yellow);color:var(--ink-soft);line-height:1.65;letter-spacing:.02em;font-size:14px;-webkit-font-smoothing:antialiased}
-a{color:var(--ink-soft);text-decoration:none}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);line-height:1.4;font-size:var(--text-body);letter-spacing:-.017em;font-weight:400;font-feature-settings:var(--font-features);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.wrap{max-width:1200px;margin-inline:auto;padding-inline:24px}
-.skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:8px 16px;z-index:100;font-weight:700}
-.skip-link:focus{left:0}
-.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:700;font-size:12px;color:var(--ink-soft);border:2px solid var(--ink-soft);padding:8px 16px;cursor:pointer;background:var(--paper);transition:transform .12s ease,background-color .12s ease}
-.btn:hover{transform:translate(2px,2px);background:var(--yellow-deep)}
+.wrap{max-width:var(--page-max);margin-inline:auto;padding-inline:var(--space-24)}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--white);padding:var(--space-8) var(--space-16);z-index:100;font-weight:400;border-radius:var(--radius-pill)}
+.skip-link:focus{left:var(--space-8);top:var(--space-8)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-8);font-family:var(--sans);font-weight:400;font-size:var(--text-body);color:var(--white);background:var(--violet);border-radius:var(--radius-pill);padding:var(--space-10) var(--space-20);cursor:pointer;transition:background-color .15s,transform .15s}
+.btn:hover{background:var(--ink)}
+.btn:active{transform:scale(.98)}
+.btn--ink{background:var(--ink);color:var(--white)}
+.btn--ink:hover{background:var(--ash)}
 
-/* nav */
-.nav{background:var(--paper);border-bottom:2px solid var(--ink-soft)}
-.nav__in{max-width:1200px;margin-inline:auto;padding:12px 24px;display:flex;align-items:center;gap:20px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink-soft)}
-.brand img{width:26px;height:26px;object-fit:contain}
-.nav__in .label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.nav__in .btn{margin-left:auto}
+/* floating nav */
+.nav{position:sticky;top:var(--space-16);z-index:50;margin:var(--space-16) auto 0;width:min(var(--page-max),calc(100% - var(--space-32)));pointer-events:none}
+.nav__in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:var(--space-12)}
+.nav__in>*{pointer-events:auto}
+.pill{grid-column:2;display:flex;align-items:center;gap:var(--space-20);padding:var(--space-8) var(--space-24) var(--space-8) var(--space-20);background:var(--white);border-radius:var(--radius-pill);box-shadow:var(--shadow-float)}
+.brand{display:flex;align-items:center;gap:var(--space-8);font-size:var(--text-body);font-weight:400;letter-spacing:-.017em}
+.brand img{width:28px;height:28px;object-fit:contain}
+.pill .label{font-size:var(--text-small);color:var(--slate)}
+.nav__in .btn{grid-column:3;justify-self:end;font-size:var(--text-small)}
 
 /* hero */
-.hero{padding:56px 0 40px;text-align:center}
-.kicker{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:var(--paper);border:2px solid var(--ink-soft);padding:5px 10px}
-h1{font-size:clamp(1.7rem,4vw,2.8rem);text-transform:uppercase;font-weight:400;color:var(--ink-soft);margin-top:20px}
-h1 b{font-weight:700;background:var(--paper);padding:0 .12em}
-.hero p{max-width:58ch;margin:16px auto 0}
+.hero{padding:var(--space-80) 0 var(--space-48);text-align:center}
+.kicker{display:inline-block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;background:var(--fog);color:var(--slate);border-radius:var(--radius-pill);padding:var(--space-8) var(--space-16)}
+h1{font-family:var(--sans);font-weight:400;font-size:clamp(40px,7vw,64px);letter-spacing:-.03em;margin-top:var(--space-24);line-height:1.02}
+h1 b{font-weight:400;color:var(--violet)}
+.hero p{max-width:60ch;margin:var(--space-20) auto 0;font-family:var(--serif);font-weight:300;font-size:clamp(19px,2.2vw,24px);color:var(--mist);line-height:1.4;letter-spacing:-.01em}
+.hero p b{color:var(--slate);font-weight:300}
 
 /* tiles */
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:48px 0 20px}
-.tile{border:2px solid var(--ink-soft);background:var(--paper);display:flex;flex-direction:column}
-.tile__stage{display:grid;place-items:center;padding:44px 24px;min-height:220px}
-.tile--primary .tile__stage{background:var(--yellow)}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-20);margin:var(--space-48) 0 var(--space-20)}
+.tile{border-radius:24px;overflow:hidden;background:var(--fog);display:flex;flex-direction:column}
+.tile__stage{display:grid;place-items:center;padding:var(--space-48) var(--space-24);min-height:220px}
+.tile--violet .tile__stage{background:var(--violet)}
 .tile--ink .tile__stage{background:var(--ink)}
-.tile--paper .tile__stage{background:var(--paper)}
-.tile--cream .tile__stage{background:var(--cream)}
+.tile--white .tile__stage{background:var(--white)}
+.tile--fog .tile__stage{background:var(--fog)}
 .tile__stage img{max-height:96px;width:auto}
-.tile__meta{border-top:2px solid var(--ink-soft);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--paper)}
-.tile__meta b{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
-.tile__meta .hex{font-size:12px}
-.dl{display:flex;gap:8px;flex-wrap:wrap}
-.dl a{font-size:11px;font-weight:700;text-transform:uppercase;border:2px solid var(--ink-soft);padding:4px 10px;background:var(--cream)}
-.dl a:hover{background:var(--yellow-deep)}
+.tile__meta{padding:var(--space-16) var(--space-24);display:flex;justify-content:space-between;align-items:center;gap:var(--space-12);flex-wrap:wrap;background:var(--fog)}
+.tile__meta b{font-size:var(--text-body);font-weight:400}
+.tile__meta .hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em;color:var(--slate)}
+.dl{display:flex;gap:var(--space-8);flex-wrap:wrap}
+.dl a{font-size:var(--text-small);font-weight:400;border:0;border-radius:var(--radius-pill);padding:var(--space-4) var(--space-12);background:var(--white);color:var(--ink)}
+.dl a:hover,.mark__meta a:hover{background:var(--tint)}
 
 /* mark row */
-.marks{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px}
-.mark{border:2px solid var(--ink-soft);display:flex;flex-direction:column}
-.mark__stage{display:grid;place-items:center;padding:28px;flex:1}
+.marks{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-20);margin-bottom:var(--space-24)}
+.mark{background:var(--fog);border-radius:24px;overflow:hidden;display:flex;flex-direction:column}
+.mark__stage{display:grid;place-items:center;padding:var(--space-32);flex:1}
 .mark__stage img{width:56px;height:56px;object-fit:contain}
-.mark__meta{border-top:2px solid var(--ink-soft);padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--paper)}
-.mark__meta b{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
-.mark__meta a{font-size:10.5px;font-weight:700;text-transform:uppercase;text-decoration:underline}
-.mark__meta a:hover{background:var(--yellow-deep)}
+.mark__meta{padding:var(--space-12) var(--space-16);display:flex;justify-content:space-between;align-items:center;gap:var(--space-8);background:var(--fog)}
+.mark__meta b{font-size:var(--text-small);font-weight:400}
+.mark__meta a{font-size:var(--text-caption);font-weight:400;border:0;border-radius:var(--radius-pill);padding:var(--space-2) var(--space-10);background:var(--white)}
+
+/* sections */
+.sec-title,.type__serif{font-variant-numeric:lining-nums}
+.sec-title{font-family:var(--sans);font-weight:400;font-size:clamp(30px,4vw,48px);letter-spacing:-.02em;line-height:1.08;margin:var(--space-120) auto 0;max-width:900px;text-align:center}
+.sec-title small{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;font-weight:400;letter-spacing:.08em;color:var(--slate);margin-bottom:var(--space-16)}
+.sec-lede{font-family:var(--serif);font-weight:300;color:var(--mist);font-size:clamp(19px,2.2vw,24px);max-width:62ch;margin:var(--space-16) auto 0;line-height:1.4;letter-spacing:-.01em;text-align:center}
 
 /* palette */
-.pal{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin:20px 0 48px}
-.swatch{border:2px solid var(--ink-soft);background:var(--paper)}
-.swatch .chipc{height:84px;border-bottom:2px solid var(--ink-soft)}
-.swatch .meta{padding:10px 12px;font-size:11px}
-.swatch .meta b{display:block;text-transform:uppercase;letter-spacing:.06em}
-.swatch .meta span{display:block;color:var(--ink-soft);opacity:.8}
+.pal{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);margin:var(--space-24) 0 var(--space-16)}
+.swatch{border-radius:24px;overflow:hidden;background:var(--fog)}
+.swatch .chipc{height:96px;box-shadow:inset 0 0 0 1px var(--fog)}
+.swatch .meta{padding:var(--space-16);font-size:var(--text-small)}
+.swatch .meta b{display:block;font-weight:400;font-size:var(--text-body)}
+.swatch .meta span{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em;color:var(--slate);margin-top:var(--space-2)}
+.swatch .meta em{display:block;font-style:normal;color:var(--slate);margin-top:var(--space-4)}
+.pal-sub{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;color:var(--slate);margin-top:var(--space-40)}
+.ratio{display:flex;height:20px;border-radius:var(--radius-pill);overflow:hidden;margin:var(--space-32) 0 var(--space-8)}
+.ratio i{display:block;height:100%}
+.r-ink{flex:30;background:var(--ink)}
+.r-fog{flex:30;background:var(--fog)}
+.r-violet{flex:15;background:var(--violet)}
+.r-tint{flex:10;background:var(--tint)}
+.r-mint{flex:5;background:var(--mint)}
+.ratio-note{font-size:var(--text-small);color:var(--slate);line-height:1.5;max-width:80ch}
 
-.rules{border:2px solid var(--ink-soft);background:var(--paper);padding:20px 24px;margin-bottom:56px}
-.rules b{font-weight:700}
-.rules li{list-style:none;padding-left:18px;position:relative;margin-top:6px;font-size:13px}
-.rules li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;background:var(--yellow-deep);border:2px solid var(--ink-soft)}
+/* type pairing */
+.type{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-20);margin:var(--space-24) 0}
+.type__card{background:var(--fog);border-radius:24px;padding:var(--space-32) var(--space-24)}
+.type__card:first-child{background:var(--ink);color:var(--white)}
+.type__card:first-child small,.type__card:first-child p{color:var(--mist)}
+.type__card small{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;color:var(--slate);margin-bottom:var(--space-16)}
+.type__serif{font-family:var(--serif);font-weight:300;font-size:var(--text-heading-lg);line-height:1.1;letter-spacing:-.02em}
+.type__serif i{font-style:italic}
+.type__sans{font-family:var(--sans);font-weight:400;font-size:var(--text-heading-sm);line-height:1.2;letter-spacing:-.017em}
+.type__card--wide{grid-column:1/-1}
+.type__card p{margin-top:var(--space-12);color:var(--slate)}
 
-footer{border-top:2px solid var(--ink-soft);background:var(--paper);padding:24px 0 40px}
-.foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px}
+.band{position:relative;overflow:hidden;background:var(--violet);color:var(--white);margin-top:var(--space-120);padding:var(--space-80) 0}
+.band::before{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;background:var(--white);opacity:.14}
+.band::after{content:"";position:absolute;left:6%;bottom:-40px;width:120px;height:120px;border-radius:24px;background:var(--white);opacity:.14}
+.band .wrap{position:relative;z-index:1}
+.rules{max-width:760px;margin:0 auto}
+.rules b.rt{font-family:var(--sans);font-weight:400;font-size:clamp(30px,4vw,48px);letter-spacing:-.02em;line-height:1.08;display:block;margin-bottom:var(--space-24);text-align:center}
+.rules-list{list-style:none}
+.rules-list li{padding-left:var(--space-24);position:relative;margin-top:var(--space-8);font-size:var(--text-body);line-height:1.5;color:var(--white)}
+.rules-list li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:50%;background:var(--mint)}
+.band .btn{margin-top:var(--space-32);background:var(--ink)}
+.band .btn:hover{background:var(--ash)}
+.band .cta{text-align:center}
 
-@media (max-width:860px){.tiles,.marks{grid-template-columns:1fr}.pal{grid-template-columns:repeat(2,1fr)}}
+footer{background:var(--violet);color:var(--white);padding:var(--space-64) 0 var(--space-48)}
+.foot-brand{display:flex;align-items:center;gap:var(--space-10);font-size:var(--text-subheading);letter-spacing:-.02em;margin-bottom:var(--space-24)}
+.foot-brand img{width:28px;height:28px;object-fit:contain}
+.foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-10);font-size:var(--text-small);color:var(--tint)}
+
+@media (max-width:860px){.tiles,.marks,.type{grid-template-columns:1fr}.marks{grid-template-columns:repeat(2,1fr)}.pal{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:860px){.nav__in{grid-template-columns:minmax(0,1fr) auto}.pill{grid-column:1;justify-self:center}.nav__in .btn{grid-column:2}}
+@media (max-width:480px){.pill .label{display:none}.pill{padding-right:var(--space-16)}.nav__in .btn{padding:var(--space-8) var(--space-14)}}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
 </style>
 </head>
 <body>
@@ -92,101 +133,147 @@ footer{border-top:2px solid var(--ink-soft);background:var(--paper);padding:24px
 
 <nav class="nav" aria-label="Main">
   <div class="nav__in">
-    <a class="brand" href="index.html"><img src="assets/Logo.png" alt=""><span>VELO</span></a>
-    <span class="label">// Brand assets</span>
-    <a class="btn" href="index.html">← MAIN SITE</a>
+    <div class="pill"><a class="brand" href="/"><img src="assets/Logo.png" alt=""><span>VELO</span></a>
+    <span class="label">Brand assets</span></div>
+    <a class="btn" href="/">Back to site <span aria-hidden="true">→</span></a>
   </div>
 </nav>
 
 <main id="main">
   <header class="hero">
     <div class="wrap">
-      <span class="kicker">Team BaCayKiem · ITCC 2026</span>
-      <h1>The <b>logo</b>, on the primary color.</h1>
-      <p>Official Velo marks on <b>#FFF9A3</b> — the primary tint of our system. Every file below is a real PNG with the ribbon in white or ink; grab what you need for slides, decks and dark surfaces.</p>
+      <span class="kicker">Team DNKTV · AI for Business Innovation 2026</span>
+      <h1>Bright floor <b>identity</b></h1>
+      <p>Official VELO marks and palette. A calm canvas of white, black and grey with <b>Signal Violet</b> for every action, <b>Mint Pulse</b> for status and Tint Wash for highlighted panels. Set in OS Studio Grotesk and OS Chronik.</p>
     </div>
   </header>
 
   <div class="wrap">
 
     <div class="tiles">
-      <div class="tile tile--primary">
-        <div class="tile__stage"><img src="assets/LogoName.png" alt="Velo wordmark in ink on the primary color"></div>
+      <div class="tile tile--violet">
+        <div class="tile__stage"><img src="assets/LogoName-white.png" alt="Velo wordmark in white on violet"></div>
         <div class="tile__meta">
-          <b>Wordmark · ink on primary</b>
-          <span class="hex">#FFF9A3</span>
-          <div class="dl"><a href="assets/LogoName.png" download>INK PNG ↓</a></div>
+          <b>Wordmark: white on violet</b>
+          <span class="hex">#5F79FF</span>
+          <div class="dl"><a href="assets/LogoName-white.png" download>White PNG</a></div>
         </div>
       </div>
-      <div class="tile tile--primary">
-        <div class="tile__stage"><img src="assets/LogoName-white.png" alt="Velo wordmark in white on the primary color"></div>
+      <div class="tile tile--fog">
+        <div class="tile__stage"><img src="assets/LogoName.png" alt="Velo wordmark in ink on fog"></div>
         <div class="tile__meta">
-          <b>Wordmark · WHITE on primary</b>
-          <span class="hex">#FFF9A3</span>
-          <div class="dl"><a href="assets/LogoName-white.png" download>WHITE PNG ↓</a></div>
+          <b>Wordmark: ink on fog</b>
+          <span class="hex">#F5F5F5</span>
+          <div class="dl"><a href="assets/LogoName.png" download>Ink PNG</a></div>
         </div>
       </div>
       <div class="tile tile--ink">
         <div class="tile__stage"><img src="assets/LogoName-white.png" alt="Velo wordmark in white on ink"></div>
         <div class="tile__meta">
-          <b>Wordmark · white on ink</b>
+          <b>Wordmark: white on ink</b>
           <span class="hex">#000000</span>
-          <div class="dl"><a href="assets/LogoName-white.png" download>WHITE PNG ↓</a></div>
+          <div class="dl"><a href="assets/LogoName-white.png" download>White PNG</a></div>
         </div>
       </div>
-      <div class="tile tile--paper">
-        <div class="tile__stage"><img src="assets/LogoName.png" alt="Velo wordmark in ink on paper"></div>
+      <div class="tile tile--white">
+        <div class="tile__stage"><img src="assets/LogoName.png" alt="Velo wordmark in ink on white"></div>
         <div class="tile__meta">
-          <b>Wordmark · ink on paper</b>
+          <b>Wordmark: ink on white</b>
           <span class="hex">#FFFFFF</span>
-          <div class="dl"><a href="assets/LogoName.png" download>INK PNG ↓</a></div>
+          <div class="dl"><a href="assets/LogoName.png" download>Ink PNG</a></div>
         </div>
       </div>
     </div>
 
     <div class="marks">
       <div class="mark">
-        <div class="mark__stage" style="background:var(--yellow)"><img src="assets/Logo.png" alt="Velo ribbon mark in ink on primary"></div>
-        <div class="mark__meta"><b>Mark · ink</b><a href="assets/Logo.png" download>PNG ↓</a></div>
+        <div class="mark__stage" style="background:var(--violet)"><img src="assets/Logo-white.png" alt="Velo ribbon mark in white on violet"></div>
+        <div class="mark__meta"><b>Mark: white on violet</b><a href="assets/Logo-white.png" download>PNG</a></div>
       </div>
       <div class="mark">
-        <div class="mark__stage" style="background:var(--yellow)"><img src="assets/Logo-white.png" alt="Velo ribbon mark in white on primary"></div>
-        <div class="mark__meta"><b>Mark · WHITE</b><a href="assets/Logo-white.png" download>PNG ↓</a></div>
+        <div class="mark__stage" style="background:var(--fog)"><img src="assets/Logo.png" alt="Velo ribbon mark in ink on fog"></div>
+        <div class="mark__meta"><b>Mark: ink on fog</b><a href="assets/Logo.png" download>PNG</a></div>
       </div>
       <div class="mark">
         <div class="mark__stage" style="background:var(--ink)"><img src="assets/Logo-white.png" alt="Velo ribbon mark in white on ink"></div>
-        <div class="mark__meta"><b>Mark · WHITE on ink</b><a href="assets/Logo-white.png" download>PNG ↓</a></div>
+        <div class="mark__meta"><b>Mark: white on ink</b><a href="assets/Logo-white.png" download>PNG</a></div>
       </div>
       <div class="mark">
-        <div class="mark__stage" style="background:var(--cream)"><img src="assets/Logo.png" alt="Velo ribbon mark in ink on cream"></div>
-        <div class="mark__meta"><b>Mark · ink on cream</b><a href="assets/Logo.png" download>PNG ↓</a></div>
+        <div class="mark__stage" style="background:var(--white)"><img src="assets/Logo.png" alt="Velo ribbon mark in ink on white"></div>
+        <div class="mark__meta"><b>Mark: ink on white</b><a href="assets/Logo.png" download>PNG</a></div>
       </div>
     </div>
 
-    <div class="pal" role="list" aria-label="Palette">
-      <div class="swatch" role="listitem"><div class="chipc" style="background:#FFF9A3"></div><div class="meta"><b>Primary</b><span>#FFF9A3</span></div></div>
-      <div class="swatch" role="listitem"><div class="chipc" style="background:#FBDD65"></div><div class="meta"><b>Secondary</b><span>#FBDD65</span></div></div>
-      <div class="swatch" role="listitem"><div class="chipc" style="background:#FFFDD6"></div><div class="meta"><b>Ambient</b><span>#FFFDD6</span></div></div>
-      <div class="swatch" role="listitem"><div class="chipc" style="background:#FFFFFF"></div><div class="meta"><b>Paper</b><span>#FFFFFF</span></div></div>
-      <div class="swatch" role="listitem"><div class="chipc" style="background:#3A3A3A"></div><div class="meta"><b>Charcoal</b><span>#3A3A3A</span></div></div>
-      <div class="swatch" role="listitem"><div class="chipc" style="background:#000000"></div><div class="meta"><b>Ink</b><span>#000000</span></div></div>
+    <h2 class="sec-title"><small>01 / Palette</small>White canvas, two chromatic notes</h2>
+    <p class="sec-lede">Pure white and greys carry every screen. Exactly two chromatic notes sit on top: Signal Violet for every interactive moment and Mint Pulse for success, highlights and status dots. Tint Wash marks highlighted panels. No other accents, no gradients.</p>
+    <div class="ratio" role="img" aria-label="Usage ratio: neutrals 75 percent, violet and tint 20 percent, mint 5 percent"><i class="r-ink"></i><i class="r-fog"></i><i class="r-violet"></i><i class="r-tint"></i><i class="r-mint"></i></div>
+    <p class="ratio-note">Neutrals ~70% (white, black and greys) · Violet and tint ~25% · Mint ~5%.</p>
+
+    <p class="pal-sub">Neutrals</p>
+    <div class="pal" role="list" aria-label="Neutral palette">
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--white)"></div><div class="meta"><b>Pure White</b><span>#FFFFFF</span><em>Page canvas, button text on violet</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--ink)"></div><div class="meta"><b>Ink Black</b><span>#000000</span><em>Text, headings, icons, footer</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--fog)"></div><div class="meta"><b>Fog</b><span>#F5F5F5</span><em>Card surface lift, quiet blocks, hairlines</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--mist)"></div><div class="meta"><b>Mist</b><span>#A6A6A6</span><em>Muted nav text, secondary borders</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--smoke)"></div><div class="meta"><b>Smoke</b><span>#9C9C9C</span><em>Tertiary borders, disabled outlines</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--ash)"></div><div class="meta"><b>Ash</b><span>#4D4D4D</span><em>Secondary body text</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--slate)"></div><div class="meta"><b>Slate</b><span>#707070</span><em>Helper text, metadata, fine print</em></div></div>
     </div>
 
-    <div class="rules">
-      <b>// RULES</b>
-      <li>White logo only on ink or the deep yellow — never on paper or cream (it disappears).</li>
-      <li>Ink logo only on paper, cream or the primary tint.</li>
-      <li>Never recolor the ribbon to anything but ink or white; never add shadows, gradients or rounded corners.</li>
-      <li>Clear space: keep at least the height of the ribbon mark on all sides.</li>
+    <p class="pal-sub">Accents</p>
+    <div class="pal" role="list" aria-label="Accent palette">
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--violet)"></div><div class="meta"><b>Signal Violet</b><span>#5F79FF</span><em>Primary action pill, links, focus, active and attention states</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--mint)"></div><div class="meta"><b>Mint Pulse</b><span>#01FE93</span><em>Success, highlight and live dots, closing stripe; never text or a button fill</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--tint)"></div><div class="meta"><b>Tint Wash</b><span>#D9DEFC</span><em>Highlighted panels, selected rows, sparkle shapes</em></div></div>
+    </div>
+
+    <p class="pal-sub">Status (product UI only)</p>
+    <div class="pal" role="list" aria-label="Status palette">
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--alert)"></div><div class="meta"><b>Alert</b><span>#C8342B</span><em>Mismatch, urgent; product status only</em></div></div>
+      <div class="swatch" role="listitem"><div class="chipc" style="background:var(--success)"></div><div class="meta"><b>Success</b><span>#1A7F45</span><em>Match, confirmed; product status only</em></div></div>
+    </div>
+
+    <h2 class="sec-title"><small>02 / Type</small>OS Chronik for headlines, OS Studio Grotesk for everything else</h2>
+    <div class="type">
+      <div class="type__card">
+        <small>OS Chronik Light 300 + Light Italic</small>
+        <div class="type__serif">Receive. Verify. <i>Record.</i></div>
+        <p>Editorial headlines and section openers only (72px at 0.9 line height, smaller at 18, 24 and 34px). Never above weight 300, never uppercase.</p>
+      </div>
+      <div class="type__card">
+        <small>OS Studio Grotesk Regular 400</small>
+        <div class="type__sans">Every delivery checked against what was ordered.</div>
+        <p>All functional UI: navigation, buttons, labels, body copy and numbers (tabular). No monospace.</p>
+      </div>
+      <div class="type__card type__card--wide">
+        <small>Source</small>
+        <p style="margin-top:0">Both families come from the OpenServ media kit (openserv.ai/media-kit) and are self-hosted from /fonts.</p>
+      </div>
     </div>
 
   </div>
+
+  <section class="band" aria-label="Discipline">
+    <div class="wrap">
+    <div class="rules">
+      <b class="rt">03 / Discipline</b>
+      <ul class="rules-list">
+        <li>Primary actions are violet pills with white text. Secondary actions are white pills with a Mist border. Selected and active states use violet and tint; mint is never a button fill.</li>
+        <li>Cards, images and nav use a 16px radius; inputs 12px; pills are for buttons and badges only.</li>
+        <li>Flat surfaces with 1px hairlines. The only shadow is the floating nav and device mockups. No gradients, no glass.</li>
+        <li>Alert and success colours appear in product status only, never as decoration or a call to action.</li>
+      </ul>
+    </div>
+      <div class="cta"><a class="btn" href="/">Back to site <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
 </main>
 
 <footer>
+  <div class="wrap"><div class="foot-brand"><img src="assets/Logo-white.png" alt=""><span>VELO</span></div></div>
   <div class="wrap foot-in">
-    <span>© 2026 TEAM BACAYKIEM — PROJECT VELO</span>
-    <span>NETCOMPANY IT CONSULTANT CHALLENGE 2026 · WITH CODE MELY</span>
+    <span>© 2026 Team DNKTV — Project VELO</span>
+    <span>Bright Floor system: white canvas, violet and mint</span>
   </div>
 </footer>
 </body>

@@ -1,0 +1,17 @@
+{
+  "_status": "TEAM ASSUMPTIONS - replace with interview / pilot data before quoting as fact",
+  "_currency": "VND",
+  "deliveries_per_month": 80,
+  "minutes_saved_per_delivery": 15,
+  "loaded_labour_cost_per_minute": 1000,
+  "inbound_goods_value_per_month": 1500000000,
+  "unrecovered_discrepancy_rate_today": 0.005,
+  "share_of_discrepancies_velo_recovers": 0.6,
+  "expiry_damage_writeoff_per_month": 3000000,
+  "expiry_damage_reduction": 0.3,
+  "oversold_orders_per_month": 4,
+  "margin_per_oversold_order": 500000,
+  "oversell_reduction": 0.5,
+  "velo_subscription_per_month": 1500000,
+  "sensitivity_inbound_values": [500000000, 1500000000, 3000000000]
+}

@@ -3,64 +3,105 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VELO — Demo process</title>
+<title>VELO Vietnam — Receive. Verify. Record. · 2-minute demo</title>
+<meta name="description" content="Prototype mockup: one delivery received, verified and recorded on a phone. Illustrative data.">
 <link rel="icon" type="image/png" href="../assets/Logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/motion.css">
+<script src="/motion.js" defer></script>
 <link rel="stylesheet" href="velo-ui.css">
 <style>
   html,body{height:100%;overflow:hidden}
-  .stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--cream);overflow:hidden}
+  .stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--white);overflow:hidden}
 
-  .st-top{position:absolute;left:0;right:0;top:0;height:84px;display:flex;align-items:center;gap:20px;padding:0 56px;border-bottom:var(--line);background:var(--paper);z-index:5}
-  .st-brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;letter-spacing:.04em;color:var(--ink);text-decoration:none}
-  .st-brand img{width:34px;height:34px;object-fit:contain}
-  .st-title{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-right:auto}
-  .st-top .v-chip{font-size:11px}
+  .st-top{position:absolute;left:50%;transform:translateX(-50%);top:16px;height:56px;width:max-content;max-width:calc(100% - 112px);display:flex;align-items:center;gap:var(--space-20);padding:0 var(--space-12) 0 var(--space-24);border-radius:var(--radius-pill);background:var(--white);box-shadow:var(--shadow-float);z-index:5}
+  .st-brand{display:flex;align-items:center;gap:var(--space-10);font-size:var(--text-subheading);font-weight:400;letter-spacing:-.017em;color:var(--ink);text-decoration:none}
+  .st-brand img{width:32px;height:32px;object-fit:contain}
+  .st-title{font-size:var(--text-small);font-weight:400;color:var(--mist);margin-right:auto}
+  .st-top .v-chip{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-color:var(--fog);background:var(--fog);color:var(--slate)}
 
   .st-cap{position:absolute;left:56px;top:124px;width:470px;bottom:118px;display:flex;flex-direction:column}
-  .cap-num{font-size:104px;line-height:1;font-weight:700;color:var(--ink);letter-spacing:-.02em}
-  .cap-stage{display:block;margin:8px 0 18px;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-  .cap-zone{align-self:flex-start;font-size:12px}
-  .cap-num,.cap-title,.cap-text{font-family:'Space Grotesk',system-ui,sans-serif}
-  .cap-num{letter-spacing:-.04em}
-  .cap-title{margin:22px 0 16px;font-size:48px;line-height:1.02;font-weight:700;letter-spacing:-.025em;text-transform:uppercase;color:var(--ink)}
-  .cap-text{font-size:21px;line-height:1.5;color:var(--ink)}
+  .cap-num{font-family:var(--serif);font-variant-numeric:lining-nums;font-size:96px;line-height:.9;font-weight:300;color:var(--violet);letter-spacing:-.02em}
+  .cap-stage{display:block;margin:var(--space-12) 0 var(--space-16);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)}
+  .cap-tags{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-8)}
+  .cap-tags #capTags{display:contents}
+  .cap-zone,.tg{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+  .tg{display:inline-flex;align-items:center;gap:var(--space-6);font-weight:400}
+  .tg::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--violet)}
+  .tg--ai{background:var(--tint);border-color:var(--violet)}
+  .tg--rule{background:var(--white)}
+  .tg--rule::before{background:var(--white);border:2px solid var(--ink)}
+  .tg--human{background:var(--ink);border-color:var(--ink);color:var(--white)}
+  .tg--human::before{background:var(--white)}
+  .cap-title{margin:var(--space-24) 0 var(--space-16);font-family:var(--sans);font-size:var(--text-heading-lg);line-height:1.1;font-weight:400;letter-spacing:-.02em;color:var(--ink)}
+  .cap-text{font-family:var(--serif);font-size:var(--text-heading-sm);line-height:1.35;font-weight:300;letter-spacing:-.01em;color:var(--mist)}
   .cap-anim > *{animation:v-rise .55s cubic-bezier(.2,.7,.2,1) both}
   .cap-anim > :nth-child(2){animation-delay:.05s}.cap-anim > :nth-child(3){animation-delay:.1s}.cap-anim > :nth-child(4){animation-delay:.15s}.cap-anim > :nth-child(5){animation-delay:.2s}
-  .loop{margin-top:auto;border:var(--line);background:var(--paper)}
-  .loop li{display:grid;grid-template-columns:56px 1fr;align-items:center;padding:12px 16px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background-color .4s}
-  .loop li+li{border-top:var(--line)}
-  .loop li b{font-size:20px;color:var(--ink)}
-  .loop li.on{background:var(--yellow-deep);color:var(--ink)}
+  .loop{margin-top:auto;border-radius:24px;background:var(--fog);overflow:hidden}
+  .loop li{display:grid;grid-template-columns:48px 1fr;align-items:center;padding:var(--space-6) var(--space-16);font-size:var(--text-small);font-weight:400;color:var(--ash);transition:background-color .4s}
+  .loop li+li{border-top:1px solid var(--white)}
+  .loop li b{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em;font-weight:400;color:var(--slate)}
+  .loop li.on{background:var(--tint);color:var(--ink)}
+  .loop li.on b{color:var(--violet)}
 
   .st-devs{position:absolute;left:566px;top:108px;width:1320px;height:880px}
-  .dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s ease,filter .6s ease,z-index 0s .35s}
+  .dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s ease,z-index 0s .35s}
   .stage[data-focus=phone] .dev--phone{transform:translate(830px,6px) scale(1);z-index:3}
-  .stage[data-focus=phone] .dev--dash{transform:translate(0,170px) scale(.62);opacity:.35;filter:blur(1.5px) grayscale(.4);z-index:1}
+  .stage[data-focus=phone] .dev--dash{transform:translate(0,170px) scale(.62);opacity:.35;z-index:1}
   .stage[data-focus=dash] .dev--dash{transform:translate(0,46px) scale(.86);z-index:3}
-  .stage[data-focus=dash] .dev--phone{transform:translate(1104px,236px) scale(.56);opacity:.45;filter:blur(1px) grayscale(.4);z-index:1}
+  .stage[data-focus=dash] .dev--phone{transform:translate(1104px,236px) scale(.56);opacity:.45;z-index:1}
   .stage[data-focus=both] .dev--dash{transform:translate(0,160px) scale(.64);z-index:2}
   .stage[data-focus=both] .dev--phone{transform:translate(944px,24px) scale(.96);z-index:3}
   .dev--dash .db{position:relative}
   .stage.is-instant .dev{transition:none}
 
-  .st-ctl{position:absolute;left:0;right:0;bottom:0;height:84px;display:flex;align-items:center;gap:14px;padding:0 56px;border-top:var(--line);background:var(--paper);z-index:5;transition:transform .3s}
-  .st-ctl .v-btn{width:auto;padding:9px 14px;font-size:12px;text-decoration:none}
+  .st-ctl{position:absolute;left:56px;right:56px;bottom:16px;height:64px;display:flex;align-items:center;gap:var(--space-12);padding:0 var(--space-16);border-radius:var(--radius-pill);background:var(--fog);z-index:5;transition:transform .3s}
+  .st-ctl .v-btn{width:auto;padding:var(--space-8) var(--space-16);font-size:var(--text-small);text-decoration:none;background:var(--white);border-color:var(--white)}
+  .st-ctl .v-btn--fill{background:var(--violet);border-color:var(--violet);color:var(--white)}
   /* Stays full size when the 1920 stage is scaled down on a phone. */
-  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 14px;background:var(--yellow);border:2px solid var(--ink);color:var(--ink);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 var(--space-16);background:var(--ink);border-radius:var(--radius-pill);color:var(--white);font-weight:400;font-size:var(--text-small);text-decoration:none}
   @media (max-width:1100px){.site-back{display:inline-flex}}
   .st-ctl #play{min-width:112px}
-  .dots{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin:0 10px}
-  .dots button{position:relative;height:30px;border:var(--line);background:var(--cream);overflow:hidden;font-size:10px;font-weight:700;letter-spacing:.06em;text-align:left;padding:0 8px;white-space:nowrap;text-overflow:ellipsis}
+  .dots{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--space-6);margin:0 var(--space-10)}
+  .dots button{position:relative;height:32px;border:1px solid var(--white);border-radius:var(--radius-pill);background:var(--white);overflow:hidden;font-size:var(--text-caption);font-weight:400;color:var(--ink);text-align:left;padding:0 var(--space-12);white-space:nowrap;text-overflow:ellipsis}
   .dots button span{position:relative;z-index:1}
-  .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--yellow-deep)}
-  .dots button.is-past i{width:100%;background:var(--yellow)}
-  .st-count{font-size:13px;font-weight:700;min-width:70px;text-align:right;color:var(--ink)}
-  .st-hint{font-size:10px;font-weight:700;letter-spacing:.06em}
-  .stage.is-clean .st-ctl{transform:translateY(100%)}
+  .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--tint)}
+  .dots button.is-past i{width:100%;background:var(--tint)}
+  .dots button[aria-current="step"]{background:var(--violet);border-color:var(--violet);color:var(--white)}
+  .dots button[aria-current="step"] i{background:transparent}
+  .st-count{font-size:var(--text-small);font-weight:400;min-width:70px;text-align:right;color:var(--ink)}
+  .st-hint{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;font-weight:400;color:var(--mist)}
+  .stage.is-clean .st-ctl{transform:translateY(150%)}
   .stage.is-clean .st-demo{visibility:hidden}
+  /* Keep captions and playback controls readable instead of shrinking them
+     together with the 1920px presentation on phones and small tablets. */
+  @media(max-width:900px){
+    html,body{height:auto;overflow:auto}
+    .site-back{display:none}
+    .stage{position:relative;left:auto;top:auto;width:100%;height:auto;min-height:100vh}
+    .st-top{position:relative;left:auto;right:auto;top:auto;transform:none;width:auto;max-width:none;margin:var(--space-12);height:auto;min-height:56px;padding:var(--space-12) var(--space-20);border-radius:28px;flex-wrap:wrap;gap:var(--space-10)}
+    .st-brand{font-size:var(--text-lead)}
+    .st-title{order:1;flex-basis:100%;font-size:var(--text-small);line-height:1.5}
+    .st-top>.v-chip{display:none}
+    .st-top>.st-demo{display:inline-block;margin-left:auto}
+    .st-cap{position:relative;left:auto;top:auto;bottom:auto;width:auto;padding:var(--space-20)}
+    .cap-num{font-size:64px}
+    .cap-stage{font-size:var(--text-small);margin:var(--space-6) 0 var(--space-12)}
+    .cap-title{font-size:var(--text-heading);margin:var(--space-16) 0 var(--space-12)}
+    .cap-text{font-size:var(--text-lead)}
+    .loop{display:none}
+    .st-devs-window{position:relative;width:100%;height:calc(880px * var(--mobile-scale));overflow:hidden}
+    .st-devs{left:0;top:0;width:1360px;height:880px;transform-origin:top left;transform:scale(var(--mobile-scale))}
+    .st-ctl{position:relative;left:auto;right:auto;bottom:auto;margin:var(--space-12);height:auto;padding:var(--space-16);border-radius:24px;gap:var(--space-8);flex-wrap:wrap}
+    .st-ctl .v-btn{min-height:44px;padding:var(--space-10) var(--space-12)}
+    .dots{order:2;flex-basis:100%;margin:0;grid-auto-flow:row;grid-template-columns:repeat(5,minmax(0,1fr))}
+    .dots button{height:44px}
+    .st-count{margin-left:auto;min-width:0}
+    .st-hint{display:none}
+    .stage.is-clean .st-ctl{transform:none}
+  }
+  @media(max-width:480px){.dots{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:360px){.dots{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -68,30 +109,35 @@
 <div class="stage" id="stage" data-focus="dash">
   <header class="st-top">
     <a class="st-brand" href="/" aria-label="Back to the website"><img src="../assets/Logo.png" alt=""><span>VELO</span></a>
-    <span class="st-title">How Velo works · the scan-to-AI decision loop</span>
-    <span class="v-chip">IT Consultant Challenge 2026</span>
-    <span class="v-chip v-chip--pastel st-demo">Demo data</span>
+    <span class="st-title">VELO Vietnam · Receive. Verify. Record. · one delivery, eight steps</span>
+    <span class="v-chip">Prototype mockup · illustrative data</span>
+    <span class="v-chip v-chip--pastel st-demo">Mockup</span>
   </header>
 
   <aside class="st-cap">
     <div id="cap">
       <div class="cap-num" id="capNum">01</div>
       <span class="cap-stage" id="capStage"></span>
-      <span class="v-chip v-chip--pastel cap-zone" id="capZone"></span>
+      <div class="cap-tags"><span class="v-chip v-chip--pastel cap-zone" id="capZone"></span><span id="capTags"></span></div>
       <h1 class="cap-title" id="capTitle"></h1>
       <p class="cap-text" id="capText"></p>
     </div>
     <ol class="loop" id="loop">
-      <li data-step="1"><b>01</b>Centralize · one source of truth</li>
-      <li data-step="2"><b>02</b>Scan to identify · 1D barcode</li>
-      <li data-step="3"><b>03</b>AI assists decisions · 4 zones</li>
+      <li data-step="1"><b>01</b>Expected delivery</li>
+      <li data-step="2"><b>02</b>Scan the delivery note</li>
+      <li data-step="3"><b>03</b>Scan &amp; count</li>
+      <li data-step="4"><b>04</b>Live three-way match</li>
+      <li data-step="5"><b>05</b>Confirm or flag</li>
+      <li data-step="6"><b>06</b>Manager approves</li>
+      <li data-step="7"><b>07</b>Digital goods receipt</li>
+      <li data-step="8"><b>08</b>Live stock &amp; alerts</li>
     </ol>
   </aside>
 
-  <div class="st-devs">
+  <div class="st-devs-window" role="img" aria-label="Animated receiver phone and manager dashboard previews"><div class="st-devs" inert>
     <div class="dev dev--dash"><div class="db" id="dash"></div></div>
     <div class="dev dev--phone"><div class="phone"><div class="ph-screen" id="phone"></div></div></div>
-  </div>
+  </div></div>
 
   <footer class="st-ctl">
     <a class="v-btn" href="/">← Website</a>
@@ -109,41 +155,45 @@
 (function () {
   'use strict'
 
-  const STAGES = { 1: 'Centralize', 2: 'Scan to identify', 3: 'AI assists decisions' }
+  const STAGES = { 1: 'Expected delivery', 2: 'Scan the delivery note', 3: 'Scan & count', 4: 'Live three-way match', 5: 'Confirm or flag', 6: 'Manager approves', 7: 'Digital goods receipt', 8: 'Live stock & alerts' }
+  const TAG = { AI: 'tg--ai', RULE: 'tg--rule', HUMAN: 'tg--human' }
 
-  // phone: [screen, state] · dash: state · tap / dtap: selector tapped on the phone / dashboard
+  // phone: [screen, state, opts] · dash: state · tap / dtap: selector tapped on the phone / dashboard
   const SCENES = [
-    { step: 1, short: 'HUB', zone: 'All zones · store hub', title: 'One source of truth', focus: 'dash', dur: 5000,
-      text: 'ERP orders, bay locations, batch expiry dates, live POS checkouts and technical manuals land in one local store hub.',
-      beats: [{ t: 0, dash: 'idle', phone: ['tasks', 'plan'] }] },
-    { step: 1, short: 'SHIFT', zone: 'Shift start · 07:02', title: 'A plan, not a clipboard', focus: 'phone', dur: 4800,
-      text: 'Velo hands Mads a morning action guide sorted by urgency. Velo plans the route; Mads decides the order.',
-      beats: [{ t: 0, phone: ['tasks', 'plan'] }, { t: 2800, tap: '[data-tap=start]' }] },
-    { step: 2, short: 'SCAN', zone: 'Zone A · receiving dock', title: 'Scan the pallet', focus: 'phone', dur: 5200,
-      text: 'The phone camera reads the EAN-13 label already on the pallet. SKU, batch and expiry in 142 ms. No relabeling and no $1,800 infrared gun.',
-      beats: [{ t: 0, phone: ['scan', 'aim'] }, { t: 1600, phone: ['scan', 'detected'] }] },
-    { step: 3, short: 'PUT-AWAY', zone: 'Zone A → B · put-away', title: 'Velo suggests the bay', focus: 'phone', dur: 6200,
-      text: 'Local AI picks Bay B-04: front-accessible, same SKU already there, 38 m away. Mads scans the bay label to confirm, or picks another. The human has final say.',
-      beats: [{ t: 0, phone: ['putaway', 'suggest'] }, { t: 2800, tap: '[data-tap=confirm]' }, { t: 3300, phone: ['putaway', 'confirmed'] }] },
-    { step: 3, short: 'MAP', zone: 'Store hub · live', title: 'The whole store sees it', focus: 'dash', dur: 5200,
-      text: 'The scan updates the zone map instantly. FEFO keeps the older batch #388 in front of the new delivery, so it sells first.',
-      beats: [{ t: 0, dash: 'received' }] },
-    { step: 3, short: 'POS', zone: 'Zone D · POS checkout', title: 'A sale triggers the refill', focus: 'dash', dur: 5500,
-      text: '10:14. A contractor buys 15 boxes of decking screws. Aisle 2 drops to 3, below its minimum of 10. Velo creates one refill task.',
-      beats: [{ t: 0, dash: 'pos' }] },
-    { step: 3, short: 'REFILL', zone: 'Zone B → C · refill', title: 'One clear task', focus: 'phone', dur: 7400,
-      text: 'Exact bay, exact batch, exact quantity. Mads walks straight to C-03, scans to confirm the pick and restocks Aisle 2.',
-      beats: [{ t: 0, phone: ['refill', 'notify'] }, { t: 1600, phone: ['refill', 'task'] }, { t: 3200, tap: '[data-tap=pick]' },
-        { t: 3700, phone: ['refill', 'picking'] }, { t: 5200, phone: ['refill', 'done'] }] },
-    { step: 3, short: 'APPROVE', zone: 'Store hub · manager', title: 'Approve, don\u2019t chase', focus: 'dash', dur: 6000,
-      text: 'Aisle 2 is back to 23. Bay C-03 fell below safety stock, so Velo drafted a restock order. Ingrid approves it in one click.',
-      beats: [{ t: 0, dash: 'refilled' }, { t: 2800, dtap: '[data-tap=approve]' }, { t: 3300, dash: 'approved' }] },
-    { step: 3, short: 'ASK', zone: 'Zone C · front floor', title: 'Ask, get an answer', focus: 'phone', dur: 7800,
-      text: 'A contractor asks about fire-rated gypsum. The local RAG copilot answers from live stock and supplier datasheets in 1.6 s. Nothing leaves the building.',
-      beats: [{ t: 0, phone: ['ask', 'typing'] }, { t: 1600, phone: ['ask', 'thinking'] }, { t: 2800, phone: ['ask', 'answered'] }] },
-    { step: 0, short: 'LOOP', zone: 'The loop', title: 'Scan. Restock. Repeat.', focus: 'both', dur: 6000,
-      text: 'Every scan feeds the hub. Every hub event becomes one clear task on a phone. Velo recommends; people confirm.',
-      beats: [{ t: 0, dash: 'approved', phone: ['tasks', 'after'] }] },
+    { step: 1, short: 'PO', zone: '09:10 · Dock 1', tags: ['RULE'], title: 'A delivery is expected', focus: 'both', dur: 5600,
+      text: 'Minh imported PO-1087: 100 tubes of SikaFlex-11FC and 20 bags of PCB40 cement from Supplier A. The truck arrives and Lan opens the delivery on her phone.',
+      beats: [{ t: 0, dash: 'expected', phone: ['deliveries', 'today'] }, { t: 3400, tap: '[data-tap=start]' }] },
+    { step: 2, short: 'NOTE', zone: '09:14 · Dock 1', tags: ['AI'], title: 'Scan the delivery note', focus: 'phone', dur: 5600,
+      text: 'Lan photographs note #DN-2481. AI reads the Vietnamese text: supplier, document number, product lines and quantities. Nothing is saved yet.',
+      beats: [{ t: 0, phone: ['note', 'aim'] }, { t: 1800, tap: '.ph-cam' }, { t: 2300, phone: ['note', 'reading'] }] },
+    { step: 2, short: 'CONFIRM', zone: '09:16 · Dock 1', tags: ['AI', 'HUMAN'], title: 'AI reads. Lan confirms.', focus: 'phone', dur: 7000,
+      text: 'Each line is matched to the catalogue, "Keo Sika 11FC 600ml" to SKF-11FC-600, with a confidence score. Lan confirms or corrects every line. OCR never writes silently.',
+      beats: [{ t: 0, phone: ['extract', 'review'] }, { t: 1800, tap: '[data-tap=chk0]' }, { t: 2300, phone: ['extract', 'review', { checked: [true, false] }] },
+        { t: 3400, tap: '[data-tap=chk1]' }, { t: 3900, phone: ['extract', 'confirmed'] }, { t: 5400, tap: '[data-tap=go]' }] },
+    { step: 3, short: 'COUNT', zone: '09:19 · Dock 1', tags: ['HUMAN'], title: 'Scan and count', focus: 'phone', dur: 8200,
+      text: 'Lan scans the EAN barcode and counts: 96 good, 4 crushed, batch L2406-A. No barcode? She can search by name, photograph the label or print an internal QR.',
+      beats: [{ t: 0, phone: ['count', 'aim', { line: 0 }] }, { t: 2400, tap: '.ph-cam' }, { t: 2900, phone: ['count', 'counted', { line: 0 }] },
+        { t: 5600, tap: '[data-tap=save]' }, { t: 6100, phone: ['count', 'counted', { line: 1 }] }] },
+    { step: 4, short: 'MATCH', zone: '09:24 · live', tags: ['RULE'], title: 'Three-way match, live', focus: 'both', dur: 6400,
+      text: 'Ordered, claimed, received: rules compare all three for every line. Cement matches. The sealant is a mismatch. A batch expiring in 20 days is flagged for attention.',
+      beats: [{ t: 0, dash: 'live', phone: ['match', 'live'] }, { t: 4200, tap: '[data-tap=flag]' }] },
+    { step: 5, short: 'FLAG', zone: '09:26 · Dock 1', tags: ['HUMAN'], title: 'Flag it with evidence', focus: 'phone', dur: 9400,
+      text: 'Lan picks the reasons and photographs the crushed tubes, which is required for damage. The driver, Hùng, confirms on the same phone while still at the dock. Then she submits.',
+      beats: [{ t: 0, phone: ['flag', 'form'] }, { t: 1800, tap: '[data-tap=photo]' }, { t: 2300, phone: ['flag', 'photo'] },
+        { t: 4000, tap: '[data-tap=driver]' }, { t: 4500, phone: ['flag', 'driver'] }, { t: 6400, tap: '[data-tap=submit]' },
+        { t: 6900, phone: ['submitted', 'waiting'], dash: 'queue' }] },
+    { step: 6, short: 'APPROVE', zone: '09:34 · manager', tags: ['HUMAN'], title: 'A named person decides', focus: 'dash', dur: 6800,
+      text: 'The exception lands in Minh\u2019s approval queue with photo, driver confirmation and an AI hint. He picks "Accept 96, claim 4". Nothing exceptional enters stock without a named approver.',
+      beats: [{ t: 0, dash: 'queue', phone: ['submitted', 'waiting'] }, { t: 3400, dtap: '[data-tap=approve]' }, { t: 3900, dash: 'approved' }] },
+    { step: 7, short: 'RECEIPT', zone: '09:34 · issued', tags: ['RULE'], title: 'The receipt writes itself', focus: 'dash', dur: 6800,
+      text: 'VELO issues the phiếu nhập kho: lines, accepted quantities, exceptions, receiver, approver, timestamps and evidence. Documentation is a by-product of checking.',
+      beats: [{ t: 0, dash: 'receipt', phone: ['receipt', 'issued'] }] },
+    { step: 8, short: 'STOCK', zone: '09:36 · live', tags: ['RULE', 'AI'], title: 'Stock, alerts, accuracy', focus: 'dash', dur: 7000,
+      text: 'Inventory shows 96 tubes with batch and expiry. A FEFO alert fires for the batch expiring in 20 days, and Supplier A\u2019s accuracy record drops after this delivery.',
+      beats: [{ t: 0, dash: 'stock', phone: ['receipt', 'issued'] }] },
+    { step: 0, short: 'CLOSE', zone: 'Receive. Verify. Record.', tags: [], title: '96 tubes entered stock. 4 entered a claim. Zero entered by assumption.', focus: 'both', dur: 6400,
+      text: 'Prototype mockup with illustrative data. VELO recommends and records; people decide.',
+      beats: [{ t: 0, dash: 'stock', phone: ['deliveries', 'done'] }] },
   ]
 
   const $ = (id) => document.getElementById(id)
@@ -151,7 +201,7 @@
   const params = new URLSearchParams(location.search)
   const n = SCENES.length
 
-  let idx = 0, elapsed = 0, playing = !params.has('paused'), last = performance.now()
+  let idx = 0, elapsed = 0, playing = !params.has('paused') && !matchMedia('(prefers-reduced-motion: reduce)').matches, last = performance.now()
   let fired = new Set(), shown = { phone: '', dash: '' }
 
   function stateAt(i, t) {
@@ -166,8 +216,8 @@
 
   function render(t) {
     const s = stateAt(idx, t)
-    const pk = s.phone.join('/')
-    if (pk !== shown.phone) { phoneEl.innerHTML = VeloUI.phone(s.phone[0], s.phone[1]); shown.phone = pk }
+    const pk = JSON.stringify(s.phone)
+    if (pk !== shown.phone) { phoneEl.innerHTML = VeloUI.phone(s.phone[0], s.phone[1], s.phone[2]); shown.phone = pk }
     if (s.dash !== shown.dash) { dashEl.innerHTML = VeloUI.dash(s.dash); shown.dash = s.dash }
   }
 
@@ -186,9 +236,10 @@
 
   function caption() {
     const s = SCENES[idx]
-    $('capNum').textContent = s.step ? '0' + s.step : '↻'
-    $('capStage').textContent = s.step ? STAGES[s.step] : 'The full loop'
+    $('capNum').textContent = s.step ? '0' + s.step : '✓'
+    $('capStage').textContent = s.step ? STAGES[s.step] : 'The whole delivery'
     $('capZone').textContent = s.zone
+    $('capTags').innerHTML = s.tags.map((t) => `<span class="v-chip tg ${TAG[t]}">${t}</span>`).join('')
     $('capTitle').textContent = s.title
     $('capText').textContent = s.text
     cap.classList.remove('cap-anim'); void cap.offsetWidth; cap.classList.add('cap-anim')
@@ -206,12 +257,14 @@
     render(elapsed)
     dots()
     history.replaceState(null, '', location.search + '#' + (idx + 1))
+    if (innerWidth <= 900) fit()
   }
 
   function dots() {
     const p = Math.min(1, elapsed / SCENES[idx].dur)
     document.querySelectorAll('#dots button').forEach((b, j) => {
       b.classList.toggle('is-past', j < idx)
+      b.setAttribute('aria-current', j === idx ? 'step' : 'false')
       b.querySelector('i').style.width = j === idx ? p * 100 + '%' : ''
     })
   }
@@ -222,7 +275,7 @@
   }
 
   function frame(now) {
-    const dt = Math.min(now - last, 100)
+    const dt = Math.max(0, Math.min(now - last, 100)) // the first rAF timestamp can predate `last`
     last = now
     if (playing) {
       elapsed += dt
@@ -241,16 +294,22 @@
   }
 
   function fit() {
+    stage.style.setProperty('--mobile-scale', String(document.querySelector('.st-devs-window').clientWidth / 1360))
+    if (innerWidth <= 900) {
+      stage.style.transform = 'none'
+      return
+    }
     const k = Math.min(innerWidth / 1920, innerHeight / 1080)
     stage.style.transform = `translate(-50%,-50%) scale(${k})`
   }
 
-  $('dots').innerHTML = SCENES.map((s, j) => `<button title="${s.title}"><i></i><span>${String(j + 1).padStart(2, '0')} ${s.short}</span></button>`).join('')
+  $('dots').innerHTML = SCENES.map((s, j) => `<button title="${s.title}" aria-label="Step ${j + 1}: ${s.title}"><i></i><span>${String(j + 1).padStart(2, '0')} ${s.short}</span></button>`).join('')
   document.querySelectorAll('#dots button').forEach((b, j) => b.addEventListener('click', () => go(j)))
   $('prev').addEventListener('click', () => go(idx - 1))
   $('next').addEventListener('click', () => go(idx + 1))
   playBtn.addEventListener('click', () => setPlaying(!playing))
   addEventListener('keydown', (e) => {
+    if (e.target.closest('button,a,input,textarea,select')) return
     if (e.key === ' ') { e.preventDefault(); setPlaying(!playing) }
     else if (e.key === 'ArrowRight') go(idx + 1)
     else if (e.key === 'ArrowLeft') go(idx - 1)
@@ -259,6 +318,7 @@
     else if (e.key === 'h' || e.key === 'H') stage.classList.toggle('is-clean')
   })
   addEventListener('resize', fit)
+  void document.fonts.ready.then(fit)
 
   fit()
   setPlaying(playing)

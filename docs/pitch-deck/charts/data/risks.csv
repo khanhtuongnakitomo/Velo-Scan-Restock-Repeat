@@ -1,0 +1,9 @@
+id,risk,short_label,likelihood,impact,status,mitigation
+R1,Goods arrive without scannable barcodes,No barcodes,4,3,mvp,Search + photo + print internal QR label at receiving
+R2,Handwritten or messy delivery notes cause OCR errors,OCR errors,4,4,mvp,Every OCR field confirmed by a person; matching learns confirmed pairs
+R3,Bulk goods (cement / steel / timber) are hard to count,Bulk counting,3,2,partial,Count by unit or pallet + stack photo + variance tolerance per product
+R4,Staff resist a system that feels like monitoring,Staff resistance,3,4,partial,Position the record as receiver protection; involve receivers in the pilot
+R5,Messy SKU catalogue and units break matching,Messy catalogue,5,3,partial,CSV clean-up; pilot starts with top SKUs by delivery volume
+R6,Poor mobile signal in yards and metal sheds,Poor signal,3,3,roadmap,Offline-tolerant receiving sessions with later sync
+R7,Existing SME inventory apps already cover receiving,Feature overlap,3,5,partial,Focus on dock verification + evidence; export to existing apps
+R8,Receiver and driver collude on false counts,Collusion,2,4,partial,Identity stamps + photos + manager approval + audit patterns

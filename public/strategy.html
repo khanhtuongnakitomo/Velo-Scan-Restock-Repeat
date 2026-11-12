@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VELO Vietnam — Product Strategy &amp; Plan</title>
+<meta name="description" content="VELO Vietnam internal strategy board: why we exist, how three-way-match receiving works, MVP scope, expected impact, weaknesses and proof plan.">
+<link rel="icon" href="/favicon.svg">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/motion.css">
+<script src="/motion.js" defer></script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:var(--space-80)}
+  body{margin:0;background:var(--white);color:var(--ink);font-family:var(--sans);font-size:var(--text-body);line-height:1.4;letter-spacing:-.017em;font-weight:400;font-feature-settings:var(--font-features);-webkit-font-smoothing:antialiased}
+  b,strong,th,h1,h2,h3,h4,h5,h6{font-weight:400}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+  .mono{font-family:var(--sans);font-variant-numeric:tabular-nums}
+  .label{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin:0 0 var(--space-12)}
+
+  /* ---------- floating top bar ---------- */
+  .topbar{position:sticky;top:var(--space-16);z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:var(--space-12);margin:var(--space-16) auto 0;width:min(var(--page-max),calc(100% - var(--space-32)));pointer-events:none}
+  .topbar>*{pointer-events:auto}
+  .pill{grid-column:2;display:flex;align-items:center;gap:var(--space-16);min-width:0;max-width:100%;padding:var(--space-8) var(--space-12) var(--space-8) var(--space-20);background:var(--white);border-radius:var(--radius-pill);box-shadow:var(--shadow-float)}
+  .brand{font-size:var(--text-body);font-weight:400;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
+  .brand em{font-style:normal;font-weight:400;font-size:11px;background:var(--fog);color:var(--slate);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-8);margin-left:var(--space-4);vertical-align:1px}
+  .nav{display:flex;gap:var(--space-2);min-width:0;overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{font-size:var(--text-small);letter-spacing:-.017em;text-decoration:none;padding:var(--space-6) var(--space-10);border-radius:var(--radius-pill);white-space:nowrap;color:var(--slate);transition:background-color .15s,color .15s}
+  .nav a:hover{color:var(--ink)}
+  .nav a.on{background:var(--fog);color:var(--violet)}
+  .print-btn{grid-column:3;justify-self:end;font-family:var(--sans);font-size:var(--text-small);font-weight:400;background:var(--violet);color:var(--white);border:0;border-radius:var(--radius-pill);padding:var(--space-10) var(--space-20);cursor:pointer;white-space:nowrap;box-shadow:0 0 0 2px var(--white),var(--shadow-float);transition:background-color .15s,transform .15s}
+  .print-btn:hover{background:var(--ink)}
+  .print-btn:active{transform:scale(.98)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;padding:var(--space-80) var(--space-24) var(--space-64);text-align:center}
+  .hero-in{position:relative;z-index:1;max-width:var(--page-max);margin:0 auto}
+  .kicker{display:inline-block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;background:var(--fog);color:var(--slate);border-radius:var(--radius-pill);padding:var(--space-8) var(--space-16)}
+  .hero h1{font-family:var(--sans);font-weight:400;font-size:clamp(40px,6.4vw,64px);line-height:1.02;letter-spacing:-.03em;margin:var(--space-24) 0 var(--space-20)}
+  .hero h1 .red{color:var(--violet)}
+  .hero .lede{font-family:var(--serif);font-weight:300;font-size:clamp(19px,2.2vw,24px);color:var(--mist);max-width:760px;margin:0 auto var(--space-40);line-height:1.4;letter-spacing:-.01em}
+  .hero .lede strong{color:var(--slate);font-weight:300}
+  .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-16);text-align:left}
+  .hero-card{background:var(--fog);border-radius:24px;padding:var(--space-32) var(--space-24)}
+  .hero-card:nth-child(2){background:var(--ink);color:var(--white)}
+  .hero-card b{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;color:var(--slate);margin-bottom:var(--space-16)}
+  .hero-card p{margin:0;font-size:var(--text-body);color:var(--slate)}
+  .hero-card p strong{color:var(--ink);font-weight:400}
+  .hero-card:nth-child(2) b,.hero-card:nth-child(2) p{color:var(--mist)}
+  .hero-card:nth-child(2) p strong{color:var(--white)}
+  .status-note{margin:var(--space-24) auto 0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.04em;color:var(--slate);background:var(--fog);border-radius:var(--radius-pill);padding:var(--space-10) var(--space-20);display:inline-block;text-align:left}
+
+  /* ---------- sections ---------- */
+  section{padding:var(--space-80) var(--space-24)}
+  section.alt,section.soft,section.dark{background:var(--fog)}
+  section.soft .card,section.dark .card,section.soft .formula,section.soft .proof-item,section.soft .status,section.soft .match-box.src1,section.soft .match-box.src3{background:var(--white)}
+  section.soft .card.hl{background:var(--ink)}
+  .in{max-width:var(--page-max);margin:0 auto}
+  .sec-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-8);margin-bottom:var(--space-48)}
+  .sec-num{font-family:var(--serif);font-weight:300;font-size:clamp(56px,8vw,96px);line-height:1;color:var(--violet)}
+  .sec-head h2{font-family:var(--sans);font-weight:400;font-size:clamp(30px,4vw,48px);line-height:1.08;letter-spacing:-.02em;margin:0;max-width:900px}
+  .sec-head .sub{font-family:var(--serif);font-weight:300;font-size:clamp(19px,2.2vw,24px);color:var(--mist);margin:var(--space-8) 0 0;max-width:760px;line-height:1.4;letter-spacing:-.01em}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-20)}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-20)}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16)}
+  .card{background:var(--fog);border-radius:24px;padding:var(--space-32) var(--space-24);color:var(--ink)}
+  .card.hl{background:var(--ink);color:var(--white)}
+  .card.hl h3{color:var(--white)}
+  .card.hl p,.card.hl li{color:var(--mist)}
+  .card.hl p strong,.card.hl li strong{color:var(--white)}
+  .card h3{font-size:22px;font-weight:400;letter-spacing:-.02em;line-height:1.2;margin:0 0 var(--space-12)}
+  .card p,.card li{font-size:var(--text-body);color:var(--slate)}
+  .card p strong,.card li strong{color:var(--ink);font-weight:400}
+  .card p{margin:0 0 var(--space-10)}
+  .card ul{margin:0;padding-left:var(--space-20)}
+  .card li{margin-bottom:var(--space-6)}
+  .card li::marker{color:var(--violet)}
+  .tag{display:inline-block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:400;padding:var(--space-4) var(--space-10);border-radius:var(--radius-pill);background:var(--white);color:var(--ink)}
+  .tag.red{background:var(--fog)}
+  .tag.yel{background:var(--tint);color:var(--ink)}
+
+  /* today timeline */
+  .steps{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--space-12);counter-reset:step}
+  .step{background:var(--fog);border-radius:24px;padding:var(--space-20);color:var(--ink);position:relative}
+    .step::before{counter-increment:step;content:counter(step,decimal-leading-zero);display:block;font-family:var(--serif);font-weight:300;font-size:var(--text-heading);line-height:1;color:var(--violet);margin-bottom:var(--space-12)}
+  .step p{margin:0;font-size:var(--text-small);color:var(--slate)}
+  .step p strong{color:var(--ink);font-weight:400}
+  .step.bad{box-shadow:inset 0 0 0 1px var(--alert)}
+  .step.bad::before{color:var(--alert)}
+  .steps-4{grid-template-columns:repeat(4,1fr)}
+
+  /* ripple band (the one coloured band: violet with white shapes) */
+  section.band{position:relative;overflow:hidden;background:var(--violet);color:var(--white);padding-bottom:var(--space-120);text-align:center}
+  .band .pill-cta{display:inline-flex;align-items:center;gap:var(--space-8);margin-top:var(--space-32);background:var(--ink);color:var(--white);border-radius:var(--radius-pill);padding:var(--space-12) var(--space-24);text-decoration:none;font-size:var(--text-body);transition:background-color .15s}
+  .band .pill-cta:hover{background:var(--ash)}
+  .band .sec-num,.band .sec-head h2,.band .big-quote{color:var(--white)}
+  .band .in{position:relative;z-index:1}
+  .chain{display:flex;align-items:stretch;gap:var(--space-10);flex-wrap:wrap;margin:var(--space-24) 0}
+  .chain-item{flex:1 1 150px;background:var(--white);border-radius:24px;padding:var(--space-20);font-size:var(--text-small);color:var(--ink);text-align:left}
+  .chain-item b{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;color:var(--slate);margin-bottom:var(--space-8)}
+    .chain-sep{align-self:center;font-size:var(--text-subheading);padding:0 var(--space-4);color:var(--white)}
+  .big-quote{font-family:var(--sans);font-weight:400;font-size:clamp(26px,4vw,40px);line-height:1.12;letter-spacing:-.02em;margin:var(--space-48) auto 0;max-width:760px;text-align:center}
+  .big-quote .red{color:var(--tint)}
+  .shapes{position:absolute;right:0;bottom:0;width:360px;height:150px;z-index:0;pointer-events:none}
+  .shapes i{position:absolute;display:block;background:var(--white)}
+  .shapes .arch{right:230px;bottom:0;width:80px;height:120px;border-radius:80px 80px 0 0}
+  .shapes .sq1{right:120px;bottom:0;width:90px;height:90px;border-radius:var(--radius-card)}
+  .shapes .sq2{right:60px;bottom:40px;width:90px;height:90px;border-radius:var(--radius-card);opacity:.7}
+  .shapes .dot-c{right:170px;bottom:100px;width:44px;height:44px;border-radius:50%}
+
+  table{width:100%;border-collapse:collapse;background:transparent;color:var(--ink);font-size:var(--text-body)}
+  .card table,.card .tbl{background:transparent}
+  th{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;color:var(--slate);text-align:left;padding:var(--space-10) var(--space-12);border-bottom:var(--hairline-strong)}
+  td{padding:var(--space-10) var(--space-12);border-top:var(--hairline);vertical-align:top}
+  tr:nth-child(2) td{border-top:0}
+  .tbl{border-radius:24px;overflow:hidden;background:var(--fog)}
+  .tbl table{margin:0}
+  .card .tbl{border:0;border-radius:0}
+  .sec-num,.step::before,.eid,.scene-btn b,.match-join{font-variant-numeric:lining-nums}
+
+  /* 3-way match */
+  .match{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:stretch;gap:var(--space-12)}
+  .match-box{border-radius:24px;padding:var(--space-24);background:var(--white);color:var(--ink)}
+  .match-box b{display:block;font-size:22px;font-weight:400;letter-spacing:-.02em;margin-bottom:var(--space-8)}
+  .match-box p{margin:0;font-size:var(--text-small)}
+  .match-box.src1{background:var(--fog);border-color:var(--fog)}
+  .match-box.src2{background:var(--tint);border-color:var(--tint)}
+  .match-box.src3{background:var(--fog);box-shadow:inset 0 0 0 1px var(--violet)}
+  .match-box.out{background:var(--ink);color:var(--white);border-color:var(--ink)}
+  .match-join{align-self:center;font-family:var(--serif);font-weight:300;font-size:var(--text-heading-lg);line-height:1;color:var(--violet)}
+  .statuses{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-16);margin-top:var(--space-20)}
+  .status{border-radius:24px;padding:var(--space-20);background:var(--fog);color:var(--ink);font-size:var(--text-body)}
+  .dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:var(--space-8)}
+  .dot.g{background:var(--success)} .dot.y{background:var(--violet)} .dot.r{background:var(--alert)}
+
+  /* flow */
+  .flow{counter-reset:step;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-12)}
+  .flow .step::before{content:counter(step,decimal-leading-zero)}
+
+  /* demo stepper */
+  .demo-wrap{display:grid;grid-template-columns:340px 1fr;gap:var(--space-24);align-items:start}
+  .phone{width:min(320px,100%);margin:0 auto;background:var(--ink);border-radius:32px;padding:var(--space-10);box-shadow:var(--shadow-float)}
+  .ph-screen{background:var(--white);color:var(--ink);border-radius:24px;min-height:430px;padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-12)}
+  .ph-top{font-size:var(--text-caption);font-weight:400;color:var(--slate);display:flex;justify-content:space-between;border-bottom:var(--hairline);padding-bottom:var(--space-8)}
+  .ph-title{font-size:var(--text-lead);font-weight:400;line-height:1.2;margin:0}
+  .ph-line{border:var(--hairline);border-radius:var(--radius-input);padding:var(--space-10) var(--space-12);font-size:var(--text-small)}
+  .ph-line b{display:block;font-size:var(--text-body);font-weight:400}
+  .ph-line.yel{background:var(--tint);border-color:var(--tint)}
+  .ph-line.red{background:var(--alert);border-color:var(--alert);color:var(--white)}
+  .ph-foot{margin-top:auto;font-size:var(--text-caption);color:var(--slate)}
+  .scene-btns{display:grid;gap:var(--space-10)}
+  .scene-btn{display:grid;grid-template-columns:44px 1fr;gap:var(--space-12);text-align:left;background:var(--white);color:var(--ink);border:0;border-radius:24px;padding:var(--space-16);cursor:pointer;font-family:var(--sans)}
+  .scene-btn:hover{background:var(--tint)}
+  .scene-btn b{color:var(--violet)}
+  .scene-btn b{font-family:var(--serif);font-weight:300;font-size:var(--text-heading-sm);line-height:1.1}
+  .scene-btn span{font-size:var(--text-small);color:var(--ash)}
+  .scene-btn span strong{display:block;font-size:var(--text-body);font-weight:400;color:var(--ink)}
+  .scene-btn.on{background:var(--ink);color:var(--white)}
+  .scene-btn.on b{color:var(--mint)}
+  .scene-btn.on span{color:var(--mist)}
+  .scene-btn.on span strong{color:var(--white)}
+  .scene-btn:active{transform:scale(.99)}
+
+  /* MVP */
+  .inout{display:grid;grid-template-columns:1.25fr 1fr;gap:var(--space-20)}
+  .checklist{list-style:none;margin:0;padding:0}
+  .card .checklist li{padding:var(--space-10) 0;border-bottom:var(--hairline);margin:0}
+  .checklist li:last-child{border-bottom:none}
+  .num-badge{display:inline-block;font-size:var(--text-caption);font-weight:400;background:var(--ink);color:var(--white);border-radius:var(--radius-pill);min-width:24px;text-align:center;padding:var(--space-2) var(--space-8);margin-right:var(--space-8)}
+
+  .formula{background:var(--fog);color:var(--ink);border-radius:24px;padding:var(--space-24);font-size:var(--text-body);line-height:1.8;white-space:pre-line}
+
+  /* proof checklist */
+  .proof{display:grid;gap:var(--space-12)}
+  .proof-item{display:grid;grid-template-columns:auto 48px 1fr;gap:var(--space-14);align-items:start;background:var(--fog);color:var(--ink);border-radius:24px;padding:var(--space-20);cursor:pointer}
+  .proof-item input{width:20px;height:20px;margin-top:var(--space-2);accent-color:var(--violet)}
+  .proof-item .eid{font-family:var(--serif);font-weight:300;font-size:var(--text-heading-sm);line-height:1;color:var(--violet)}
+  .proof-item p{margin:0;font-size:var(--text-body)}
+  .proof-item small{display:block;margin-top:var(--space-4);color:var(--slate);font-size:var(--text-small)}
+  .proof-item.done{opacity:.62}
+  .proof-item.done p{text-decoration:line-through}
+  .progress-line{height:8px;border-radius:var(--radius-pill);background:var(--fog);overflow:hidden;margin:var(--space-16) 0}
+  .progress-fill{height:100%;width:100%;background:var(--violet);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+
+  .pilot{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-12)}
+  .road{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-12);margin-top:var(--space-20)}
+
+  footer{padding:var(--space-64) var(--space-24);background:var(--violet);color:var(--white)}
+  footer .in{display:grid;gap:var(--space-16)}
+  footer .f-brand{display:flex;align-items:center;gap:var(--space-10);font-size:var(--text-subheading);letter-spacing:-.02em}
+  footer .f-brand img{width:28px;height:28px;object-fit:contain}
+  footer p strong{color:var(--white)}
+  footer p{margin:0;font-size:var(--text-small);color:var(--tint);max-width:900px;line-height:1.5}
+  footer p.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--white)}
+
+  @media(max-width:1000px){
+    .topbar{grid-template-columns:minmax(0,1fr) auto}
+    .pill{grid-column:1;justify-self:center}
+    .print-btn{grid-column:2}
+    .hero-cards,.grid-3,.grid-4,.statuses{grid-template-columns:1fr 1fr}
+    .steps,.flow{grid-template-columns:1fr 1fr}
+    .match{grid-template-columns:1fr}
+    .match-join{transform:rotate(90deg);justify-self:center}
+    .demo-wrap,.inout,.grid-2{grid-template-columns:1fr}
+    .pilot,.road{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .hero-cards,.grid-3,.grid-4,.statuses,.steps,.flow,.pilot,.road{grid-template-columns:1fr}
+    .pill{padding:var(--space-6) var(--space-8) var(--space-6) var(--space-16)}
+    .print-btn{padding:var(--space-10) var(--space-16)}
+    section{padding:var(--space-48) var(--space-16)}
+    .hero{padding:var(--space-48) var(--space-16)}
+    .hero::before{width:200px;height:200px;right:-70px}
+    .hero::after{display:none}
+    .shapes{display:none}
+    .chain{flex-direction:column}
+    .chain-sep{transform:rotate(90deg);align-self:center}
+    .proof-item{grid-template-columns:auto 1fr}
+    .proof-item .eid{grid-column:2}
+    .proof-item > span:last-child{grid-column:1 / -1}
+  }
+  @media print{
+    .topbar,.print-btn,.scene-btns input,.shapes,.pill-cta{display:none}
+    *{box-shadow:none!important}
+    body,.hero,section,section.alt,section.soft,section.dark,section.band,footer{background:var(--white)!important;color:var(--ink)}
+    .hero::before,.hero::after{display:none}
+    section,.hero{border-bottom:1px solid var(--ink);padding:var(--space-24)}
+    .tbl,.scene-btn,.formula,.hero-card,.card.hl{background:var(--white)!important;color:var(--ink)!important}
+    .card.hl h3,.card.hl p,.card.hl li,.card.hl p strong,.card.hl li strong,.hero-card b,.hero-card p,.hero-card p strong,.scene-btn b,.scene-btn span,.scene-btn span strong,.big-quote .red,.chain-sep,footer p,footer p strong,footer p.mono,.hero h1 .red,.match-join,.hero .lede,.hero .lede strong,.sec-head .sub,.pill-cta{color:var(--ink)!important}
+    .hero-card,.tbl,.scene-btn,.formula{border:1px solid var(--ink)}
+    footer .f-brand img{filter:invert(1)}
+    .card,.step,.match-box,.proof-item,.status,.chain-item{break-inside:avoid;border:1px solid var(--ink)!important;background:var(--white)!important;color:var(--ink)!important}
+    .match-box.out{background:var(--white)!important}
+    .kicker,.tag,.num-badge,.hero h1 .red,.status-note,.brand em{background:var(--white)!important;border:1px solid var(--ink)}
+    .num-badge,.band .sec-num,.band .sec-head h2,.band .big-quote{color:var(--ink)}
+    .label,.sec-num,.step::before,.eid,.chain-item b,.hero-card b{color:var(--ink)!important}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .progress-fill,.nav a{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="pill">
+  <a class="brand" href="#top">VELO <em>VN</em></a>
+  <nav class="nav" id="nav" aria-label="Strategy sections">
+    <a href="#why">01 Why</a>
+    <a href="#who">02 Who</a>
+    <a href="#how">03 How</a>
+    <a href="#demo">04 Demo</a>
+    <a href="#mvp">05 MVP</a>
+    <a href="#impact">06 Impact</a>
+    <a href="#proof">07 Proof</a>
+    <a href="#plan">08 Plan</a>
+  </nav>
+  </div>
+  <button class="print-btn" type="button" onclick="window.print()">Print / PDF</button>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="hero-in">
+    <span class="kicker">Internal strategy board · LIKELION AI for Business Innovation</span>
+    <h1>Receive.<br>Verify. <span class="red">Record.</span></h1>
+    <p class="lede">VELO turns warehouse receiving from a paper checklist into a <strong>verified digital control point</strong>: every delivery is checked against what was ordered, every discrepancy is evidenced, and inventory updates only after a human confirms what physically arrived.</p>
+    <div class="hero-cards">
+      <div class="hero-card"><b>Why</b><p>A tick on paper proves a form was filled. It does <strong>not</strong> prove the goods arrived, matched, or were usable.</p></div>
+      <div class="hero-card"><b>How</b><p><strong>Three-way match:</strong> Ordered vs Supplier-claimed vs Physically received — compared live at the dock, on a phone.</p></div>
+      <div class="hero-card"><b>Proof</b><p>Inventory is created by a confirmed count — never by copying a delivery note. Every exception has photo, reason, and approver.</p></div>
+    </div>
+    <p class="status-note">⚠ READING RULE: numbers on this page are pilot targets or formulas — not results. Claims marked “to validate” are team observations until interview evidence lands.</p>
+  </div>
+</div>
+
+<!-- ================= 01 WHY ================= -->
+<section id="why">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Why — the tick is not confirmation</h2>
+      <p class="sub">When goods arrive at a Vietnamese warehouse today, the process is manual, rigid, and exhausting — and it creates inventory the business cannot trust.</p>
+    </div>
+
+    <h3 class="label">What happens today</h3>
+    <div class="steps" style="margin-top:var(--space-12)">
+      <div class="step"><p>Truck arrives with paper delivery note (<em>phiếu giao hàng</em>)</p></div>
+      <div class="step"><p>Employee checks under time pressure, driver waiting</p></div>
+      <div class="step bad"><p>Visual check — often <strong>without the purchase order</strong> beside them</p></div>
+      <div class="step bad"><p>Cartons ticked on paper; damage, shortages, near-expiry noted by hand — or not at all</p></div>
+      <div class="step"><p>Paper filed; result re-typed into Excel <strong>hours or days later</strong></p></div>
+      <div class="step bad"><p>System now says goods are in stock — <strong>whether they are or not</strong></p></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:var(--space-28)">
+      <div class="card">
+        <h3>A tick does not prove…</h3>
+        <ul>
+          <li>Counted quantity = claimed quantity</li>
+          <li>Right SKU, unit, pack size, specification</li>
+          <li>Goods undamaged and acceptable</li>
+          <li>Which batch arrived, or when it expires</li>
+          <li>Who counted it, when, under what exception</li>
+          <li>Anything, when the supplier disputes it later</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Root cause (not careless people)</h3>
+        <ul>
+          <li><strong>Order, delivery note, physical goods</strong> — three sources, never systematically compared</li>
+          <li>Verification depends on memory and handwriting under pressure</li>
+          <li>Documentation happens <em>after</em> the event, by re-typing</li>
+          <li>Exceptions — the costly cases — have no structured record</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Who feels it</h3>
+        <ul>
+          <li><strong>Receiver:</strong> counts, inspects, unloads, does paperwork simultaneously — then gets blamed when stock vanishes</li>
+          <li><strong>Manager:</strong> hears about damage hours later via chat; cannot win supplier claims</li>
+          <li><strong>Sales:</strong> sells stock that was assumed, not real → cancelled orders</li>
+          <li><strong>Owner/finance:</strong> pays invoices for goods never verified</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RIPPLE (dark) ================= -->
+<section class="band" aria-label="Ripple effect">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">→</span>
+      <h2>One bad delivery poisons everything</h2>
+    </div>
+    <div class="chain">
+      <div class="chain-item"><b>Start</b>Unverified delivery — ticked, not confirmed</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Day one</b>Inventory record wrong from the moment of entry</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Sales</b>Promises stock that is not there → cancelled orders, lost trust</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Money</b>Reorders on false quantities; cash locked in wrong stock</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Disputes</b>Supplier claims argued from memory — business pays anyway</div>
+    </div>
+    <span class="shapes" aria-hidden="true"><i class="arch"></i><i class="sq1"></i><i class="sq2"></i><i class="dot-c"></i></span>
+    <p class="big-quote">Receiving is treated as paperwork.<br>It is actually <span class="red">where inventory truth is created.</span></p>
+    <a class="pill-cta" href="#plan">See the plan <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<!-- ================= 02 WHO ================= -->
+<section id="who" class="soft">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Who — start narrow, win one warehouse</h2>
+      <p class="sub">Beachhead first. Expansion is a segment change later, not a product rebuild.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Beachhead customer</h3>
+        <p><strong>Vietnamese building-materials &amp; industrial-supplies distributors/retailers</strong> — 1–5 warehouses, hundreds–thousands of SKUs, deliveries daily, stock run on paper + Excel + Zalo today.</p>
+        <ul>
+          <li>Bulky, damage-prone goods → inspection matters</li>
+          <li>Cement, sealants, paint, chemicals → batch &amp; expiry risk</li>
+          <li>Mixed SKUs, partial deliveries, substitutions are routine</li>
+          <li>Supplier quantity/condition disputes are recurring and expensive</li>
+        </ul>
+        <p style="margin-top:var(--space-12)"><span class="tag yel">Later</span> General SME distribution (FMCG, electrical, spare parts) — same receiving pain.</p>
+      </div>
+      <div class="card">
+        <h3>People in the flow</h3>
+        <div class="tbl"><table>
+          <tr><th>Person</th><th>Role in VELO</th></tr>
+          <tr><td><strong>Receiver</strong></td><td>Runs receiving on phone: scans, counts, photographs, confirms</td></tr>
+          <tr><td><strong>Manager</strong></td><td>Approves discrepancies, monitors stock &amp; supplier accuracy</td></tr>
+          <tr><td><strong>Owner / finance</strong></td><td>Uses documented receipts to approve supplier payment</td></tr>
+          <tr><td><strong>Driver</strong> (participant)</td><td>Co-confirms discrepancies at the dock, on the spot</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 HOW ================= -->
+<section id="how">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>How — three-way match</h2>
+      <p class="sub">The mechanism judges should remember: three sources compared for every delivery line. Stock exists only when they agree — or a named human approves the difference.</p>
+    </div>
+    <div class="match" role="img" aria-label="Ordered plus claimed plus received produces verified stock">
+      <div class="match-box src1"><b>1 · Ordered</b><p>Purchase order / expected delivery. What the business asked for.</p></div>
+      <span class="match-join">+</span>
+      <div class="match-box src2"><b>2 · Claimed</b><p>Supplier delivery note, read by AI OCR. What the supplier says arrived.</p></div>
+      <span class="match-join">+</span>
+      <div class="match-box src3"><b>3 · Received</b><p>Physically scanned &amp; counted by the employee. What is actually here.</p></div>
+      <span class="match-join">=</span>
+      <div class="match-box out"><b>Verified stock</b><p>Digital phiếu nhập kho + inventory + audit trail. Nothing by assumption.</p></div>
+    </div>
+
+    <div class="statuses">
+      <div class="status"><span class="dot g"></span><strong>MATCH</strong><br>Ordered = claimed = received, condition good → receiver confirms.</div>
+      <div class="status"><span class="dot y"></span><strong>ATTENTION</strong><br>Short/over quantity, near-expiry batch, no-PO line → structured reason required.</div>
+      <div class="status"><span class="dot r"></span><strong>MISMATCH</strong><br>Wrong item, damage, large variance → photo + manager approval before stock moves.</div>
+    </div>
+
+    <h3 class="label" style="margin:var(--space-32) 0 var(--space-12)">The 8-step dock workflow</h3>
+    <div class="flow">
+      <div class="step"><p><strong>Expected delivery</strong> created from PO/CSV — or no-PO mode when none exists</p></div>
+      <div class="step"><p><strong>Scan delivery note</strong> — AI OCR extracts supplier, lines, quantities; human confirms</p></div>
+      <div class="step"><p><strong>Scan &amp; count goods</strong> — barcode/QR; fallback: search + photo + printable QR label</p></div>
+      <div class="step"><p><strong>Live 3-way match</strong> — system does arithmetic; human judges exceptions</p></div>
+      <div class="step"><p><strong>Confirm or flag</strong> — identity + timestamp; damage needs photo; driver co-confirms</p></div>
+      <div class="step"><p><strong>Manager approves</strong> — accept / partial / reject / open supplier claim</p></div>
+      <div class="step"><p><strong>Digital receipt</strong> — phiếu nhập kho auto-generated; documentation is the by-product</p></div>
+      <div class="step"><p><strong>Monitor</strong> — live stock, batch/expiry (FEFO), low-stock and supplier-accuracy alerts</p></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:var(--space-28)">
+      <div class="card hl">
+        <h3>AI does (perception)</h3>
+        <ul>
+          <li>OCR on Vietnamese/English delivery notes &amp; labels</li>
+          <li>Fuzzy match supplier names → internal SKUs <span class="mono">(“Keo Sika 11FC 600ml” → SKF-11FC-600)</span></li>
+          <li>Anomaly hints; later: forecasting</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Rules do (control)</h3>
+        <ul>
+          <li>Match arithmetic, variance thresholds</li>
+          <li>Expiry windows, approval routing</li>
+          <li>Receipt generation</li>
+        </ul>
+        <p><em>Deliberate: control logic must be predictable and auditable.</em></p>
+      </div>
+      <div class="card">
+        <h3>Humans do (judgement)</h3>
+        <ul>
+          <li>Count, inspect, photograph</li>
+          <li>Confirm matches</li>
+          <li>Approve every exception</li>
+        </ul>
+        <p><em>VELO recommends and records. People decide. No silent stock changes.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 DEMO ================= -->
+<section id="demo" class="dark">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Demo — the 2-minute story</h2>
+      <p class="sub">Expected: 100 tubes of SikaFlex + 20 bags of cement from Supplier A. Click through the scenes.</p>
+    </div>
+    <div class="demo-wrap">
+      <div class="phone" aria-live="polite">
+        <div class="ph-screen">
+          <div class="ph-top"><span>VELO · RECEIVING</span><span id="phClock">09:12</span></div>
+          <p class="ph-title" id="phTitle">Scan delivery note</p>
+          <div id="phBody" style="display:grid;gap:var(--space-12)"></div>
+          <p class="ph-foot" id="phFoot">Supplier A · Note #DN-2481</p>
+        </div>
+      </div>
+      <div class="scene-btns" id="sceneBtns" role="tablist" aria-label="Demo scenes"></div>
+    </div>
+    <p class="big-quote" style="margin-top:var(--space-32)">“96 tubes entered stock. 4 entered a claim.<br>Zero entered by assumption.”</p>
+  </div>
+</section>
+
+<!-- ================= 05 MVP ================= -->
+<section id="mvp" class="soft">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>MVP — one claim, proven end-to-end</h2>
+      <p class="sub">“A delivery can be received, verified, documented, and reflected in live inventory through VELO — with discrepancies caught and evidenced.” Nothing more.</p>
+    </div>
+    <div class="inout">
+      <div class="card">
+        <h3><span class="tag yel">In scope</span></h3>
+        <ul class="checklist">
+          <li><span class="num-badge">1</span>Expected delivery (manual / CSV import) + no-PO mode</li>
+          <li><span class="num-badge">2</span>Delivery-note capture; OCR lines shown for confirmation</li>
+          <li><span class="num-badge">3</span>Barcode scan (EAN) + code-entry fallback; count, batch, expiry per line</li>
+          <li><span class="num-badge">4</span>Condition &amp; evidence: damage requires photo; structured discrepancy reasons</li>
+          <li><span class="num-badge">5</span>Live three-way match per line (match / attention / mismatch)</li>
+          <li><span class="num-badge">6</span>Receiver confirmation (identity + timestamp); manager approval queue</li>
+          <li><span class="num-badge">7</span>Auto-generated digital phiếu nhập kho</li>
+          <li><span class="num-badge">8</span>Inventory update on acceptance + full audit trail</li>
+          <li><span class="num-badge">9</span>Dashboard: stock, low-stock, expiring batches, open claims, supplier accuracy</li>
+          <li><span class="num-badge">10</span>Seeded demo mode: the 96/4 scenario above, runnable in &lt; 2 minutes</li>
+        </ul>
+      </div>
+      <div style="display:grid;gap:var(--space-20);align-content:start">
+        <div class="card">
+          <h3><span class="tag red">Out — roadmap only</span></h3>
+          <ul>
+            <li>Put-away optimisation &amp; route guidance</li>
+            <li>Sales/POS integration</li>
+            <li>Demand forecasting, auto purchase orders</li>
+            <li>Multi-warehouse transfers</li>
+            <li>Full ERP integration (MVP = CSV in/out)</li>
+            <li>Automatic supplier-payment approval</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Platform shape</h3>
+          <ul>
+            <li><strong>Receiver:</strong> mobile web app, ordinary phones, camera scanning — no new hardware</li>
+            <li><strong>Manager:</strong> web dashboard</li>
+            <li><strong>Backend:</strong> one small service + one database (sessions, inventory, audit)</li>
+            <li><strong>AI:</strong> OCR + name-matching at capture; every field human-confirmed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 IMPACT ================= -->
+<section id="impact">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>Impact — mechanisms first, numbers honestly</h2>
+      <p class="sub">We claim mechanisms now. We claim numbers only after a pilot measures them against a real baseline.</p>
+    </div>
+    <div class="grid-4">
+      <div class="card"><h3>Errors stop at the door</h3><p>Short, wrong, or damaged goods caught during receiving — not discovered weeks later.</p></div>
+      <div class="card"><h3>Documentation is free</h3><p>Receipt, audit trail, and stock update are by-products of checking — not evening re-typing.</p></div>
+      <div class="card"><h3>Evidence wins disputes</h3><p>Photo + reason + driver co-confirmation + approver, timestamped. Claims resolve on facts.</p></div>
+      <div class="card"><h3>Stock can be trusted</h3><p>Sales promises, reorders, and payments run on confirmed quantities. Receivers get protection, not blame.</p></div>
+    </div>
+
+    <h3 class="label" style="margin:var(--space-32) 0 var(--space-12);">Pilot targets — hypotheses to test in 4–8 weeks, NOT results</h3>
+    <div class="tbl"><table>
+      <tr><th>Indicator</th><th>How measured</th><th>Illustrative target</th></tr>
+      <tr><td>Documentation completeness</td><td>% deliveries with complete digital record</td><td>≥ 95%</td></tr>
+      <tr><td>Discrepancy capture at receiving</td><td>Recorded in VELO ÷ found by later spot-audit</td><td>≥ 90%</td></tr>
+      <tr><td>Time to trusted stock figure</td><td>Delivery done → stock visible</td><td>Same session (vs hours–days)</td></tr>
+      <tr><td>Receiving effort</td><td>Person-minutes per delivery vs paper baseline</td><td>No slower; −20–30% after week 2</td></tr>
+      <tr><td>Inventory record accuracy</td><td>Cycle-count agreement, VELO-managed SKUs</td><td>≥ 98%</td></tr>
+      <tr><td>Supplier claim resolution</td><td>Days, discrepancy → agreed resolution</td><td>Measurable reduction</td></tr>
+    </table></div>
+
+    <h3 class="label" style="margin:var(--space-28) 0 var(--space-12);">Business value per warehouse / month (fill with real baseline)</h3>
+    <div class="formula">Value = (deliveries × minutes saved × labour cost/min)
+      + discrepancies caught before payment
+      + expiry / damage losses avoided
+      + margin protected from cancelled oversold orders
+      − VELO subscription</div>
+    <p style="margin-top:var(--space-14);font-size:15px">Pricing story: <strong>per-warehouse subscription</strong>, employees’ existing phones, zero scanner hardware, CSV coexistence with Excel/accounting. Set a price only after interview evidence on willingness to pay.</p>
+  </div>
+</section>
+
+<!-- ================= 07 PROOF ================= -->
+<section id="proof" class="soft">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2>Weaknesses &amp; proof — our defence plan</h2>
+      <p class="sub">Every weakness below has a mitigation in the product and an evidence task. Tick tasks off as the team completes them (saved in this browser).</p>
+    </div>
+
+    <h3 class="label">Evidence we must collect (E1–E6)</h3>
+    <div class="progress-line" aria-hidden="true"><div class="progress-fill" id="proofFill"></div></div>
+    <p class="mono" id="proofCount" style="font-size:var(--text-small);font-weight:400;margin:0 0 var(--space-16)">0 / 6 evidence tasks done</p>
+    <div class="proof" id="proofList">
+      <label class="proof-item"><input type="checkbox" data-proof="e1"><span class="eid">E1</span><span><p><strong>“Receiving is manual and unverified”</strong> — currently team observation only.</p><small>Proof: interview 3–5 warehouse staff/managers (HCMC building materials); photograph anonymised paper checklists, delivery notes, Excel files.</small></span></label>
+      <label class="proof-item"><input type="checkbox" data-proof="e2"><span class="eid">E2</span><span><p><strong>“Errors and disputes cost money”</strong> — currently assumed.</p><small>Proof: ask each interviewee for the last discrepancy — what happened, cost, days to resolve. Quote two anonymised incidents on the problem slide.</small></span></label>
+      <label class="proof-item"><input type="checkbox" data-proof="e3"><span class="eid">E3</span><span><p><strong>“Receiving is exhausting and rigid”</strong> — needs direct user voice.</p><small>Proof: short receiver quotes; observe/photograph one real receiving session if permitted.</small></span></label>
+      <label class="proof-item"><input type="checkbox" data-proof="e4"><span class="eid">E4</span><span><p><strong>“Businesses will pay”</strong> — unproven.</p><small>Proof: ask current software spend + value of verified receiving; one pilot-interest message beats any survey.</small></span></label>
+      <label class="proof-item"><input type="checkbox" data-proof="e5"><span class="eid">E5</span><span><p><strong>“VELO is faster / more accurate”</strong> — unproven.</p><small>Proof: timed paper-vs-VELO mock delivery. Report honestly — accuracy and evidence are the primary claim even if speed ties.</small></span></label>
+      <label class="proof-item"><input type="checkbox" data-proof="e6"><span class="eid">E6</span><span><p><strong>“OCR works on Vietnamese delivery notes”</strong> — unproven.</p><small>Proof: run OCR on 5–10 anonymised real notes; report field accuracy + the human-confirmation safeguard.</small></span></label>
+    </div>
+
+    <div class="grid-2" style="margin-top:var(--space-32)">
+      <div class="card">
+        <h3>Known weaknesses → mitigation → admit</h3>
+        <ul>
+          <li><strong>No scannable barcode:</strong> search + photo + printable internal QR labels. <em>Admit: first receipt of unlabelled goods is slower.</em></li>
+          <li><strong>Messy supplier notes/handwriting:</strong> OCR always human-confirmed; fuzzy SKU matching learns confirmed pairs. <em>Admit: poor handwriting limits OCR.</em></li>
+          <li><strong>Bulk goods (cement, timber):</strong> count by pallet/unit + stack photo + variance tolerance. <em>Admit: VELO verifies declared counts; it cannot weigh a truck.</em></li>
+          <li><strong>“Surveillance” resistance:</strong> frame audit as receiver protection, supplier facts, not personal blame. <em>Admit: adoption needs manager behaviour change + training.</em></li>
+          <li><strong>Messy SKU catalogue:</strong> CSV clean-up, pilot starts with top SKUs by volume. <em>Admit: data clean-up is real upfront work.</em></li>
+          <li><strong>Dock connectivity:</strong> offline-tolerant design requirement. <em>Admit: roadmap until demonstrated — never pitch as built.</em></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Judge objections — one-line defences</h3>
+        <ul>
+          <li><strong>“Just a digital checklist?”</strong> A checklist records ticks; VELO enforces 3-way match, blocks silent stock creation, and structures exceptions with approval.</li>
+          <li><strong>“Where’s the AI?”</strong> In perception — reading VN documents, resolving supplier naming chaos. Control arithmetic is rules <em>on purpose</em>: auditable.</li>
+          <li><strong>“WMS/ERP already does this?”</strong> At enterprise cost and timelines. Our segment runs paper + Excel; VELO is phone-first, days to deploy, and can feed an ERP later.</li>
+          <li><strong>“Employees can fake counts?”</strong> No system prevents collusion — we say so. Identity stamps, photos, driver co-confirmation, and approval raise the cost and expose patterns.</li>
+          <li><strong>“Suppliers won’t cooperate?”</strong> They change nothing; VELO also documents their <em>correct</em> deliveries, which protects them.</li>
+          <li><strong>“Impact numbers from where?”</strong> Labelled pilot targets with a measurement method and an 8-week gate — not results.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:var(--space-20)">
+      <h3>Responsible AI &amp; risk rules</h3>
+      <ul>
+        <li>Inventory and supplier-pricing data are sensitive: role-based access (receiver/manager); all collected evidence anonymised before it touches a slide.</li>
+        <li>AI output is always human-confirmed before it affects stock; confidence shown, errors correctable, corrections improve matching.</li>
+        <li>No automatic supplier payment or stock write-off — named humans confirm counts and approve exceptions.</li>
+        <li>Failure mode: if scan/OCR fails, manual count still completes. VELO degrades to a structured form; it never blocks a delivery.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 PLAN ================= -->
+<section id="plan">
+  <div class="in">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <h2>Plan — validate, pilot, then expand</h2>
+      <p class="sub">Sequence matters: each stage is credible only because the previous stage made the data real.</p>
+    </div>
+
+    <h3 class="label">This week (before submission)</h3>
+    <div class="steps steps-4" style="margin-top:var(--space-12)">
+      <div class="step"><p><strong>Interview</strong> 3–5 receivers/managers/owners; capture incidents + costs (E1–E4)</p></div>
+      <div class="step"><p><strong>Collect artefacts</strong> — paper checklist, delivery note, Excel stock file, anonymised (E1, E6)</p></div>
+      <div class="step"><p><strong>Test OCR</strong> on real notes; record field accuracy honestly (E6)</p></div>
+      <div class="step"><p><strong>Lock demo</strong> seeded 96/4 scenario; optional timed paper-vs-VELO test (E5)</p></div>
+    </div>
+
+    <h3 class="label" style="margin:var(--space-32) 0 var(--space-12)">8-week single-warehouse pilot</h3>
+    <div class="pilot">
+      <div class="card"><h3>Week 1–2 · Prepare</h3><p>Catalogue clean-up (top SKUs), CSV import, receiver training.</p><p><span class="tag">Gate</span> Manager agrees catalogue &amp; units.</p></div>
+      <div class="card"><h3>Week 3–4 · Shadow</h3><p>VELO runs alongside paper; records compared daily.</p><p><span class="tag">Gate</span> ≥95% documented; no delivery blocked.</p></div>
+      <div class="card"><h3>Week 5–8 · Live</h3><p>VELO is the system of record for receiving; weekly claim review.</p><p><span class="tag">Gate</span> §06 indicators measured vs baseline.</p></div>
+      <div class="card"><h3>End W8 · Decide</h3><p>Value model with real numbers; expand or stop.</p><p><span class="tag">Gate</span> Owner signs expansion — or documents why not.</p></div>
+    </div>
+
+    <h3 class="label" style="margin:var(--space-32) 0 var(--space-12)">Roadmap beyond receiving</h3>
+    <div class="chain">
+      <div class="chain-item"><b>Now</b>Verify inbound</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Next</b>Trust inventory</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Then</b>Optimise movement (put-away, FEFO, transfers)</div>
+      <span class="chain-sep">→</span>
+      <div class="chain-item"><b>Later</b>Predict demand &amp; reorder</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="in">
+    <div class="f-brand"><img src="assets/Logo-white.png" alt=""><span>VELO</span></div>
+    <p><strong>Source discipline.</strong> Product story: <span class="mono">docs/proposals/VELO_Vietnam_Receiving_Story.md</span>. Competition facts: LIKELION “AI for Business Innovation” brief. Problem claims are team observations pending E1–E6 evidence. The current repository ships a landing page and a scripted demo with illustrative data — the receiving MVP on this page is the build target, and must not be described as already working until it is.</p>
+    <p class="mono">VELO Vietnam — Strategy board · Receive. Verify. Record.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- demo stepper ---------- */
+  var SCENES = [
+    {
+      btn: 'Scan the note', title: 'Scan delivery note',
+      foot: 'Supplier A · Note #DN-2481 · OCR confirmed by receiver',
+      lines: [
+        ['<b>SikaFlex-11FC 600ml</b>Claimed: 100 tubes', 'yel'],
+        ['<b>Cement PCB40 50kg</b>Claimed: 20 bags', ''],
+        ['<b>Expected (PO-1042)</b>100 tubes · 20 bags', '']
+      ]
+    },
+    {
+      btn: 'Count & find damage', title: 'Count: 96 good, 4 crushed',
+      foot: 'Damage photo required · batch & expiry captured',
+      lines: [
+        ['<b>SikaFlex-11FC</b>Received 96 good <span class="dot g"></span>', ''],
+        ['<b>4 tubes crushed</b>🔴 Photo taken · driver co-confirms', 'red'],
+        ['<b>Batch B-118</b>🟡 Expires in 20 days → FEFO alert', 'yel']
+      ]
+    },
+    {
+      btn: 'Manager approves', title: 'Approve: accept 96, claim 4',
+      foot: 'Manager dashboard · exception queue · named approver',
+      lines: [
+        ['<b>Decision</b>Accept 96 · Claim 4 damaged', ''],
+        ['<b>Evidence</b>Photo + reason + timestamps attached', ''],
+        ['<b>Cement</b>20/20 matched <span class="dot g"></span>', '']
+      ]
+    },
+    {
+      btn: 'Receipt & stock update', title: 'Phiếu nhập kho issued',
+      foot: 'Inventory + audit trail updated · Supplier A accuracy recorded',
+      lines: [
+        ['<b>Stock now</b>SikaFlex 96 tubes · Batch B-118 · FEFO-first', ''],
+        ['<b>Claim open</b>4 damaged — documented, not in stock', 'red'],
+        ['<b>Audit</b>Receiver · Approver · 09:12–09:26 · complete', '']
+      ]
+    }
+  ];
+  var btnWrap = document.getElementById('sceneBtns');
+  var phTitle = document.getElementById('phTitle');
+  var phBody = document.getElementById('phBody');
+  var phFoot = document.getElementById('phFoot');
+  var phClock = document.getElementById('phClock');
+  var clocks = ['09:12', '09:19', '09:24', '09:26'];
+
+  function show(i) {
+    var s = SCENES[i];
+    phTitle.textContent = s.title;
+    phFoot.textContent = s.foot;
+    phClock.textContent = clocks[i];
+    phBody.innerHTML = s.lines.map(function (l) {
+      return '<div class="ph-line' + (l[1] ? ' ' + l[1] : '') + '">' + l[0] + '</div>';
+    }).join('');
+    Array.prototype.forEach.call(btnWrap.children, function (b, j) {
+      b.classList.toggle('on', j === i);
+      b.setAttribute('aria-selected', j === i ? 'true' : 'false');
+    });
+  }
+  SCENES.forEach(function (s, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'scene-btn';
+    b.setAttribute('role', 'tab');
+    b.innerHTML = '<b>0' + (i + 1) + '</b><span><strong>' + s.btn + '</strong>' + s.title + '</span>';
+    b.addEventListener('click', function () { show(i); });
+    btnWrap.appendChild(b);
+  });
+  show(0);
+
+  /* ---------- proof checklist (local persistence) ---------- */
+  var KEY = 'velo-strategy-proof-v1';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-proof]'));
+  var fill = document.getElementById('proofFill');
+  var count = document.getElementById('proofCount');
+  function refresh() {
+    var done = 0;
+    boxes.forEach(function (box) {
+      var item = box.closest('.proof-item');
+      if (box.checked) { done++; item && item.classList.add('done'); }
+      else { item && item.classList.remove('done'); }
+    });
+    fill.style.transform = 'scaleX(' + (boxes.length ? done / boxes.length : 0) + ')';
+    count.textContent = done + ' / ' + boxes.length + ' evidence tasks done';
+  }
+  boxes.forEach(function (box) {
+    box.checked = !!saved[box.getAttribute('data-proof')];
+    box.addEventListener('change', function () {
+      saved[box.getAttribute('data-proof')] = box.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      refresh();
+    });
+  });
+  refresh();
+
+  /* ---------- nav highlight ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && map[en.target.id]) {
+          links.forEach(function (a) { a.classList.remove('on'); });
+          map[en.target.id].classList.add('on');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    links.forEach(function (a) {
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) io.observe(t);
+    });
+  }
+})();
+</script>
+</body>
+</html>

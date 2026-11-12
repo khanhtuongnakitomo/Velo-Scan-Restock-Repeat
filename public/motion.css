@@ -1,0 +1,45 @@
+/* VELO shared motion — loaded by every page together with /motion.js.
+   Elements are only hidden after motion.js marks <html class="motion">, so the site stays readable without JS.
+   Transform/opacity only; everything is disabled under prefers-reduced-motion. */
+
+/* scroll reveal: fade + rise, staggered by motion.js via --rv-delay */
+.motion .rv { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-delay, 0ms), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-delay, 0ms); }
+.motion .rv--scale { transform: translateY(20px) scale(0.97); }
+.motion .rv--left { transform: translateX(-28px); }
+.motion .rv.rv-in { opacity: 1; transform: none; }
+
+/* images settle from a slight zoom */
+.motion img.rv { transform: scale(1.06); }
+.motion img.rv.rv-in { transform: none; }
+
+/* buttons and links: lift + arrow nudge */
+.btn, [class*='btn'], .link { transition: transform 0.2s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.2s ease; }
+.btn:hover, a[class*='btn']:hover, button[class*='btn']:hover { transform: translateY(-2px); }
+.btn:active, a[class*='btn']:active, button[class*='btn']:active { transform: translateY(0) scale(0.97); }
+.btn span, [class*='btn'] span { display: inline-block; transition: transform 0.2s ease; }
+.btn:hover span, [class*='btn']:hover span { transform: translateX(3px); }
+
+/* cards and tiles lift on hover */
+.card, .member, .kpi, .tile, .swatch, [class*='card'] { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-delay, 0ms); }
+.motion .card.rv-in:hover, .motion .member.rv-in:hover, .motion .tile.rv-in:hover, .motion .swatch.rv-in:hover, .motion [class*='card'].rv-in:hover { transform: translateY(-4px); }
+.motion .btn.rv-in:hover { transform: translateY(-2px); }
+.motion .rv-in:is(.card, .member, .tile, .swatch, [class*='card'], .btn) { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease var(--rv-delay, 0ms), background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
+.card:hover, .member:hover, .tile:hover, .swatch:hover { transform: translateY(-4px); }
+
+/* scroll-linked parallax for decorative layers (motion.js sets --py) */
+[data-parallax] { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
+
+/* hero headline: words rise in (motion.js wraps words in .w) */
+.motion .split .w { display: inline-block; opacity: 0; transform: translateY(0.6em); transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: calc(var(--i) * 70ms); }
+.motion .split.rv-in .w { opacity: 1; transform: none; }
+
+/* live dots breathe */
+.live-dot, .hero__meta i, .badge__dot { animation: velo-breathe 2.4s ease-in-out infinite; }
+@keyframes velo-breathe { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.75); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion .rv, .motion .split .w { opacity: 1 !important; transform: none !important; transition: none !important; }
+  [data-parallax] { transform: none !important; }
+  .live-dot, .hero__meta i, .badge__dot { animation: none; }
+  .btn:hover, .card:hover, .member:hover, .tile:hover, .swatch:hover { transform: none; }
+}

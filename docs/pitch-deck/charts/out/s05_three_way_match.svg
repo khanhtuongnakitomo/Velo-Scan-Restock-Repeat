@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1152pt" height="316.8pt" viewBox="0 0 1152 316.8" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-12T11:47:59.761990</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 316.8 
+L 1152 316.8 
+L 1152 0 
+L 0 0 
+L 0 316.8 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 867.24 275.04 
+L 1112.04 275.04 
+L 1112.04 59.04 
+L 867.24 59.04 
+z
+" clip-path="url(#pf09018f49a)" style="fill: #b92d25"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 48.6 266.4 
+L 264.6 266.4 
+L 264.6 50.4 
+L 48.6 50.4 
+z
+" clip-path="url(#pf09018f49a)" style="fill: #f1e5cb; stroke: #20201d; stroke-width: 2.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 318.6 266.4 
+L 534.6 266.4 
+L 534.6 50.4 
+L 318.6 50.4 
+z
+" clip-path="url(#pf09018f49a)" style="fill: #f0c642; stroke: #20201d; stroke-width: 2.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 588.6 266.4 
+L 804.6 266.4 
+L 804.6 50.4 
+L 588.6 50.4 
+z
+" clip-path="url(#pf09018f49a)" style="fill: #f7f0e2; stroke: #315c91; stroke-width: 5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 858.6 266.4 
+L 1103.4 266.4 
+L 1103.4 50.4 
+L 858.6 50.4 
+z
+" clip-path="url(#pf09018f49a)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 17px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="63" y="81.166" transform="rotate(-0 63 81.166)">1 · ORDERED</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 40px; font-family: 'Archivo Black'; text-anchor: middle; fill: #f7f0e2" x="291.6" y="171.76" transform="rotate(-0 291.6 171.76)">+</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 17px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="333" y="81.166" transform="rotate(-0 333 81.166)">2 · CLAIMED</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 40px; font-family: 'Archivo Black'; text-anchor: middle; fill: #f7f0e2" x="561.6" y="171.76" transform="rotate(-0 561.6 171.76)">+</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 17px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="603" y="81.166" transform="rotate(-0 603 81.166)">3 · RECEIVED</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 40px; font-family: 'Archivo Black'; text-anchor: middle; fill: #f7f0e2" x="831.6" y="171.76" transform="rotate(-0 831.6 171.76)">=</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 21px; font-family: 'Archivo Black'; fill: #f0c642" transform="translate(874.44 85.458872)">VERIFIED</text>
+    <text style="font-size: 21px; font-family: 'Archivo Black'; fill: #f0c642" transform="translate(874.44 109.449272)">STOCK</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="63" y="132.394219" transform="rotate(-0 63 132.394219)">Purchase order</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 12px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="63" y="167.41125" transform="rotate(-0 63 167.41125)">What we asked for</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="333" y="132.394219" transform="rotate(-0 333 132.394219)">Supplier delivery note</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 12px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(333 168.071836)">What they say arrived</text>
+    <text style="font-size: 12px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(333 181.355508)">(read by AI)</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="603" y="132.394219" transform="rotate(-0 603 132.394219)">Scanned &amp; counted</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 12px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="603" y="167.28375" transform="rotate(-0 603 167.28375)">What is actually here</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 12.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #f7f0e2" transform="translate(874.44 172.074829)">Digital goods receipt</text>
+    <text style="font-size: 12.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #f7f0e2" transform="translate(874.44 185.911987)">+ inventory + audit trail</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf09018f49a">
+   <rect x="0" y="0" width="1152" height="316.8"/>
+  </clipPath>
+ </defs>
+</svg>

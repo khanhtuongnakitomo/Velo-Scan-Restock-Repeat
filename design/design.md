@@ -1,51 +1,52 @@
-# VELO Design System — Notebook Mono Edition
+# VELO Design System — modelled on openserv.ai (DESIGN.md palette and fonts)
 
-> Direction: `direction.md` · Tokens: `tokens.json` · Reference implementation: `../website/index.html`
-> Rule: every visual value comes from `tokens.json` via CSS variables — never hardcode.
+> Source: the team's `DESIGN.md` (OpenServ "Bright blueprint on frosted glass"). Tokens: `../public/tokens.css` · Reference implementation: `../src/landing.html`
+> Rule: every visual value comes from `public/tokens.css` via CSS variables — never hardcode hex colors or raw px spacing. `pnpm lint:tokens` enforces it for `src/` and `public/`.
 
-## Brand voice in UI
-A dev-tool that refuses to dress like a marketing site. Everything is a readout: consoles, badges, task queues, version stamps. Confident, plain-spoken, zero exclamation marks. The clerk is the hero; Velo is the helpful machine beside them.
+The layout and type roles follow the live openserv.ai site; colours and fonts follow DESIGN.md. No Velo yellow: the system is monochromatic with exactly two chromatic notes, Signal Violet and Mint Pulse.
+
+## Color
+
+| Token | Hex | DESIGN.md name | Role |
+|---|---|---|---|
+| `--white` | `#FFFFFF` | Pure White | Page canvas, card surface, button text on violet |
+| `--ink` | `#000000` | Ink Black | Text, headings, hairline borders, icons, footer ink, black pill CTA on the violet band |
+| `--fog` | `#F5F5F5` | Fog Gray | Card surface lift, subtle blocks, card hairline |
+| `--mist` | `#A6A6A6` | Mist Gray | Muted nav text, secondary borders, ghost-button outline |
+| `--smoke` | `#9C9C9C` | Smoke Gray | Tertiary borders, disabled outlines |
+| `--ash` | `#4D4D4D` | Ash Gray | Secondary body text |
+| `--slate` | `#707070` | Slate Gray | Helper text, metadata, fine print |
+| `--violet` | `#5F79FF` | Signal Violet | Every interactive moment: primary pill fill, active nav, focus, progress, card header labels, the one full-bleed band |
+| `--mint` | `#01FE93` | Mint Pulse | Success, highlights, status dots, section stripe. Never a CTA fill or text colour |
+| `--tint` | `#D9DEFC` | Tint Wash | Highlighted panels, badges, sparkles, selected rows |
+| `--alert` / `--success` | `#C8342B` / `#1A7F45` | — | Product-UI status only (three-way match: Match = success/mint, Attention = violet/tint, Mismatch = alert) |
 
 ## Typography
-- One family: **Space Mono** (Google Fonts), weights 400 + 700 only.
-- Display/headlines: 400 weight, UPPERCASE, `letter-spacing: .02em`, sizes `clamp()`-fluid (hero ~1.9→3.4rem). Keywords inside headlines get **700 weight on a `--yellow` block** (black-on-pastel = 19.3:1) — never colored text on light.
-- Body: 400, 13.5–15.5px, `line-height 1.65`, color `--ink-soft`.
-- Labels/tags/eyebrows: 700, 11–12px, UPPERCASE, `letter-spacing .08em`.
-- NEVER mix a second family; never use italic; never use Space Mono 400 above 3.4rem without uppercase.
+Two typefaces with strict role separation, from the OpenServ media kit (openserv.ai/media-kit), self-hosted as WOFF2 in `public/fonts/` and declared in `public/tokens.css`:
+- **OS Studio Grotesk Regular 400** — headlines and all UI, as on openserv.ai: hero 56–64px, section titles 40px (centred, black, −0.02em), card titles 22–24px, body 15px. OpenType `blwf cv03 cv04 cv09 cv11` (`--font-features`).
+- **OS Chronik Light 300** — the grey subtitle under every headline (24px, `--mist`, centred), big benchmark numbers (96px violet), and the "Feel free to reach out!" line. Never used for section titles.
+- **Monospace** (`--mono`, system) — uppercase 11px letter-spaced micro-labels ("LIVE RECEIVING", node keys, tags) and data readouts (violet stats, code cards).
+- Scale: caption 12 · small 13 · body 15/1.4 · subheading 20 · heading-sm 24 · heading-lg 40 · display 72.
+- Fallbacks if the files fail: Inter / Cormorant Garamond / system.
 
-## Color usage
-The palette is **charcoal ink on cream paper with a two-step yellow**:
+## Shape, elevation, layout
+- Radius 16px for the nav pill and small cards; 24px (`--radius-panel`) for feature panels and cards; 100px pills for buttons and chips.
+- White page; fog (`#F5F5F5`) panels and cards; one black featured card per card row. No drop shadows except the floating nav.
+- Sections 120px apart (80px on phones); full-bleed fog bands for the word strip, benchmarks, quote marquee and contact; one violet band; full-violet footer.
 
-| Token | Hex | Role | Rules |
-|---|---|---|---|
-| `--ink` | `#000000` | Terminal band, code windows | Dark surfaces only — never body text on cream |
-| `--ink-soft` | `#3A3A3A` | ALL text on light surfaces + ALL borders | The universal line color (Charcoal Ink) |
-| `--paper` | `#FFFFFF` | Cards, nav, footer bands | Cards always sit on the cream canvas — never cream-on-cream |
-| `--yellow` | `#FFF9A3` | **PRIMARY tint**: marquee band, approach band, headline highlight blocks, kicker chip, hover feedback | The brand's color field — fills surfaces, never a CTA fill |
-| `--yellow-deep` | `#FBDD65` | **SECONDARY accent — action only**: CTA fills, live badge, task squares on dark, quote card, timeline "now" tag | If it doesn't act or signal, it isn't deep yellow |
-| `--cream` | `#FFFDD6` | Page canvas | Everything sits on the notebook |
-
-**Contrast facts (WCAG):** `#3A3A3A` on white 10.4:1 · on `#FFF9A3` 10.5:1 · on `#FFFDD6` 10.1:1 · black on `#FBDD65` 15.6:1 · `#FBDD65` on black 15.6:1 · white on `#3A3A3A` 11.4:1.
-**FORBIDDEN:** any yellow as text on cream/white (≤1.6:1); white text on any yellow; pure `#000` text at body sizes; alpha tints of yellow for borders.
-
-## Layout
-- Spacing scale: 4/8/12/16/20/22/24/28/32/44/48/72. Sections 72px vertical.
-- Max width 1200px, 24px gutters. Full-bleed color bands between sections: cream hero → pastel marquee → stats strip → cream → pastel approach band → black sovereignty → cream → white footer, all separated by 2px charcoal rules.
-- Cards: white surface, 2px `--ink-soft` border, **radius 0**, no shadows. Tag chip top-left.
-- Buttons: 2px charcoal border, radius 0. Primary = `--yellow-deep` fill; hover = translate(2px,2px) "press" + `--yellow` background. Never a shadow.
-- Console/task language (signature): charcoal 2px borders, pastel square markers, uppercase chips — the notebook "readout" language repeats across cards, stats and the marquee band.
+## Components
+- **Nav**: a centred floating white pill (logo + small grey links) and a separate violet "Try the demo" pill floating at the far right.
+- **Hero**: centred grotesk headline, grey serif subtitle, violet + black pills, a grey status line; large violet/tint arcs drifting at the edges.
+- **Buttons**: violet pill (primary), black pill (secondary, and the CTA on the violet band), white ghost pill with `--mist` border. Arrows → / ↗.
+- **Feature card**: fog, 24px radius, violet icon top-left, violet arrow top-right, grotesk title, light-grey body; the featured card is black with a mint icon and a monospace code block.
+- **Benchmarks band**: fog band, three serif violet numbers with grotesk labels, thin dividers.
+- **Columns**: comparison and pilot timeline in openserv.ai roadmap style: chip per column (mint = now, violet = next, black = later), diamond markers on a line, ✓ items.
+- **FAQ**: open list; grotesk question, grey answer at 20px.
+- **Flow model** (`#match`): a fog panel with a "LIVE RECEIVING" label and a "THREE-WAY MATCH ON" violet pill. Purchase order, delivery note and the receiver's phone feed the black three-way-match node; results go to the manager, the phiếu nhập kho and inventory. The active node gets a violet outline, the active connector is a moving dashed violet line, a mint packet travels along it, and a monospace readout shows the 96/4 scenario. Monospace violet stats (96 / 4 / 0) close the panel.
 
 ## Motion
-- **Site-wide scroll reveals** (owner-approved): section heads, every card, quote, FAQ rows and pain cards rise 14px/fade in once — 550–650ms, staggered 70ms per sibling group, never re-triggered.
-- One orchestrated load moment: hero children rise 460ms, 70ms stagger, then still.
-- Scroll-progress bar: 3px deep-yellow line fixed at the very top.
-- Marquee: linear 26s loop, duplicated track, `aria-hidden`.
-- Counters: 1.2s ease-out count-up once on scroll-into-view; pain charts draw at their own pace (1.1–2s).
-- Hover/press: 120–160ms — buttons and cards "press" translate(2px,2px); cards tint (white→cream on cream, white→pastel on the pastel band); FAQ summary tints yellow.
-- All of it off under `prefers-reduced-motion: reduce` (reveals, counters, marquee, progress bar) — content appears instantly.
-
-## Forbidden (AI-slop list)
-- No border-radius anywhere (0 — the de-slop contract), no drop shadows, no gradients, no glassmorphism, no emoji in UI copy.
-- No hover-lift on cards; no fade-up on scroll for sections; no third font.
-- No yellow text on light surfaces; no pure-black body text; no cream card on cream canvas.
-- No "revolutionary/game-changing" marketing words; no centered body paragraphs (hero stack is the only centered block).
+- Transform/opacity only (packet uses SVG `animateMotion`; connectors use a dash offset on a small SVG).
+- Site-wide (`public/motion.css` + `public/motion.js`, linked by every page): headings, text, cards, images and buttons fade and rise into view as you scroll, staggered 70ms; the hero headline rises in word by word; images settle from a slight zoom; decorative hero arcs parallax with scroll; buttons lift and nudge their arrow; cards, team photos and tiles lift on hover; live dots breathe. Product UI (phone mockups, demo stage, dashboards) is excluded because it has its own state-driven motion. Without JavaScript nothing is hidden.
+- Landing ambient: hero arcs drift, word strip and quote marquee scroll, band shapes bob.
+- Functional: counters count up when visible, the pilot timeline fills when visible, the flow model auto-advances every 4s only while on screen; Pause/Play control.
+- `prefers-reduced-motion: reduce`: all animation off, flow model starts paused on step 1, counters show final values.

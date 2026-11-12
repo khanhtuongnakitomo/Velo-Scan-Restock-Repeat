@@ -1,6 +1,7 @@
 /*
- * Velo demo UI — renders the clerk phone app and the store hub dashboard as HTML strings.
- * Shared by index.html (demo player) and screens.html (screen board). All data is illustrative.
+ * Velo demo UI — renders the receiver phone app and the manager dashboard as HTML strings.
+ * Shared by index.html (demo player), app.html (interactive) and screens.html (screen board).
+ * Scenario: one delivery, three-way match, one planted discrepancy. All data is illustrative.
  * Classic script (not a module) so the pages also work when opened straight from disk.
  */
 ;(function (global) {
@@ -8,41 +9,79 @@
 
   const LOGO = '../assets/Logo.png'
 
+  /* ================= scenario data ================= */
+
+  const D = {
+    date: 'THU 12 NOV 2026',
+    warehouse: 'Kho Bình Tân',
+    supplier: 'Supplier A',
+    note: 'DN-2481',
+    po: 'PO-1087',
+    receipt: 'PNK-20261112-01',
+    claim: 'CL-2481-01',
+    receiver: 'Lan T.',
+    manager: 'Minh N.',
+    driver: 'Hùng',
+    lines: [
+      { sku: 'SKF-11FC-600', name: 'SikaFlex-11FC 600 ml sealant', short: 'SikaFlex-11FC', raw: 'Keo Sika 11FC 600ml', rawUnit: 'tuýp', unit: 'tube', ean: '8 936041 230115',
+        ordered: 100, claimed: 100, good: 96, dmg: 4, batch: 'L2406-A', exp: '02 Dec 2026', days: 20, conf: 96 },
+      { sku: 'PCB40-50', name: 'PCB40 cement 50 kg', short: 'PCB40 cement', raw: 'Xi măng PCB40 bao 50kg', rawUnit: 'bao', unit: 'bag', ean: '8 936041 250021',
+        ordered: 20, claimed: 20, good: 20, dmg: 0, batch: 'XM-1108', exp: '10 Feb 2027', days: 90, conf: 88 },
+    ],
+  }
+
+  const STATUS = {
+    match: ['✓ MATCH', 'v-chip--ok'],
+    attn: ['! ATTENTION', 'v-chip--attn'],
+    miss: ['✕ MISMATCH', 'v-chip--alert'],
+  }
+  const chip = (st, extra) => `<span class="v-chip ${STATUS[st][1]}">${extra || STATUS[st][0]}</span>`
+
+  /* Deterministic three-way match for one line. Ordered vs claimed vs received (good) + damaged. */
+  function matchOf(l, good, dmg) {
+    const issues = []
+    let st = 'match'
+    if (dmg > 0) { st = 'miss'; issues.push('dmg') }
+    if (good + dmg < l.claimed) { if (st === 'match') st = (l.claimed - good - dmg) / l.claimed > 0.1 ? 'miss' : 'attn'; issues.push('short') }
+    else if (good + dmg > l.claimed) { if (st === 'match') st = (good + dmg - l.claimed) / l.claimed > 0.1 ? 'miss' : 'attn'; issues.push('over') }
+    if (st === 'match' && l.claimed !== l.ordered) st = 'attn'
+    const near = l.days <= 30
+    if (near) issues.push('exp')
+    return { st, issues, near }
+  }
+
   /* ================= phone ================= */
 
   const ICON = {
-    tasks: '<path d="M3 5h2M8 5h9M3 10h2M8 10h9M3 15h2M8 15h9"/>',
+    deliveries: '<path d="M3 5h2M8 5h9M3 10h2M8 10h9M3 15h2M8 15h9"/>',
     scan: '<path d="M2 6V2h4M14 2h4v4M18 14v4h-4M6 18H2v-4M6 6v8M9 6v8M12 6v8M14 6v8"/>',
-    ask: '<path d="M3 3h14v11H9l-4 3v-3H3z"/>',
-    map: '<path d="M2 2h16v16H2zM2 9h9M11 2v16"/>',
+    match: '<path d="M3 5l2 2 3-3M10 5h7M3 11l2 2 3-3M10 11h7M3 17h14"/>',
+    receipt: '<path d="M5 2h10v16l-2-1.5L10 18l-3-1.5L5 18zM8 6h4M8 10h4"/>',
   }
-  const TABS = [['tasks', 'TASKS'], ['scan', 'SCAN'], ['ask', 'ASK'], ['map', 'MAP']]
+  const TABS = [['deliveries', 'DELIVERIES'], ['scan', 'SCAN'], ['match', 'MATCH'], ['receipt', 'RECEIPT']]
 
-  function shell({ time, zone, tab, main, back }) {
+  function shell({ time, zone, tab, main, back, who }) {
+    const nav = tab === false
+      ? ''
+      : `<nav class="ph-tabs">${TABS.map(([k, l]) => `<button class="ph-tab${k === tab ? ' on' : ''}" data-tab="${k}"><svg viewBox="0 0 20 20" aria-hidden="true">${ICON[k]}</svg>${l}</button>`).join('')}</nav>`
     return `
       <div class="ph-status"><b>${time}</b><span class="ph-island"></span><span class="ph-sys"><span class="ph-sig"><i></i><i></i><i></i><i></i></span><span class="ph-bat"><i></i></span></span></div>
-      <div class="ph-top">${back ? '<button class="ph-back" data-act="back" aria-label="Back">←</button>' : ''}<span class="ph-brand"><img src="${LOGO}" alt=""><b>VELO</b></span><span class="v-chip v-chip--pastel">${zone}</span><button class="ph-me" data-act="menu" aria-label="Clerk menu">MK</button></div>
-      <div class="ph-main">${main}</div>
-      <nav class="ph-tabs">${TABS.map(([k, l]) => `<button class="ph-tab${k === tab ? ' on' : ''}" data-tab="${k}"><svg viewBox="0 0 20 20" aria-hidden="true">${ICON[k]}</svg>${l}</button>`).join('')}</nav>
+      <div class="ph-top">${back ? '<button class="ph-back" data-act="back" aria-label="Back">←</button>' : ''}<span class="ph-brand"><img src="${LOGO}" alt=""><b>VELO</b></span><span class="v-chip v-chip--pastel">${zone}</span><button class="ph-me" data-act="menu" aria-label="Demo menu">${who || 'LT'}</button></div>
+      <div class="ph-main${tab === false ? ' is-bare' : ''}">${main}</div>
+      ${nav}
       <span class="ph-home"></span>`
   }
 
   function taskList(rows) {
     return `<ol class="ph-tasks">${rows
       .map(
-        (r, i) => `<li class="ph-task${r.st ? ' is-' + r.st : ''} v-in v-in-${Math.min(i + 2, 5)}"${r.act ? ` data-act="${r.act}" role="button" tabindex="0"` : ''}>
+        (r, i) => `<li class="ph-task${r.st ? ' is-' + r.st : ''} v-in v-in-${Math.min(i + 2, 5)}"${r.act ? ` data-act="${r.act}"${r.tap ? ` data-tap="${r.tap}"` : ''} role="button" tabindex="0"` : ''}>
           <span class="ph-task__n">${r.st === 'done' ? '✓' : r.n}</span>
           <div><b>${r.title}</b><span>${r.sub}</span></div>
           <span class="v-chip${r.st === 'now' ? ' v-chip--deep' : ''}">${r.tag}</span></li>`,
       )
       .join('')}</ol>`
   }
-
-  const TASKS_PLAN = [
-    { n: '01', title: 'Receive PO-88213', sub: 'Dock 2 · truck 07:20 · 24 cartons', tag: 'NOW', st: 'now' },
-    { n: '02', title: 'FEFO: rotate SikaFlex #388', sub: 'Bay B-04 · expires in 14 days', tag: 'FEFO' },
-    { n: '03', title: 'Move mortar M5 #77 to front', sub: 'Bay B-02 → Aisle 4 · 9 days left', tag: 'FEFO' },
-  ]
 
   function barcode(digits) {
     const widths = '211213111321211231112113121321112211313121112312'
@@ -53,191 +92,271 @@
     return `<div class="bc"><div class="bc__bars">${bars}</div><span>${digits}</span></div>`
   }
 
+  const stp = (label, val, key) =>
+    `<div class="stp"><span class="v-lbl">${label}</span><div><button data-act="dec:${key}" aria-label="Fewer ${label.toLowerCase()}">−</button><b>${val}</b><button data-act="inc:${key}" aria-label="More ${label.toLowerCase()}">+</button></div></div>`
+
+  const photoThumb = (cap) =>
+    `<div class="photo"><div class="photo__img"><i></i><i></i><i></i><i></i></div><div class="photo__cap"><b>PHOTO 1 · ${cap}</b><span>09:26 · ${D.receiver} · ATTACHED</span></div></div>`
+
+  const REASONS = [['short', 'SHORT'], ['over', 'OVER'], ['wrong', 'WRONG ITEM'], ['dmg', 'DAMAGED'], ['exp', 'NEAR-EXPIRY'], ['sub', 'SUBSTITUTED']]
+
   const PHONE = {
-    tasks(state) {
-      if (state === 'after') {
-        return shell({
-          time: '10:20',
-          zone: 'ZONE C · FLOOR',
-          tab: 'tasks',
-          main: `<div class="ph-pad">
-            <div class="ph-hello v-in"><small>MON 26 OCT · SHIFT 07:00–15:00</small><h2>Your shift <b>so far</b></h2><p>Every task came from a scan or a sale. Nothing was typed into a desktop terminal.</p></div>
-            <div class="ph-stats v-in v-in-2"><div><b>2</b><span>DONE</span></div><div><b>2</b><span>LEFT</span></div><div><b>0</b><span>PAPER FORMS</span></div></div>
-            ${taskList([
-              { n: '01', title: 'Receive PO-88213', sub: 'Put away in B-04 · 07:24', tag: 'DONE', st: 'done' },
-              { n: 'R', title: 'Refill Aisle 2 · screws', sub: '20 boxes from C-03 · 4 m 12 s', tag: 'DONE', st: 'done' },
-              { n: '02', title: 'FEFO: rotate SikaFlex #388', sub: 'Bay B-04 · expires in 14 days', tag: 'NEXT', st: 'now' },
-              TASKS_PLAN[2],
-            ])}
-          </div>`,
-        })
-      }
+    /* 1 · expected deliveries */
+    deliveries(state) {
+      const done = state === 'done'
+      const rows = [
+        done
+          ? { n: 'A', title: `${D.supplier} · ${D.note}`, sub: 'Received 09:34 · 1 claim open', tag: 'DONE', st: 'done' }
+          : { n: 'A', title: `${D.supplier} · ${D.note}`, sub: `${D.po} · 2 lines · truck at Dock 1`, tag: 'ARRIVED', st: 'now', act: 'start', tap: 'start' },
+        { n: 'B', title: 'Supplier C · PO-1091', sub: '5 lines · expected 14:00', tag: 'EXPECTED', act: 'other' },
+        { n: 'C', title: 'Supplier B · PO-1094', sub: '3 lines · expected tomorrow', tag: 'TOMORROW', act: 'other' },
+      ]
       return shell({
-        time: '07:02',
-        zone: 'ZONE A · DOCK 2',
-        tab: 'tasks',
+        time: done ? '09:35' : '09:12', zone: 'DOCK 1', tab: 'deliveries',
         main: `<div class="ph-pad">
-            <div class="ph-hello v-in"><small>MON 26 OCT · SHIFT 07:00–15:00</small><h2>Good morning, <b>Mads</b></h2><p>Your action guide, sorted by urgency. Velo planned the route; you decide the order.</p></div>
-            ${taskList(TASKS_PLAN)}
+            <div class="ph-hello v-in"><small>${D.date} · ${D.warehouse.toUpperCase()}</small><h2>Good morning, <b>Lan</b></h2><p>Today's expected deliveries, created from purchase orders. Pick the truck at your dock.</p></div>
+            ${taskList(rows)}
           </div>
-          <div class="ph-cta v-in v-in-5"><button class="v-btn v-btn--fill" data-tap="start" data-act="start">Start receiving →</button></div>`,
+          <div class="ph-cta v-in v-in-5">
+            ${done ? '' : `<button class="v-btn v-btn--fill" data-act="start">Start receiving ${D.note} →</button>`}
+            <button class="v-btn v-btn--link" data-act="nopo">Truck without a PO? Start a no-PO receipt</button>
+          </div>`,
       })
     },
 
-    scan(state, opts = {}) {
-      const lookup = state === 'lookup'
-      const hit = state === 'detected' || lookup
-      const lk = lookup || opts.lookup
+    /* 2 · scan the delivery note */
+    note(state, o = {}) {
+      const reading = state === 'reading'
       return shell({
-        time: '07:21',
-        zone: lk ? 'ZONE B · LOOKUP' : 'ZONE A · DOCK 2',
-        tab: 'scan',
-        back: opts.back,
-        main: `<div class="ph-cam"${hit ? '' : ' data-act="scan" role="button" aria-label="Scan the label"'}>
+        time: '09:14', zone: 'DOCK 1', tab: 'scan', back: o.back,
+        main: `<div class="ph-cam"${reading ? '' : ' data-act="scan-note" role="button" aria-label="Photograph the delivery note"'}>
             <div class="cam-box"></div>
-            <div class="cam-top"><span class="v-chip v-chip--ink">${lk ? 'STOCK LOOKUP' : 'PO-88213'}</span><span class="v-chip">${hit ? 'READ ✓' : opts.hint || '1 / 1 PALLET'}</span></div>
-            <div class="cam-label">
-              <div class="cam-label__sup"><span>SIKA DANMARK A/S</span><span>SSCC 1</span></div>
-              <div class="cam-label__name">SikaFlex-11FC 300 ml</div>
-              <div class="cam-label__meta"><span>24 CTN · BATCH 412</span><span>EXP 2027-03-14</span></div>
-              ${barcode('5 701234 567898')}
+            <div class="cam-top"><span class="v-chip v-chip--ink">${D.po} · ${D.supplier.toUpperCase()}</span><span class="v-chip">${reading ? 'AI READING…' : 'DELIVERY NOTE'}</span></div>
+            <div class="cam-note${reading ? ' is-read' : ''}">
+              <div class="cam-note__hd"><b>PHIẾU GIAO HÀNG</b><span>No. ${D.note}</span></div>
+              <div class="cam-note__sub"><span>${D.supplier}</span><span>12/11/2026</span></div>
+              <div class="cam-note__row cam-note__row--h"><span>STT</span><span>Tên hàng</span><span>ĐVT</span><span>SL</span></div>
+              ${D.lines.map((l, i) => `<div class="cam-note__row"><span>${i + 1}</span><span class="hl">${l.raw}</span><span>${l.rawUnit}</span><span class="hl">${l.claimed}</span></div>`).join('')}
+              <div class="cam-note__ft">Người giao hàng: ………………</div>
             </div>
-            <div class="cam-frame${hit ? ' is-hit' : ''}"><i></i><i></i><i></i><i></i><span class="cam-beam"></span>${hit ? '<span class="cam-hit">✓</span>' : ''}</div>
-            <div class="cam-mode"><span class="on">PRODUCT · EAN-13</span><span>BAY · CODE-128</span></div>
+            <div class="cam-frame cam-frame--note${reading ? ' is-hit' : ''}"><i></i><i></i><i></i><i></i><span class="cam-beam"></span></div>
+            <div class="cam-mode"><span class="on">DELIVERY NOTE</span><span>NO PO</span></div>
           </div>
           <div class="ph-sheet">${
-            lookup
-              ? `<div class="sheet-hd v-in"><span class="v-chip v-chip--deep">✓ FOUND</span><small>EAN-13 · 138 MS</small></div>
-                 <h3 class="v-in v-in-2">SikaFlex-11FC sealant 300 ml</h3>
-                 <dl class="kv v-in v-in-3"><div><dt>ON SHELF</dt><dd>12 · AISLE 7</dd></div><div><dt>BACKROOM</dt><dd>${opts.stored || 24} CTN · B-04</dd></div><div><dt>SELL FIRST</dt><dd>#388 · 14 DAYS</dd></div><div><dt>NEXT DELIVERY</dt><dd>THU 29 OCT</dd></div></dl>
-                 <p class="sheet-note v-in v-in-4">Same label, different job: outside receiving, a scan becomes a stock lookup.</p>
-                 <div class="sheet-act v-in v-in-5"><button class="v-btn" data-act="rescan">Scan another</button></div>`
-              : hit
-              ? `<div class="sheet-hd v-in"><span class="v-chip v-chip--deep">✓ DETECTED</span><small>EAN-13 · 142 MS</small></div>
-                 <h3 class="v-in v-in-2">SikaFlex-11FC sealant 300 ml</h3>
-                 <dl class="kv v-in v-in-3"><div><dt>BATCH</dt><dd>#412</dd></div><div><dt>EXPIRES</dt><dd>14 MAR 2027</dd></div><div><dt>QUANTITY</dt><dd>24 CTN</dd></div><div><dt>DELIVERY NOTE</dt><dd>MATCH ✓</dd></div></dl>
-                 <p class="sheet-note v-in v-in-4">Logged against PO-88213. No paper checklist, no relabeling.</p>
-                 ${opts.next ? '<div class="sheet-act v-in v-in-5"><button class="v-btn v-btn--fill" data-act="suggest">Find a bay →</button></div>' : ''}`
-              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${opts.tapHint ? 'Tap the camera to scan the label' : 'Point the camera at the pallet label'}</div>
-                 ${opts.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan">Scan label</button></div>' : ''}
-                 <p class="sheet-note">Works with the EAN-13 and Code-128 labels already in the store.</p>`
+            reading
+              ? `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>AI is reading the Vietnamese text…</div>
+                 <p class="sheet-note">Nothing is saved yet. You confirm every line on the next screen.</p>`
+              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${o.tapHint ? 'Tap the camera to photograph the note' : 'Fit the whole note inside the frame'}</div>
+                 ${o.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan-note">Photograph note</button></div>' : ''}
+                 <p class="sheet-note">Printed or handwritten, Vietnamese or English. The photo is kept as evidence.</p>`
           }</div>`,
       })
     },
 
-    putaway(state, opts = {}) {
-      const done = state === 'confirmed'
-      const cells = []
-      for (const r of 'ABCD') for (let c = 1; c <= 6; c++) {
-        const id = `${r}-0${c}`
-        cells.push(`<span class="mini__c${id === 'B-04' ? ' is-target' : ''}">${id === 'B-04' ? 'B-04' : ''}</span>`)
-      }
+    /* 2b · AI extraction review */
+    extract(state, o = {}) {
+      const checked = o.checked || (state === 'confirmed' ? [true, true] : [false, false])
+      const all = checked.every(Boolean)
+      const lines = D.lines.map((l, i) => {
+        const low = l.conf < 90
+        return `<div class="xl${checked[i] ? ' is-on' : ''} v-in v-in-${i + 2}" data-act="chk:${i}" data-tap="chk${i}" role="button" tabindex="0" aria-pressed="${checked[i]}">
+          <div class="xl__top"><span class="v-lbl">ON THE NOTE</span><span class="xl__chk">${checked[i] ? '✓' : ''}</span></div>
+          <div class="xl__raw">“${l.raw}” · ${l.rawUnit} · <b>${l.claimed}</b></div>
+          <div class="xl__sku"><span class="v-lbl">MATCHED TO CATALOGUE</span><b>${l.name}</b><small>${l.sku} · ${l.claimed} ${l.unit}s</small></div>
+          <div class="xl__conf"><span class="conf"><i style="width:${l.conf}%"></i></span><span class="v-chip${low ? ' v-chip--attn' : ''}">${l.conf}%${low ? ' · CHECK' : ''}</span></div>
+        </div>`
+      }).join('')
       return shell({
-        time: done ? '07:24' : '07:22',
-        zone: 'ZONE A → B',
-        tab: 'scan',
-        back: opts.back,
+        time: '09:16', zone: 'DOCK 1', tab: 'scan', back: o.back,
         main: `<div class="ph-pad">
-            <div class="ai-hd v-in"><span class="v-lbl ai-badge">AI SUGGESTION · LOCAL</span><span class="v-chip">24 CTN · #412</span></div>
-            <div class="bay-big v-in v-in-2"><small>PUT AWAY IN</small><b>BAY B-04</b><span>Back warehouse · row B · level 1</span></div>
-            <div class="mini v-in v-in-3"><div class="mini__grid"><span class="mini__dock">DOCK 2</span>${cells.join('')}</div>
-              <div class="mini__foot"><span>DOCK 2 → ROW B → B-04</span><span>38 M · 1 MIN</span></div></div>
-            <ul class="why v-in v-in-4">
-              <li><span><b>Front-accessible bay.</b> SikaFlex sells about 40 cartons a week.</span></li>
-              <li><span><b>Same SKU already here.</b> Older batch #388 stays in front, so it leaves first.</span></li>
-              <li><span><b>Shortest walk</b> from Dock 2 with space for 24 cartons.</span></li>
-            </ul>
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">AI · READ FROM THE NOTE</span><span class="v-chip">${D.note}</span></div>
+            <h3 class="ph-h3 v-in v-in-2">Check what AI read</h3>
+            <p class="ph-p v-in v-in-2">Tap each line to confirm it. You can correct any field. OCR never writes to stock by itself.</p>
+            <div class="xls">${lines}</div>
           </div>
           <div class="ph-actions">${
-            done
-              ? `<div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Put-away confirmed</b><span>CODE-128 · ZONE-WH-BAY-04 · 07:24</span></div></div>
-                 ${opts.next ? '<button class="v-btn v-btn--fill" data-act="home">Next task →</button>' : '<p class="fine">The store map is updated for everyone.</p>'}`
-              : `<button class="v-btn v-btn--fill" data-tap="confirm" data-act="confirm">Scan bay label to confirm</button>
-                 <button class="v-btn v-btn--link" data-act="other-bay">Bay blocked? Scan any bay instead</button>`
+            all
+              ? '<button class="v-btn v-btn--fill" data-tap="go" data-act="extract-ok">Continue to counting →</button>'
+              : '<button class="v-btn" disabled data-act="extract-ok">Confirm both lines to continue</button>'
           }</div>`,
       })
     },
 
-    refill(state, opts = {}) {
-      if (state === 'notify') {
-        return shell({
-          time: '10:14',
-          zone: 'ZONE B · WAREHOUSE',
-          tab: 'tasks',
-          main: `<div class="ph-push"><img src="${LOGO}" alt=""><div><small><span>VELO · REFILL</span><span>NOW</span></small><b>Aisle 2 needs a refill</b><p>Decking screws: 3 left after a checkout on Lane 2.</p></div></div>
-            <div class="ph-pad ph-dim">
-              <div class="ph-hello"><small>MON 26 OCT · SHIFT 07:00–15:00</small><h2>Action <b>guide</b></h2></div>
-              ${taskList([
-                { n: '01', title: 'Receive PO-88213', sub: 'Put away in B-04 · 07:24', tag: 'DONE', st: 'done' },
-                { n: '02', title: 'FEFO: rotate SikaFlex #388', sub: 'Bay B-04 · expires in 14 days', tag: 'FEFO', st: 'now' },
-                TASKS_PLAN[2],
-              ])}
-            </div>`,
-        })
-      }
-      const step = { task: 0, picking: 2, done: 3 }[state]
-      const steps = [
-        ['Walk to Bay C-03', '52 M'],
-        ['Scan bay + product', '2 SCANS'],
-        ['Restock Aisle 2', '20 BOXES'],
-      ]
+    /* 3 · scan & count per line */
+    count(state, o = {}) {
+      const i = o.line || 0
+      const l = D.lines[i]
+      const hit = state === 'counted'
+      const good = o.good ?? l.good
+      const dmg = o.dmg ?? l.dmg
+      const near = l.days <= 30
+      return shell({
+        time: i ? '09:23' : hit ? '09:22' : '09:19', zone: 'DOCK 1', tab: 'scan', back: o.back,
+        main: `<div class="ph-cam"${hit ? '' : ' data-act="scan" role="button" aria-label="Scan the barcode"'}>
+            <div class="cam-box"></div>
+            <div class="cam-top"><span class="v-chip v-chip--ink">LINE ${i + 1} OF 2</span><span class="v-chip">${hit ? 'READ ✓' : '1D BARCODE'}</span></div>
+            <div class="cam-label">
+              <div class="cam-label__sup"><span>${D.supplier.toUpperCase()}</span><span>EAN-13</span></div>
+              <div class="cam-label__name">${l.name}</div>
+              <div class="cam-label__meta"><span>BATCH ${l.batch}</span><span>EXP ${l.exp.toUpperCase()}</span></div>
+              ${barcode(l.ean)}
+            </div>
+            <div class="cam-frame${hit ? ' is-hit' : ''}"><i></i><i></i><i></i><i></i><span class="cam-beam"></span>${hit ? '<span class="cam-hit">✓</span>' : ''}</div>
+            <div class="cam-mode"><span class="on">BARCODE · EAN</span><span data-act="fallback:search">SEARCH</span><span data-act="fallback:photo">PHOTO</span></div>
+          </div>
+          <div class="ph-sheet">${
+            hit
+              ? `<div class="sheet-hd v-in"><span class="v-chip v-chip--ok">✓ FOUND ON THE NOTE</span><small>EAN-13 · LINE ${i + 1} OF 2</small></div>
+                 <h3 class="v-in v-in-2">${l.name}</h3>
+                 <div class="cnt v-in v-in-3">${stp('COUNTED GOOD', good, 'good')}${stp('DAMAGED', dmg, 'dmg')}</div>
+                 <dl class="kv v-in v-in-3"><div><dt>BATCH</dt><dd>${l.batch}</dd></div><div><dt>EXPIRES</dt><dd>${l.exp.toUpperCase()}${near ? ` · ${l.days} DAYS` : ''}</dd></div></dl>
+                 <p class="sheet-note v-in v-in-4">${dmg > 0 ? 'Damaged units need a photo on the flag screen.' : 'Condition good. Counted by hand, not copied from the note.'}${near ? ' Batch expires soon: rules will raise a FEFO alert.' : ''}</p>
+                 <div class="sheet-act v-in v-in-5"><button class="v-btn v-btn--fill" data-tap="save" data-act="save-line">${i ? 'Save · see the match →' : 'Save line →'}</button></div>`
+              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${o.tapHint ? 'Tap the camera to scan the barcode' : 'Scan the product barcode'}</div>
+                 ${o.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan">Scan barcode</button></div>' : ''}
+                 <p class="sheet-note">Expected on this line: <b>${l.claimed} ${l.unit}s</b> · ${l.sku}</p>
+                 <div class="fb v-in v-in-3"><span class="v-lbl">NO BARCODE?</span>
+                   <div class="fb__row"><button class="v-chip" data-act="fallback:search">Search by name</button><button class="v-chip" data-act="fallback:photo">Photo the label</button><button class="v-chip" data-act="fallback:qr">Print an internal QR</button></div></div>`
+          }</div>`,
+      })
+    },
+
+    /* 4 · live three-way match */
+    match(state, o = {}) {
+      const rows = D.lines.map((l, i) => {
+        const g = o.good ? o.good[i] : l.good
+        const d = o.dmg ? o.dmg[i] : l.dmg
+        return { l, g, d, m: matchOf(l, g, d) }
+      })
+      const n = { match: 0, attn: 0, miss: 0 }
+      rows.forEach((r) => { n[r.m.st === 'attn' ? 'attn' : r.m.st]++; if (r.m.near && r.m.st !== 'attn') n.attn++ })
+      const cards = rows.map(({ l, g, d, m }, i) => `<div class="ml ml--${m.st} v-in v-in-${i + 2}">
+          <div class="ml__hd"><div><b>${l.name}</b><span>${l.sku}</span></div>${chip(m.st)}</div>
+          <div class="m3"><div><dt>ORDERED</dt><dd>${l.ordered}</dd></div><div><dt>CLAIMED</dt><dd>${l.claimed}</dd></div><div><dt>RECEIVED</dt><dd>${g}${d ? `<small> +${d} damaged</small>` : ''}</dd></div></div>
+          <div class="ml__flags">${
+            m.st === 'match' && !m.near
+              ? '<span class="ml__ok">All three agree · condition good</span>'
+              : [
+                  d ? chip('miss', `${d} DAMAGED`) : '',
+                  m.issues.includes('short') ? chip('attn', 'SHORT') : '',
+                  m.issues.includes('over') ? chip('attn', 'OVER') : '',
+                  m.near ? chip('attn', `NEAR-EXPIRY · ${l.days} DAYS`) : '',
+                ].join('')
+          }</div>
+        </div>`).join('')
+      return shell({
+        time: '09:24', zone: 'DOCK 1', tab: 'match', back: o.back,
+        main: `<div class="ph-pad">
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">THREE-WAY MATCH · RULES</span><span class="v-chip">${D.note}</span></div>
+            <div class="ph-stats v-in v-in-2"><div><b>${n.match}</b><span>MATCH</span></div><div><b>${n.attn}</b><span>ATTENTION</span></div><div><b>${n.miss}</b><span>MISMATCH</span></div></div>
+            <div class="mls">${cards}</div>
+            <p class="sheet-note v-in v-in-4">Rules did the arithmetic. You judge the exceptions.</p>
+          </div>
+          <div class="ph-actions"><button class="v-btn v-btn--fill" data-tap="flag" data-act="flag">Flag discrepancy →</button></div>`,
+      })
+    },
+
+    /* 5 · flag with evidence, driver co-confirms */
+    flag(state, o = {}) {
+      const reasons = o.reasons || ['dmg', 'exp']
+      const photo = state !== 'form' || o.photo
+      const driver = state === 'driver' || o.driver
+      const dmgSel = reasons.includes('dmg')
+      const needDriver = reasons.some((r) => ['dmg', 'short', 'over', 'wrong'].includes(r))
+      const ready = (photo || !dmgSel) && (driver || !needDriver) && reasons.length > 0
+      return shell({
+        time: '09:26', zone: 'DOCK 1', tab: 'match', back: o.back,
+        main: `<div class="ph-pad">
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">FLAG · ${D.lines[0].short.toUpperCase()}</span><span class="v-chip v-chip--ink">YOU DECIDE</span></div>
+            <h3 class="ph-h3 v-in v-in-2">What is wrong?</h3>
+            <div class="rs v-in v-in-2">${REASONS.map(([k, t]) => `<button class="rsb${reasons.includes(k) ? ' on' : ''}" data-act="reason:${k}" aria-pressed="${reasons.includes(k)}">${t}</button>`).join('')}</div>
+            <div class="ev v-in v-in-3"><span class="v-lbl">EVIDENCE${dmgSel ? ' · PHOTO REQUIRED FOR DAMAGE' : ''}</span>${
+              photo ? photoThumb(`${o.d ?? 4} CRUSHED TUBES`) : `<button class="ev-add" data-tap="photo" data-act="photo">+ Take photo of the damage</button>`
+            }</div>
+            <div class="drv v-in v-in-4${driver ? ' is-ok' : ''}"><span class="v-lbl">DRIVER CO-CONFIRMS · SAME PHONE</span>${
+              driver
+                ? `<div class="ok-row"><span class="v-ok">✓</span><div><b>${D.driver} · ${D.supplier} driver</b><span>CONFIRMS ${o.d ?? 4} DAMAGED ON ARRIVAL · 09:27</span></div></div>`
+                : photo
+                  ? `<p>Hand the phone to the driver. He checks the photo and the count.</p><button class="v-btn" data-tap="driver" data-act="driver">Driver confirms on this phone</button>`
+                  : '<p>Unlocks after the photo, while the driver is still at the dock.</p>'
+            }</div>
+          </div>
+          <div class="ph-actions">${
+            ready
+              ? `<button class="v-btn v-btn--fill" data-tap="submit" data-act="submit">Submit for approval →</button>`
+              : `<button class="v-btn" disabled data-act="submit">${!photo && dmgSel ? 'Photo required to submit' : needDriver && !driver ? 'Driver confirmation needed' : 'Pick a reason to submit'}</button>`
+          }</div>`,
+      })
+    },
+
+    /* 6 · submitted, waiting for approval */
+    submitted(state, o = {}) {
+      return shell({
+        time: '09:27', zone: 'DOCK 1', tab: 'match',
+        main: `<div class="ph-pad">
+            <div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Sent to ${D.manager} for approval</b><span>${D.note} · 09:27</span></div></div>
+            <ol class="steps v-in v-in-2">
+              <li class="is-done"><i>✓</i>Counted and matched by rules<span>09:24</span></li>
+              <li class="is-done"><i>✓</i>Photo + driver confirmation<span>09:27</span></li>
+              <li class="is-now"><i>3</i>Manager approval<span>WAITING</span></li>
+              <li><i>4</i>Receipt (phiếu nhập kho)<span>AFTER APPROVAL</span></li>
+            </ol>
+            <ul class="why v-in v-in-3"><li><span><b>Nothing enters stock yet.</b> Only a named approver can accept an exception.</span></li><li><span><b>The 4 damaged tubes</b> will exist only as a documented claim.</span></li></ul>
+          </div>
+          <div class="ph-actions">${
+            o.demo
+              ? `<span class="v-lbl">DEMO CONTROL</span><button class="v-btn v-btn--fill" data-tap="switch" data-act="to-manager">Switch to ${D.manager}, manager →</button>`
+              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>Waiting for ${D.manager.split(' ')[0]}…</div>`
+          }</div>`,
+      })
+    },
+
+    /* 7 · receipt issued */
+    receipt(state, o = {}) {
+      const l0 = D.lines[0], l1 = D.lines[1]
+      return shell({
+        time: '09:34', zone: 'DOCK 1', tab: 'receipt',
+        main: `<div class="ph-pad">
+            <div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Receipt issued</b><span>APPROVED BY ${D.manager.toUpperCase()} · 09:34</span></div></div>
+            <div class="rc v-in v-in-2">
+              <div class="rc__hd"><div><b>PHIẾU NHẬP KHO</b><span>Goods receipt note · ${D.receipt}</span></div><span class="v-chip v-chip--ink">ISSUED</span></div>
+              <div class="rc__meta"><span>${D.supplier} · ${D.note}</span><span>${D.po} · ${D.warehouse}</span></div>
+              <div class="rc__row"><div><b>${l0.name}</b><small>BATCH ${l0.batch} · EXP ${l0.exp.toUpperCase()}</small></div><div class="rc__q"><b>96</b><small>ACCEPTED</small></div></div>
+              <div class="rc__row rc__row--claim"><div><b>Claim ${D.claim}</b><small>4 DAMAGED · PHOTO + DRIVER CONFIRMED</small></div><div class="rc__q"><b>4</b><small>CLAIM</small></div></div>
+              <div class="rc__row"><div><b>${l1.name}</b><small>BATCH ${l1.batch} · EXP ${l1.exp.toUpperCase()}</small></div><div class="rc__q"><b>20</b><small>ACCEPTED</small></div></div>
+              <div class="rc__sig"><span>Received · ${D.receiver} · 09:27</span><span>Approved · ${D.manager} · 09:34</span></div>
+            </div>
+            <p class="sheet-note v-in v-in-3">Stock is updated with batch and expiry. Every step is in the audit trail.</p>
+          </div>
+          ${o.next ? '<div class="ph-actions"><button class="v-btn v-btn--fill" data-act="home">Back to deliveries →</button></div>' : ''}`,
+      })
+    },
+
+    /* manager's approval, on the same prototype */
+    approve(state, o = {}) {
       const done = state === 'done'
-      const shelf = done ? 23 : 3
+      const g = o.good ?? 96
+      const d = o.dmg ?? 4
       return shell({
-        time: done ? '10:18' : state === 'picking' ? '10:17' : '10:14',
-        zone: done ? 'ZONE C · AISLE 2' : 'ZONE B · C-03',
-        tab: 'tasks',
-        back: opts.back,
+        time: done ? '09:34' : '09:28', zone: 'MANAGER', tab: false, who: 'MN',
         main: `<div class="ph-pad">
-            <div class="rf-hd v-in"><span class="v-chip v-chip--deep">ASSISTED REFILL · P1</span><small>FROM POS · LANE 2</small></div>
-            <h2 class="rf-title v-in v-in-2">Decking screws 4.5×50 A2</h2>
-            <div class="rf-stock v-in v-in-3"><b>${shelf}<small> ON SHELF</small></b>
-              <div><div class="rf-meter"><i style="width:${Math.min(100, (shelf / 30) * 100)}%"></i><em style="left:33.3%"></em></div>
-              <div class="rf-meter__lbl"><span>AISLE 2</span><span>MIN 10</span><span>CAP 30</span></div></div></div>
-            <div class="rf-pick v-in v-in-4"><div><small>PICK</small><b>20 boxes</b></div><div><small>FROM</small><b>Bay C-03</b></div><div><small>BATCH</small><b>#401 oldest</b></div></div>
-            <ol class="steps v-in v-in-5">${steps
-              .map(([t, s], i) => `<li class="${i < step ? 'is-done' : i === step ? 'is-now' : ''}"><i>${i < step ? '✓' : i + 1}</i>${t}<span>${s}</span></li>`)
-              .join('')}</ol>
-            <div class="rf-why v-in v-in-5"><span class="v-lbl">WHY THIS BATCH</span><p>#401 arrived on 12 Aug and is the oldest of the three screw batches in the store. Picking it first keeps the backroom rotating.</p></div>
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">APPROVAL QUEUE · 1</span><span class="v-chip v-chip--ink">${D.manager.toUpperCase()}</span></div>
+            <h3 class="ph-h3 v-in v-in-2">${D.supplier} · ${D.note}</h3>
+            <dl class="kv v-in v-in-2"><div><dt>RECEIVED</dt><dd>${g} OF 100 TUBES</dd></div><div><dt>DAMAGED</dt><dd>${d} · DRIVER OK</dd></div><div><dt>CEMENT</dt><dd>20 OF 20 ✓</dd></div><div><dt>BATCH L2406-A</dt><dd>20 DAYS LEFT</dd></div></dl>
+            <div class="ev v-in v-in-3" style="margin-top:var(--space-12)">${photoThumb(`${d} CRUSHED TUBES`)}</div>
+            <p class="sheet-note v-in v-in-3">AI hint: ${d} damaged is outside this supplier's usual range for sealant (0 to 1 per delivery).</p>
+            ${
+              done
+                ? `<div class="db-stamp v-in" style="margin-top:var(--space-12)"><b>${d ? `Accept ${g}, claim ${d}` : `Accept ${g}`}</b><span>Approved by ${D.manager} · 09:34.${d ? ` Claim ${D.claim} opened.` : ''} Receipt ${D.receipt} issued.</span></div>`
+                : ''
+            }
           </div>
           <div class="ph-actions">${
             done
-              ? `<div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Refill complete · 4 m 12 s</b><span>AISLE 2: 23 ON SHELF · SALE → SHELF</span></div></div>
-                 ${opts.next ? '<button class="v-btn v-btn--fill" data-act="home">Back to tasks →</button>' : ''}
-                 <p class="fine">Bay C-03 is low now. Velo drafted a restock order for your manager.</p>`
-              : state === 'picking'
-                ? `<div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Pick confirmed</b><span>C-03 · BATCH #401 · 20 BOXES</span></div></div>
-                   <button class="v-btn v-btn--fill" data-act="restock">Confirm shelf restocked</button>`
-                : `<button class="v-btn v-btn--fill" data-tap="pick" data-act="pick">Scan to pick</button>
-                   <button class="v-btn v-btn--link" data-act="handover">Can't do it now? Hand over to Sofie</button>`
+              ? `<span class="v-lbl">DEMO CONTROL</span><button class="v-btn v-btn--fill" data-act="to-receiver">Back to Lan's phone →</button>`
+              : `<button class="v-btn v-btn--fill" data-tap="approve" data-act="approve">${d ? `Accept ${g}, claim ${d}` : `Accept ${g}`}</button>
+                 <div class="act2"><button class="v-btn" data-act="mgr-other">Accept as-is</button><button class="v-btn" data-act="mgr-other">Partial accept</button><button class="v-btn" data-act="mgr-other">Reject line</button><button class="v-btn" data-act="mgr-other">Open claim only</button></div>`
           }</div>`,
-      })
-    },
-
-    ask(state) {
-      const q = 'Where are the extra pallets of 15 mm fire-rated gypsum, is any batch expiring, and does it meet TEK17 fire wall rules?'
-      const intro = `<div class="msg msg--ai v-in"><span class="msg__who">VELO COPILOT</span>Ask about stock, locations or product specs. Answers come from this store's data and documents, on the local server.</div>`
-      let chat = intro
-      if (state !== 'typing') chat += `<div class="msg msg--me v-in"><span class="msg__who">MADS K.</span>${q}</div>`
-      if (state === 'thinking') {
-        chat += `<div class="msg msg--ai think v-in"><span class="v-dots"><i></i><i></i><i></i></span>Searching live stock and 2,140 local documents…</div>`
-      }
-      if (state === 'answered') {
-        chat += `<div class="msg msg--ai is-wide v-in"><span class="msg__who">VELO COPILOT · 1.6 S</span>
-            <div class="ans"><span class="v-lbl">STOCK &amp; LOCATION</span><p><b>4</b> on the front shelf, Aisle 5. <b>32 pallets</b> in Bay D-01. Batch #204 expires first, in 45 days.</p></div>
-            <div class="ans"><span class="v-lbl">TECHNICAL ANSWER</span><p>Yes. It meets TEK17 REI 60 fire resistance when installed in double layers.</p></div>
-            <div class="src"><span class="v-chip">GYPROC DATASHEET · P.4</span><span class="v-chip">TEK17 · CH. 11</span><span class="v-chip">STOCK · LIVE</span></div>
-            <div class="ans-meta">ON-PREMISE · 0 EXTERNAL CALLS</div></div>`
-      }
-      const box =
-        state === 'typing'
-          ? `<div class="ph-input__box">${q}<span class="ph-input__caret"></span></div>`
-          : `<div class="ph-input__box is-empty">Ask in Danish, Norwegian or Swedish…</div>`
-      return shell({
-        time: '11:05',
-        zone: 'ZONE C · AISLE 5',
-        tab: 'ask',
-        main: `<div class="chat">${chat}</div><div class="ph-input">${box}<span class="ph-input__send">→</span></div>`,
       })
     },
   }
@@ -248,152 +367,199 @@
 
   /* ================= dashboard ================= */
 
-  const DASH = ['idle', 'received', 'pos', 'refilled', 'approved']
-  const CLOCK = ['07:05', '07:24', '10:14', '10:18', '10:19']
+  const DASH = ['expected', 'live', 'queue', 'approved', 'receipt', 'stock']
+  const CLOCK = ['09:10', '09:24', '09:28', '09:34', '09:34', '09:36']
+  const NAV = ['Receiving', 'Approvals', 'Receipts', 'Inventory', 'Alerts', 'Suppliers']
+  const NAV_ON = [0, 0, 1, 1, 2, 3]
 
   const EVENTS = [
-    { s: 0, t: '06:00', k: 'SYNC', x: 'ERP orders, POS and 30,412 SKUs indexed on the local server' },
-    { s: 0, t: '06:30', k: 'FEFO', x: '3 batches expire within 14 days · added to action guides' },
-    { s: 0, t: '07:02', k: 'SHIFT', x: 'Mads K. checked in · 3 tasks planned, sorted by urgency' },
-    { s: 1, t: '07:21', k: 'SCAN', x: 'PO-88213 · 24 ctn SikaFlex-11FC #412 · EAN-13 · 142 ms' },
-    { s: 1, t: '07:24', k: 'PUT-AWAY', x: 'Bay B-04 confirmed by Code-128 scan · Mads K.' },
-    { s: 2, t: '10:14', k: 'POS', x: 'Lane 2 · sold 15 × decking screws 4.5×50 A2' },
-    { s: 2, t: '10:14', k: 'REFILL', x: 'Aisle 2 at 3, below min 10 → task sent to Mads K.', hot: true },
-    { s: 3, t: '10:17', k: 'PICK', x: '20 boxes from C-03 · batch #401 (oldest) · scan confirmed' },
-    { s: 3, t: '10:18', k: 'SHELF', x: 'Aisle 2 restocked to 23 · sale → shelf in 4 m 12 s' },
-    { s: 3, t: '10:18', k: 'DRAFT', x: 'C-03 at 60, below safety stock 80 → restock order awaits approval', hot: true },
-    { s: 4, t: '10:19', k: 'APPROVED', x: 'Ingrid H. approved PO-88342 · 200 boxes · sent to ERP' },
+    { s: 0, t: '06:45', k: 'IMPORT', x: `${D.po} imported from CSV · ${D.supplier} · 2 lines` },
+    { s: 0, t: '09:05', k: 'ARRIVED', x: `${D.supplier} truck at Dock 1 · ${D.note}` },
+    { s: 1, t: '09:14', k: 'NOTE', x: `${D.receiver} photographed ${D.note} · AI extracted 2 lines` },
+    { s: 1, t: '09:16', k: 'HUMAN', x: `${D.receiver} confirmed both lines · catalogue match 96% and 88%` },
+    { s: 1, t: '09:22', k: 'COUNT', x: 'SikaFlex-11FC: 96 good, 4 damaged · EAN scanned' },
+    { s: 1, t: '09:24', k: 'MATCH', x: 'Cement matches · sealant mismatch · batch expires in 20 days', hot: 1 },
+    { s: 2, t: '09:26', k: 'FLAG', x: `Damage flagged with photo · driver ${D.driver} co-confirmed`, hot: 1 },
+    { s: 2, t: '09:27', k: 'QUEUE', x: `${D.note} waiting for approval · ${D.receiver}` },
+    { s: 3, t: '09:34', k: 'APPROVED', x: `${D.manager}: accept 96, claim 4 · ${D.claim} opened`, hot: 1 },
+    { s: 4, t: '09:34', k: 'RECEIPT', x: `Phiếu nhập kho ${D.receipt} issued` },
+    { s: 5, t: '09:35', k: 'STOCK', x: '+96 SikaFlex L2406-A · +20 PCB40 XM-1108 · audit trail saved' },
+    { s: 5, t: '09:36', k: 'ALERT', x: 'FEFO · SikaFlex L2406-A expires in 20 days', hot: 1 },
+    { s: 5, t: '09:36', k: 'SUPPLIER', x: `${D.supplier} accuracy 98% to 93%` },
   ]
 
-  function tasksFor(i) {
-    return [
-      { n: 'Receive PO-88213', z: 'A', who: 'MADS K.', st: i >= 1 ? 'DONE' : 'NOW' },
-      { n: 'Refill Aisle 2 · screws', z: 'B→C', who: 'MADS K.', st: i < 2 ? null : i === 2 ? 'SENT' : 'DONE' },
-      { n: 'FEFO rotate SikaFlex #388', z: 'B', who: 'MADS K.', st: 'QUEUED' },
-      { n: 'Move mortar M5 #77 to front', z: 'B→C', who: 'MADS K.', st: 'QUEUED' },
-      { n: 'Click & Collect · 3 orders', z: 'C', who: 'SOFIE L.', st: i >= 2 ? 'PICKING' : 'QUEUED' },
-      { n: 'Approve restock order', z: 'MGR', who: 'INGRID H.', st: i < 3 ? null : i === 3 ? 'WAITING' : 'DONE' },
-    ].filter((r) => r.st)
-  }
-
-  const MAP = [
-    { 'D-2': { c: 'src', n: 'TRUCK 07:20' }, 'B-04': { c: 'fefo' }, 'B-02': { c: 'fefo' }, 'C-05': { c: 'fefo' } },
-    { 'D-2': { n: 'UNLOADED' }, 'B-04': { c: 'target fefo', n: '+24 CTN', pin: 'MK' }, 'B-02': { c: 'fefo' }, 'C-05': { c: 'fefo' } },
-    { 'L-2': { c: 'target', n: 'SALE −15' }, 'A-2': { c: 'alert', n: '3 / MIN 10' }, 'C-03': { c: 'src', n: '80 BOX' }, 'B-04': { c: 'fefo' }, 'B-02': { c: 'fefo' }, 'C-05': { c: 'fefo' } },
-    { 'A-2': { c: 'target', n: '23 / MIN 10', pin: 'MK' }, 'C-03': { c: 'alert', n: '60 < 80' }, 'B-04': { c: 'fefo' }, 'B-02': { c: 'fefo' }, 'C-05': { c: 'fefo' } },
-    { 'A-2': { n: '23 / MIN 10' }, 'C-03': { c: 'src', n: 'PO SENT' }, 'B-04': { c: 'fefo' }, 'B-02': { c: 'fefo' }, 'C-05': { c: 'fefo' } },
+  const KPIS = [
+    [['SESSIONS TODAY', '3', '1 done · 1 arrived · 1 expected'], ['AWAITING APPROVAL', '0', 'nothing waiting'], ['OPEN CLAIMS', '0', 'with suppliers'], ['EXPIRING ≤ 30 DAYS', '0', 'batches in stock']],
+    [['SESSIONS TODAY', '3', '1 done · 1 in progress'], ['AWAITING APPROVAL', '0', 'nothing waiting'], ['OPEN CLAIMS', '0', 'with suppliers'], ['EXPIRING ≤ 30 DAYS', '0', 'batches in stock']],
+    [['SESSIONS TODAY', '3', '1 done · 1 waiting · 1 expected'], ['AWAITING APPROVAL', '1', `${D.note} · ${D.supplier}`], ['OPEN CLAIMS', '0', 'with suppliers'], ['EXPIRING ≤ 30 DAYS', '0', 'batches in stock']],
+    [['SESSIONS TODAY', '3', '1 done · 1 approved · 1 expected'], ['AWAITING APPROVAL', '0', 'queue clear'], ['OPEN CLAIMS', '1', `${D.claim} · 4 tubes`], ['EXPIRING ≤ 30 DAYS', '0', 'batches in stock']],
+    [['SESSIONS TODAY', '3', '2 receipts issued · 1 expected'], ['AWAITING APPROVAL', '0', 'queue clear'], ['OPEN CLAIMS', '1', `${D.claim} · 4 tubes`], ['EXPIRING ≤ 30 DAYS', '0', 'batches in stock']],
+    [['SESSIONS TODAY', '3', '2 receipts issued · 1 expected'], ['AWAITING APPROVAL', '0', 'queue clear'], ['OPEN CLAIMS', '1', `${D.claim} · 4 tubes`], ['EXPIRING ≤ 30 DAYS', '1', 'L2406-A · FEFO']],
   ]
-
-  function cell(i, id, label) {
-    const m = MAP[i][id] || {}
-    const cls = (m.c || '').split(' ').filter(Boolean).map((c) => ' is-' + c).join('')
-    return `<span class="cell${cls}">${label}${m.n ? `<em>${m.n}</em>` : ''}${m.pin ? `<span class="pin">${m.pin}</span>` : ''}</span>`
-  }
-
-  function storeMap(i) {
-    const docks = [1, 2, 3].map((n) => cell(i, `D-${n}`, `DOOR ${n}`)).join('')
-    let bays = ''
-    for (const r of 'ABCD') for (let c = 1; c <= 6; c++) bays += cell(i, `${r}-0${c}`, `${r}-0${c}`)
-    const aisles = [1, 2, 3, 4, 5, 6].map((n) => cell(i, `A-${n}`, `AISLE ${n}`)).join('')
-    const lanes = [1, 2, 3].map((n) => cell(i, `L-${n}`, `LANE ${n}`)).join('')
-    return `<div class="db-map">
-        <div class="mz mz--a"><span class="mz__lbl">A · DOCK</span><div class="cells">${docks}</div></div>
-        <div class="mz mz--b"><span class="mz__lbl">B · BACK WAREHOUSE</span><div class="cells">${bays}</div></div>
-        <div class="mz mz--c"><span class="mz__lbl">C · FRONT FLOOR</span><div class="cells">${aisles}</div></div>
-        <div class="mz mz--d"><span class="mz__lbl">D · POS CHECKOUT</span><div class="cells">${lanes}</div></div>
-      </div>
-      <div class="db-legend">
-        <span><i style="background:var(--yellow-deep);border-color:var(--ink)"></i>ACTIVE</span>
-        <span><i style="background:var(--yellow)"></i>STOCK SOURCE</span>
-        <span><i style="background:var(--ink);border-color:var(--ink)"></i>NEEDS ACTION</span>
-        <span><i class="lg-fefo"></i>EXPIRES ≤ 14 DAYS</span>
-        <span><b class="lg-pin">MK</b>CLERK</span>
-      </div>`
-  }
+  const HOT = [[], [], [1], [1, 2], [], [3]]
 
   function kpis(i) {
-    const open = tasksFor(i).filter((t) => t.st !== 'DONE').length
-    const shelf = ['97.8%', '97.8%', '97.1%', '98.4%', '98.4%'][i]
-    const shelfSub = ['across 412 shelf faces', 'across 412 shelf faces', 'Aisle 2 below minimum', 'Aisle 2 back above minimum', 'Aisle 2 back above minimum'][i]
-    const refill = ['6m 40s', '6m 40s', 'RUNNING', '4m 12s', '4m 12s'][i]
-    const refillSub = ['7-day average', '7-day average', 'task sent 10:14', 'last refill · Aisle 2', 'last refill · Aisle 2'][i]
-    const k = (lbl, val, sub, hot) => `<div class="db-kpi${hot ? ' is-hot' : ''}"><span class="v-lbl">${lbl}</span><b>${val}</b><span>${sub}</span></div>`
-    return `<div class="db-kpis">
-        ${k('Shelf availability', shelf, shelfSub, i === 2 || i === 3)}
-        ${k('Open tasks', open, `${tasksFor(i).length - open} done today`, i === 2)}
-        ${k('Expiring ≤ 14 days', '3 batches', 'all in action guides', false)}
-        ${k('Sale → shelf', refill, refillSub, i === 3)}
-      </div>`
+    return `<div class="db-kpis">${KPIS[i].map(([l, v, s], k) => `<div class="db-kpi${HOT[i].includes(k) ? ' is-hot' : ''}"><span class="v-lbl">${l}</span><b>${v}</b><span>${s}</span></div>`).join('')}</div>`
   }
 
-  function fefo(i) {
-    return `<div class="db-card"><div class="db-card__hd"><h2>FEFO watch</h2><small>FIRST EXPIRED, FIRST OUT</small></div>
-        <table class="db-table"><thead><tr><th>Batch</th><th>Bay</th><th>Expires</th><th>Velo suggests</th></tr></thead><tbody>
-          <tr><td><b>SikaFlex-11FC #388</b>${i >= 1 ? '<small>New batch #412 stored behind it</small>' : ''}</td><td>B-04</td><td><span class="v-chip v-chip--deep">14 DAYS</span></td><td>Sell #388 first</td></tr>
-          <tr><td><b>Mortar M5 25 kg #77</b></td><td>B-02</td><td><span class="v-chip v-chip--ink">9 DAYS</span></td><td>Move to Aisle 4 front</td></tr>
-          <tr><td><b>Tile grout CG2 #19</b></td><td>C-05</td><td><span class="v-chip v-chip--deep">12 DAYS</span></td><td>Bundle with tile offer</td></tr>
-        </tbody></table></div>`
+  const SESS_STATUS = [
+    ['ARRIVED', ''], ['IN PROGRESS', 'v-chip--pastel'], ['AWAITING APPROVAL', 'v-chip--ink'], ['APPROVED', 'v-chip--ink'], ['RECEIPT ISSUED', ''], ['RECEIPT ISSUED', ''],
+  ]
+  function sessions(i) {
+    const [t, c] = SESS_STATUS[i]
+    return `<div class="db-card"><div class="db-card__hd"><h2>Receiving sessions · today</h2><small>${D.date}</small></div>
+      <table class="db-table"><thead><tr><th>NOTE</th><th>SUPPLIER</th><th>RECEIVER</th><th>LINES</th><th>RESULT</th><th style="text-align:right">STATUS</th></tr></thead><tbody>
+        <tr><td><b>DN-0932</b></td><td>Supplier B</td><td>Quang</td><td>6</td><td>${chip('match', '✓ ALL MATCH')}</td><td style="text-align:right"><span class="v-chip">RECEIPT ISSUED</span></td></tr>
+        <tr class="is-cur"><td><b>${D.note}</b><small>${D.po}</small></td><td>${D.supplier}</td><td>${D.receiver.replace(' T.', '')}</td><td>2</td><td>${
+          i < 1 ? '<span class="v-chip">NOT STARTED</span>' : i < 2 ? '<span class="v-chip">COUNTING</span>' : `${chip('miss', '1 MISMATCH')} ${chip('attn', '1 ATTENTION')}`
+        }</td><td style="text-align:right"><span class="v-chip ${c}">${t}</span></td></tr>
+        <tr><td><b>PO-1091</b></td><td>Supplier C</td><td>·</td><td>5</td><td><span class="v-chip">EXPECTED 14:00</span></td><td style="text-align:right"><span class="v-chip">EXPECTED</span></td></tr>
+      </tbody></table></div>`
   }
 
-  function approval(i) {
-    const done = i >= 4
-    return `<div class="db-card"><div class="db-card__hd"><h2>${done ? 'Restock order approved' : 'Needs your approval'}</h2><small>VELO NEVER ORDERS ON ITS OWN</small></div>
-        <div class="db-appr">
-          <div class="db-appr__body">
-            <h3>Draft restock order · decking screws 4.5×50 A2</h3>
-            <p>Bay C-03 dropped to 60 boxes after the Aisle 2 refill, below its safety stock of 80. Seven-day sales: 112 boxes.</p>
-            <div class="db-appr__kv"><div><span class="v-lbl">QUANTITY</span><b>200 boxes</b></div><div><span class="v-lbl">SUPPLIER</span><b>ERP #S-2207</b></div><div><span class="v-lbl">ARRIVES</span><b>Wed 28 Oct</b></div></div>
-          </div>
-          <div class="db-appr__act">${
-            done
-              ? `<div class="db-stamp"><b>✓ APPROVED</b><span>Ingrid H. · 10:19<br>PO-88342 sent to ERP</span></div>`
-              : `<button class="v-btn v-btn--fill" data-tap="approve">Approve order</button><button class="v-btn">Edit quantity</button><button class="v-btn v-btn--link">Reject</button>`
-          }</div>
-        </div></div>`
+  function expectedCard() {
+    return `<div class="db-card db-card--grow"><div class="db-card__hd"><h2>Expected delivery · ${D.po}</h2><span class="v-chip v-chip--pastel">RULE</span><small>CREATED FROM CSV · ${D.manager.toUpperCase()}</small></div>
+      <div class="db-doc"><div class="db-appr__kv"><div><span class="v-lbl">SUPPLIER</span><b>${D.supplier}</b></div><div><span class="v-lbl">ETA</span><b>09:10 · DOCK 1</b></div><div><span class="v-lbl">DOCUMENT</span><b>${D.note} (ON ARRIVAL)</b></div></div>
+      <table class="db-table"><thead><tr><th>PRODUCT</th><th>SKU</th><th>ORDERED</th></tr></thead><tbody>
+        ${D.lines.map((l) => `<tr><td><b>${l.name}</b></td><td>${l.sku}</td><td>${l.ordered} ${l.unit}s</td></tr>`).join('')}
+      </tbody></table>
+      <p class="db-note">No PO on a truck? The receiver starts a no-PO receipt and VELO matches claimed against received, flagging that no order exists.</p></div></div>`
+  }
+
+  function liveCard() {
+    return `<div class="db-card db-card--grow"><div class="db-card__hd"><h2>Live three-way match · ${D.note}</h2><span class="v-chip v-chip--pastel">RULE</span><small>UPDATES AS ${D.receiver.toUpperCase()} COUNTS</small></div>
+      <table class="db-table"><thead><tr><th>PRODUCT</th><th>ORDERED</th><th>CLAIMED</th><th>RECEIVED</th><th style="text-align:right">STATUS</th></tr></thead><tbody>
+        <tr><td><b>${D.lines[0].name}</b><small>BATCH ${D.lines[0].batch} · EXP ${D.lines[0].exp.toUpperCase()}</small></td><td>100</td><td>100</td><td><b>96</b> <small style="display:inline">+4 damaged</small></td><td style="text-align:right">${chip('miss')}</td></tr>
+        <tr><td><b>${D.lines[1].name}</b><small>BATCH ${D.lines[1].batch} · EXP ${D.lines[1].exp.toUpperCase()}</small></td><td>20</td><td>20</td><td><b>20</b></td><td style="text-align:right">${chip('match')}</td></tr>
+        <tr><td colspan="4"><b>Batch ${D.lines[0].batch} expires in 20 days</b><small>FEFO alert will be created when the receipt is issued</small></td><td style="text-align:right">${chip('attn')}</td></tr>
+      </tbody></table>
+      <p class="db-note">Counts are entered by ${D.receiver.split(' ')[0]}. The arithmetic and thresholds are deterministic rules; nothing here changes stock yet.</p></div>`
+  }
+
+  function approvalCard(i) {
+    const decided = i >= 3
+    return `<div class="db-card db-card--grow"><div class="db-card__hd"><h2>Approval queue</h2><span class="v-chip v-chip--ink">HUMAN</span><small>${decided ? 'QUEUE CLEAR' : '1 WAITING'}</small></div>
+      <div class="db-appr"><div class="db-appr__body">
+        <div class="q-tags">${chip('miss', '✕ 4 DAMAGED')}${chip('attn', '! NEAR-EXPIRY · 20 DAYS')}<small>SUBMITTED 09:27 BY ${D.receiver.toUpperCase()}</small></div>
+        <h3>${D.supplier} · ${D.note} · ${D.lines[0].name}</h3>
+        <p>${D.receiver} received <b>96 good + 4 crushed</b> of 100 claimed. Driver ${D.driver} co-confirmed the damage on her phone at 09:26. Cement matched 20 of 20. Batch ${D.lines[0].batch} expires ${D.lines[0].exp}.</p>
+        <div class="q-ev">
+          <div class="photo"><div class="photo__img"><i></i><i></i><i></i><i></i></div><div class="photo__cap"><b>PHOTO 1 · 4 CRUSHED TUBES</b><span>09:26 · ${D.receiver} · DRIVER CONFIRMED</span></div></div>
+          <div class="q-ai"><span class="v-lbl">AI HINT</span><p>4 damaged is outside ${D.supplier}'s usual range for sealant (0 to 1 per delivery).</p></div>
+        </div>
+      </div>
+      <div class="db-appr__act">${
+        decided
+          ? `<div class="db-stamp"><b>Accept 96, claim 4</b><span>Approved by ${D.manager} · 09:34. Claim ${D.claim} opened with ${D.supplier}. Receipt generated.</span></div>`
+          : `<span class="v-lbl">YOUR DECISION</span>
+             <button class="v-btn" data-act="x">Accept as-is</button>
+             <button class="v-btn v-btn--fill" data-tap="approve">Accept 96, claim 4</button>
+             <button class="v-btn" data-act="x">Partial accept</button>
+             <button class="v-btn" data-act="x">Reject line</button>
+             <button class="v-btn" data-act="x">Open claim only</button>`
+      }</div></div></div>`
+  }
+
+  const AUDIT = [
+    ['09:14', D.receiver, 'Photographed the delivery note', 'NOTE IMAGE'],
+    ['09:16', 'AI + ' + D.receiver, 'Read 2 lines (96%, 88%); both confirmed by the receiver', 'LINES'],
+    ['09:22', D.receiver, 'Scanned EAN, counted 96 good + 4 damaged', 'SCAN'],
+    ['09:24', 'Rules', 'Match: cement ✓, sealant ✕, near-expiry !', 'RULES'],
+    ['09:26', D.receiver + ' + ' + D.driver, 'Flagged damage; driver co-confirmed', 'PHOTO'],
+    ['09:34', D.manager, 'Approved: accept 96, claim 4', 'DECISION'],
+    ['09:34', 'Rules', `Issued ${D.receipt}; stock +96, +20; ${D.claim} opened`, 'RECEIPT'],
+  ]
+
+  function receiptCard() {
+    const [a, b] = D.lines
+    return `<div class="db-card db-card--grow"><div class="db-card__hd"><h2>Phiếu nhập kho · goods receipt note</h2><span class="v-chip v-chip--pastel">RULE</span><small>${D.receipt}</small></div>
+      <div class="db-rcpt">
+        <div class="rcd">
+          <div class="rcd__hd"><div><b>PHIẾU NHẬP KHO</b><span>GOODS RECEIPT NOTE</span></div><span class="v-chip v-chip--ink">ISSUED 09:34</span></div>
+          <div class="rcd__meta"><div><span class="v-lbl">SUPPLIER</span><b>${D.supplier}</b></div><div><span class="v-lbl">DELIVERY NOTE · PO</span><b>${D.note} · ${D.po}</b></div><div><span class="v-lbl">WAREHOUSE</span><b>${D.warehouse}</b></div><div><span class="v-lbl">RECEIVER</span><b>${D.receiver}</b></div><div><span class="v-lbl">APPROVER</span><b>${D.manager}</b></div><div><span class="v-lbl">DATE</span><b>12/11/2026</b></div></div>
+          <table class="db-table"><thead><tr><th>PRODUCT</th><th>BATCH · EXPIRY</th><th>CLAIMED</th><th>ACCEPTED</th><th>EXCEPTION</th></tr></thead><tbody>
+            <tr><td><b>${a.short}</b><small>600 ml sealant</small></td><td>${a.batch}<small>${a.exp}</small></td><td>100</td><td><b>96</b></td><td>4 damaged<small>${D.claim}</small></td></tr>
+            <tr><td><b>${b.short}</b><small>50 kg bag</small></td><td>${b.batch}<small>${b.exp}</small></td><td>20</td><td><b>20</b></td><td>None</td></tr>
+          </tbody></table>
+          <div class="rcd__sig"><span>Receiver confirmed · ${D.receiver} · 09:27</span><span>Driver confirmed · ${D.driver} · 09:26</span><span>Approved · ${D.manager} · 09:34</span></div>
+        </div>
+        <div class="au"><span class="v-lbl">AUDIT TRAIL · WHO · WHAT · WHEN · EVIDENCE</span>
+          <ol>${AUDIT.map(([t, w, x, e]) => `<li><time>${t}</time><div><b>${w}</b><span>${x}</span></div><span class="v-chip">${e}</span></li>`).join('')}</ol></div>
+      </div></div>`
+  }
+
+  function inventoryCard() {
+    return `<div class="db-card db-card--grow"><div class="db-card__hd"><h2>Inventory · batch &amp; expiry</h2><span class="v-chip v-chip--pastel">FEFO ORDER</span><small>UPDATED 09:35</small></div>
+      <table class="db-table"><thead><tr><th>PRODUCT</th><th>BATCH</th><th>ON HAND</th><th>EXPIRY</th><th>LOCATION</th><th style="text-align:right">STATUS</th></tr></thead><tbody>
+        <tr class="is-cur"><td><b>SikaFlex-11FC 600 ml</b><small>NEW · ${D.note}</small></td><td>L2406-A</td><td><b>96</b></td><td>02 Dec 2026 · 20 days</td><td>Shelf B2</td><td style="text-align:right">${chip('attn', '! SELL FIRST')}</td></tr>
+        <tr><td><b>SikaFlex-11FC 600 ml</b></td><td>L2403-C</td><td>48</td><td>18 Jan 2027 · 67 days</td><td>Shelf B2</td><td style="text-align:right"><span class="v-chip">IN STOCK</span></td></tr>
+        <tr class="is-cur"><td><b>PCB40 cement 50 kg</b><small>NEW · ${D.note}</small></td><td>XM-1108</td><td><b>20</b></td><td>10 Feb 2027 · 90 days</td><td>Yard 1</td><td style="text-align:right"><span class="v-chip">IN STOCK</span></td></tr>
+        <tr><td><b>PCB40 cement 50 kg</b></td><td>XM-1102</td><td>140</td><td>05 Feb 2027 · 85 days</td><td>Yard 1</td><td style="text-align:right"><span class="v-chip">IN STOCK</span></td></tr>
+        <tr><td><b>Tile adhesive 25 kg</b></td><td>TA-0931</td><td>12</td><td>30 Jun 2027</td><td>Shelf C1</td><td style="text-align:right">${chip('attn', '! LOW · MIN 30')}</td></tr>
+      </tbody></table>
+      <p class="db-note">The 4 damaged tubes are not in this table. They exist only as claim ${D.claim}.</p></div>`
+  }
+
+  function alertsCard() {
+    return `<div class="db-card"><div class="db-card__hd"><h2>Alerts</h2><span class="v-chip v-chip--pastel">RULE + AI</span><small>3 OPEN</small></div>
+      <ul class="al">
+        <li>${chip('attn', 'FEFO')}<div><b>SikaFlex-11FC L2406-A expires in 20 days</b><span>Sell or move to the front before batch L2403-C (18 Jan 2027).</span></div></li>
+        <li>${chip('attn', 'LOW STOCK')}<div><b>Tile adhesive 25 kg: 12 bags</b><span>Below the minimum of 30. Reorder suggested; you approve.</span></div></li>
+        <li><span class="v-chip">CLAIM</span><div><b>${D.claim} · 4 tubes · ${D.supplier}</b><span>Photo, driver confirmation and approver attached.</span></div></li>
+      </ul></div>`
+  }
+
+  function supplierCard(i) {
+    const after = i >= 3
+    const row = (name, v, prev) => `<li><span>${name}</span><div class="acc__bar"><i class="${prev ? 'is-drop' : ''}" style="width:${v}%"></i>${prev ? `<em style="left:${prev}%"></em>` : ''}</div><b>${v}%</b><small>${prev ? '↓ ' + (prev - v) : '·'}</small></li>`
+    return `<div class="db-card"><div class="db-card__hd"><h2>Supplier accuracy</h2><small>LAST 20 DELIVERIES</small></div>
+      <ul class="acc">${row(D.supplier, after ? 93 : 98, after ? 98 : 0)}${row('Supplier B', 100, 0)}${row('Supplier C', 96, 0)}</ul>
+      <p class="db-note">${after ? `${D.supplier} dropped after ${D.note}: 4 damaged tubes recorded.` : 'Share of lines received without an exception.'} Illustrative data.</p></div>`
+  }
+
+  function feed(i) {
+    const evs = EVENTS.filter((e) => e.s <= i).reverse()
+    return `<div class="db-card db-card--grow"><div class="db-card__hd"><h2>Live events · audit</h2><small>EVERY EVENT HAS A NAME</small></div>
+      <ol class="db-feed">${evs.map((e) => `<li class="${e.s === i && i > 0 ? 'is-new' : ''}${e.hot && e.s === i ? ' is-hot' : ''}"><time>${e.t}</time><span class="v-chip">${e.k}</span><span>${e.x}</span></li>`).join('')}</ol></div>`
   }
 
   function dash(key) {
     const i = Math.max(0, DASH.indexOf(key))
-    const events = EVENTS.filter((e) => e.s <= i).reverse()
-    const tasks = tasksFor(i)
-    const stChip = { NOW: 'v-chip--deep', SENT: 'v-chip--deep', WAITING: 'v-chip--ink', PICKING: 'v-chip--pastel', DONE: '', QUEUED: '' }
+    const left = [
+      `${sessions(i)}${expectedCard()}`,
+      `${sessions(i)}${liveCard()}`,
+      `${approvalCard(i)}${sessions(i)}`,
+      `${approvalCard(i)}${sessions(i)}`,
+      receiptCard(),
+      `${inventoryCard()}${alertsCard()}`,
+    ][i]
     return `
-      <div class="db-chrome"><i></i><i></i><i></i><span class="db-url"><b>LAN</b>velo.local/hub/odense-014</span></div>
+      <div class="db-chrome"><i></i><i></i><i></i><span class="db-url"><b>MOCKUP</b>velo · receiving dashboard · illustrative data</span></div>
       <div class="db-app">
         <aside class="db-side">
-          <div class="db-brand"><img src="${LOGO}" alt=""><span>VELO</span></div>
-          <div class="db-store"><span class="v-lbl">STORE</span><b>Odense 014 · DK</b></div>
-          <nav class="db-nav"><a class="on">Overview</a><a>Zone map</a><a>Tasks</a><a>FEFO watch</a><a>Copilot</a><a>Network <em>PHASE 2</em></a></nav>
+          <div class="db-brand"><img src="${LOGO}" alt="">VELO</div>
+          <div class="db-store"><span class="v-lbl">WAREHOUSE</span><b>${D.warehouse}</b></div>
+          <nav class="db-nav">${NAV.map((n, k) => {
+            const badge = n === 'Approvals' && i === 2 ? '1' : n === 'Alerts' && i === 5 ? '3' : n === 'Receipts' && i >= 4 ? '2' : ''
+            return `<a href="#" class="${k === NAV_ON[i] ? 'on' : ''}">${n}${badge ? `<em>${badge}</em>` : ''}</a>`
+          }).join('')}</nav>
           <ul class="db-crew">
-            <li><i>MK</i><span><b>Mads K.</b>Clerk · zones A–B</span></li>
-            <li><i>SL</i><span><b>Sofie L.</b>Clerk · zone C</span></li>
-            <li><i>IH</i><span><b>Ingrid H.</b>Store manager</span></li>
+            <li><i>LT</i><span><b>${D.receiver}</b>Receiver · Dock 1</span></li>
+            <li><i>MN</i><span><b>${D.manager}</b>Warehouse manager</span></li>
           </ul>
-          <div class="db-sov"><b>LOCAL AI</b>Runs on the store server. 0 external API calls today.</div>
+          <div class="db-sov"><b>PROTOTYPE MOCKUP</b>Illustrative data. Not a working product. VELO recommends; people decide.</div>
         </aside>
         <main class="db-main">
-          <header class="db-head"><h1>Store hub · <b>Odense 014</b></h1><span class="v-chip v-chip--deep db-live">LIVE</span>
-            <span class="db-clock">${CLOCK[i]}</span><span class="db-user"><i>IH</i><span><b>Ingrid H.</b>Store manager</span></span></header>
+          <header class="db-head"><h1>Receiving · <b>${D.warehouse}</b></h1><span class="v-chip v-chip--deep db-live">ILLUSTRATIVE</span>
+            <span class="db-clock">${CLOCK[i]}</span><span class="db-user"><i>MN</i><span><b>${D.manager}</b>Warehouse manager</span></span></header>
           ${kpis(i)}
           <div class="db-grid">
-            <div class="db-col">
-              <div class="db-card"><div class="db-card__hd"><h2>Store zone map</h2><small>UPDATED BY EVERY SCAN</small></div>${storeMap(i)}</div>
-              ${i >= 3 ? approval(i) : fefo(i)}
-            </div>
-            <div class="db-col">
-              <div class="db-card db-card--grow"><div class="db-card__hd"><h2>Live events</h2><small>WEBSOCKET</small></div>
-                <ol class="db-feed">${events
-                  .map((e) => `<li class="${e.s === i && i > 0 ? 'is-new' : ''}${e.hot && e.s === i ? ' is-hot' : ''}"><time>${e.t}</time><span class="v-chip">${e.k}</span><span>${e.x}</span></li>`)
-                  .join('')}</ol></div>
-              <div class="db-card"><div class="db-card__hd"><h2>Task queue</h2><small>${tasks.filter((t) => t.st !== 'DONE').length} OPEN</small></div>
-                <table class="db-table"><tbody>${tasks
-                  .map((t) => `<tr><td><b>${t.n}</b><small>${t.who} · ZONE ${t.z}</small></td><td style="text-align:right"><span class="v-chip ${stChip[t.st]}">${t.st}</span></td></tr>`)
-                  .join('')}</tbody></table></div>
-            </div>
+            <div class="db-col">${left}</div>
+            <div class="db-col">${feed(i)}${supplierCard(i)}</div>
           </div>
         </main>
       </div>`
   }
 
-  global.VeloUI = { phone, dash, DASH, shell, taskList, LOGO }
+  global.VeloUI = { phone, dash, DASH, shell, taskList, matchOf, chip, STATUS, D, LOGO }
 })(window)

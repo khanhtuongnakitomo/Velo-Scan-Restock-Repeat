@@ -1,0 +1,4 @@
+id,role,business_type,city,deliveries_per_month,minutes_per_check,pains,quote_en,is_sample
+S01,receiver,building materials distributor,HCMC,,,no_po_check;damage_unrecorded;exhausting,SAMPLE ROW - replace with a real interview,1
+S02,manager,building materials distributor,HCMC,,,late_entry;supplier_dispute;short_delivery,SAMPLE ROW - replace with a real interview,1
+S03,owner,industrial supplies distributor,Binh Duong,,,oversell;supplier_dispute;late_entry,SAMPLE ROW - replace with a real interview,1

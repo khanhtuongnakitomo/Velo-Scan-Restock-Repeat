@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="547.2pt" height="475.2pt" viewBox="0 0 547.2 475.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-12T11:48:53.050215</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 475.2 
+L 547.2 475.2 
+L 547.2 0 
+L 0 0 
+z
+" style="fill: #f1e5cb"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 51.42 435.219727 
+L 536.4 435.219727 
+L 536.4 34.56 
+L 51.42 34.56 
+z
+" style="fill: #f1e5cb"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 51.42 186.810696 
+L 313.3092 186.810696 
+L 313.3092 34.56 
+L 51.42 34.56 
+z
+" clip-path="url(#pab8c4dca45)" style="fill: #f0c642; opacity: 0.45; stroke-dasharray: 5.18,2.24; stroke-dashoffset: 0; stroke: #20201d; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #20201d" x="80.5188" y="446" transform="rotate(-0 80.5188 446)">Low</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #20201d" x="507.3012" y="446.122852" transform="rotate(-0 507.3012 446.122852)">High</text>
+     </g>
+    </g>
+    <g id="text_3">
+     <text style="font-weight: 700; font-size: 12px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #20201d" x="293.91" y="461.500352" transform="rotate(-0 293.91 461.500352)">Cost &amp; setup effort →</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_3"/>
+     <g id="text_4">
+      <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #20201d" x="47.92" y="414.82028" transform="rotate(-0 47.92 414.82028)">Low</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_4"/>
+     <g id="text_5">
+      <text style="font-size: 10px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #20201d" x="47.92" y="62.301146" transform="rotate(-0 47.92 62.301146)">High</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-weight: 700; font-size: 12px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #20201d" x="20.089688" y="234.889863" transform="rotate(-90 20.089688 234.889863)">Verification depth at the dock →</text>
+    </g>
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="m5e19cb1a55" d="M -16.583124 16.583124 
+L 16.583124 16.583124 
+L 16.583124 -16.583124 
+L -16.583124 -16.583124 
+z
+" style="stroke: #b92d25"/>
+    </defs>
+    <g clip-path="url(#pab8c4dca45)">
+     <use xlink:href="#m5e19cb1a55" x="196.914" y="114.691945" style="fill: #b92d25; stroke: #b92d25"/>
+    </g>
+   </g>
+   <g id="patch_4">
+    <path d="M 51.42 435.219727 
+L 51.42 34.56 
+" style="fill: none; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 536.4 435.219727 
+L 536.4 34.56 
+" style="fill: none; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 51.42 435.219727 
+L 536.4 435.219727 
+" style="fill: none; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 51.42 34.56 
+L 536.4 34.56 
+" style="fill: none; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(63.05952 52.524932)">TARGET: DEEP VERIFICATION,</text>
+    <text style="font-weight: 700; font-size: 8.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(63.05952 61.618438)">LOW COST &amp; FAST SETUP</text>
+   </g>
+   <g id="PathCollection_2">
+    <defs>
+     <path id="m7aa0dd35e4" d="M -11.401754 11.401754 
+L 11.401754 11.401754 
+L 11.401754 -11.401754 
+L -11.401754 -11.401754 
+z
+" style="stroke: #20201d; stroke-width: 1.8"/>
+    </defs>
+    <g clip-path="url(#pab8c4dca45)">
+     <use xlink:href="#m7aa0dd35e4" x="119.3172" y="371.11417" style="fill: #555247; stroke: #20201d; stroke-width: 1.8"/>
+    </g>
+   </g>
+   <g id="PathCollection_3">
+    <defs>
+     <path id="me5b0c88d6c" d="M -11.401754 11.401754 
+L 11.401754 11.401754 
+L 11.401754 -11.401754 
+L -11.401754 -11.401754 
+z
+" style="stroke: #20201d; stroke-width: 1.8"/>
+    </defs>
+    <g clip-path="url(#pab8c4dca45)">
+     <use xlink:href="#me5b0c88d6c" x="235.7124" y="282.96903" style="fill: #315c91; stroke: #20201d; stroke-width: 1.8"/>
+    </g>
+   </g>
+   <g id="PathCollection_4">
+    <defs>
+     <path id="mde02e05afc" d="M -11.401754 11.401754 
+L 11.401754 11.401754 
+L 11.401754 -11.401754 
+L -11.401754 -11.401754 
+z
+" style="stroke: #20201d; stroke-width: 1.8"/>
+    </defs>
+    <g clip-path="url(#pab8c4dca45)">
+     <use xlink:href="#mde02e05afc" x="468.5028" y="98.665556" style="fill: #20201d; stroke: #20201d; stroke-width: 1.8"/>
+    </g>
+   </g>
+   <g id="PathCollection_5">
+    <defs>
+     <path id="m0865a08cc2" d="M -16.583124 16.583124 
+L 16.583124 16.583124 
+L 16.583124 -16.583124 
+L -16.583124 -16.583124 
+z
+" style="stroke: #20201d; stroke-width: 2.2"/>
+    </defs>
+    <g clip-path="url(#pab8c4dca45)">
+     <use xlink:href="#m0865a08cc2" x="192.0642" y="110.685348" style="fill: #f0c642; stroke: #20201d; stroke-width: 2.2"/>
+    </g>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="140.65632" y="373.920889" transform="rotate(-0 140.65632 373.920889)">Paper + Excel</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(257.05152 279.846491)">SME sales &amp;</text>
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(257.05152 291.64657)">inventory apps</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(398.691492 95.536679)">Enterprise</text>
+    <text style="font-size: 11px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #20201d" transform="translate(392.550399 107.519804)">WMS / ERP</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #20201d" x="192.0642" y="114.308395" transform="rotate(-0 192.0642 114.308395)">V</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 15px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="226.0128" y="114.567184" transform="rotate(-0 226.0128 114.567184)">VELO</text>
+   </g>
+  </g>
+  <g id="text_13">
+   <g id="patch_8">
+    <path d="M 326.17225 23.185906 
+L 539.056 23.185906 
+L 539.056 10.078094 
+L 326.17225 10.078094 
+z
+" style="fill: #f0c642; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #20201d; stroke-linejoin: miter"/>
+   </g>
+   <text style="font-weight: 700; font-size: 8px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #20201d" x="536.256" y="18.702313" transform="rotate(-0 536.256 18.702313)">TEAM ASSESSMENT — VERIFY COMPETITOR FEATURES</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pab8c4dca45">
+   <rect x="51.42" y="34.56" width="484.98" height="400.659727"/>
+  </clipPath>
+ </defs>
+</svg>

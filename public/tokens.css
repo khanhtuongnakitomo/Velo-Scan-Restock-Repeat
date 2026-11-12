@@ -1,0 +1,83 @@
+/* VELO design tokens — DESIGN.md (OpenServ style reference) applied as-is. Single source of truth.
+   Served from /tokens.css and linked by index.html, public/brand.html, public/strategy.html and every
+   public/demo/*.html page, so the landing page, demos and brand sheet share one palette.
+   Rules: see design/design.md. Guard: pnpm lint:tokens.
+   Fonts: OS Studio Grotesk + OS Chronik from the OpenServ media kit (openserv.ai/media-kit), self-hosted in /fonts. */
+@font-face { font-family: 'OS Studio Grotesk'; src: url('/fonts/OSStudioGrotesk-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'OS Studio Grotesk'; src: url('/fonts/OSStudioGrotesk-RegularItalic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'OS Studio Grotesk'; src: url('/fonts/OSStudioGrotesk-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'OS Studio Grotesk'; src: url('/fonts/OSStudioGrotesk-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'OS Chronik'; src: url('/fonts/OSChronik-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'OS Chronik'; src: url('/fonts/OSChronik-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
+
+:root {
+  /* Colors (DESIGN.md "Tokens — Colors") */
+  --white: #ffffff;   /* Pure White: page canvas, card surface, button text on violet */
+  --ink: #000000;     /* Ink Black: text, headings, hairline borders, icons, footer ink */
+  --fog: #f5f5f5;     /* Fog Gray: card surface lift, subtle background blocks */
+  --mist: #a6a6a6;    /* Mist Gray: muted nav text, secondary borders */
+  --smoke: #9c9c9c;   /* Smoke Gray: tertiary borders, disabled outlines */
+  --line: #f5f5f5;    /* card hairline (DESIGN.md: 1px #f5f5f5 or #a6a6a6) */
+  --ash: #4d4d4d;     /* Ash Gray: secondary body text */
+  --slate: #707070;   /* Slate Gray: helper text, metadata, fine print */
+  --violet: #5f79ff;  /* Signal Violet: every interactive moment — primary action fill, active nav, focus, icon accents */
+  --mint: #01fe93;    /* Mint Pulse: success, highlights, section stripe; never a CTA fill */
+  --tint: #d9defc;    /* Tint Wash: highlighted panels, sparkles */
+
+  /* Colors: product-UI status only (three-way match: Match = success, Attention = violet, Mismatch = alert) */
+  --alert: #c8342b;
+  --success: #1a7f45;
+
+  /* Typography */
+  --sans: 'OS Studio Grotesk', Inter, Manrope, 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --serif: 'OS Chronik', 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --font-features: 'blwf' on, 'cv03' on, 'cv04' on, 'cv09' on, 'cv11' on;
+  --mono: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, Menlo, monospace; /* openserv.ai micro-labels and data readouts */
+
+  --text-caption: 12px;
+  --text-small: 13px;
+  --text-body: 15px;
+  --text-lead: 18px;
+  --text-subheading: 20px;
+  --text-heading-sm: 24px;
+  --text-heading: 30px;
+  --text-heading-lg: 40px;
+  --text-display: 72px;
+
+  /* Shape */
+  --radius-card: 16px;
+  --radius-panel: 24px; /* large feature panels and cards, as on openserv.ai */
+  --radius-input: 12px;
+  --radius-pill: 100px;
+  --hairline: 1px solid var(--line);
+  --hairline-strong: 1px solid var(--mist);
+
+  /* Elevation: floating nav (and phone mockups) only */
+  --shadow-float: 0 0 48px 0 rgba(0, 0, 0, 0.1);
+
+  /* Layout */
+  --page-max: 1200px;
+  --section-gap: 80px;
+
+  /* Spacing scale (4px base) */
+  --space-0: 0px;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-60: 60px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-120: 120px;
+}

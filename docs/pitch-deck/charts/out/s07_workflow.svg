@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1152pt" height="518.4pt" viewBox="0 0 1152 518.4" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-12T11:48:00.288345</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 518.4 
+L 1152 518.4 
+L 1152 0 
+L 0 0 
+z
+" style="fill: #f1e5cb"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 279 127.8 
+Q 295.2 127.8 308.604915 127.8 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 300.604915 123.8 
+L 308.604915 127.8 
+L 300.604915 131.8 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 559.8 127.8 
+Q 576 127.8 589.404915 127.8 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 581.404915 123.8 
+L 589.404915 127.8 
+L 581.404915 131.8 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 840.6 127.8 
+Q 856.8 127.8 870.204915 127.8 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 862.204915 123.8 
+L 870.204915 127.8 
+L 862.204915 131.8 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 997.2 219.6 
+Q 997.2 243 997.2 263.604915 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 1001.2 255.604915 
+L 997.2 263.604915 
+L 993.2 255.604915 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 873 358.2 
+Q 856.8 358.2 843.395085 358.2 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 851.395085 362.2 
+L 843.395085 358.2 
+L 851.395085 354.2 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 592.2 358.2 
+Q 576 358.2 562.595085 358.2 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 570.595085 362.2 
+L 562.595085 358.2 
+L 570.595085 354.2 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 311.4 358.2 
+Q 295.2 358.2 281.795085 358.2 
+" clip-path="url(#p48f738dd88)" style="fill: none; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+    <path d="M 289.795085 362.2 
+L 281.795085 358.2 
+L 289.795085 354.2 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #20201d; stroke: #20201d; stroke-width: 2.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 34.2 216 
+L 275.4 216 
+L 275.4 39.6 
+L 34.2 39.6 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #315c91; stroke-width: 4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 315 216 
+L 556.2 216 
+L 556.2 39.6 
+L 315 39.6 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #f0c642; stroke-width: 4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 595.8 216 
+L 837 216 
+L 837 39.6 
+L 595.8 39.6 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #20201d; stroke-width: 2.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 876.6 216 
+L 1117.8 216 
+L 1117.8 39.6 
+L 876.6 39.6 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #315c91; stroke-width: 4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 876.6 446.4 
+L 1117.8 446.4 
+L 1117.8 270 
+L 876.6 270 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #20201d; stroke-width: 2.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 595.8 446.4 
+L 837 446.4 
+L 837 270 
+L 595.8 270 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #20201d; stroke-width: 2.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 315 446.4 
+L 556.2 446.4 
+L 556.2 270 
+L 315 270 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #315c91; stroke-width: 4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 34.2 446.4 
+L 275.4 446.4 
+L 275.4 270 
+L 34.2 270 
+z
+" clip-path="url(#p48f738dd88)" style="fill: #f7f0e2; stroke: #315c91; stroke-width: 4; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="47.16" y="69.716" transform="rotate(-0 47.16 69.716)">01</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="327.96" y="69.716" transform="rotate(-0 327.96 69.716)">02</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="608.76" y="69.716" transform="rotate(-0 608.76 69.716)">03</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="889.56" y="69.716" transform="rotate(-0 889.56 69.716)">04</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="889.56" y="300.116" transform="rotate(-0 889.56 300.116)">05</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="608.76" y="300.116" transform="rotate(-0 608.76 300.116)">06</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="327.96" y="300.116" transform="rotate(-0 327.96 300.116)">07</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 22px; font-family: 'Archivo Black'; text-anchor: start; fill: #20201d" x="47.16" y="300.116" transform="rotate(-0 47.16 300.116)">08</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="47.16" y="110.794219" transform="rotate(-0 47.16 110.794219)">Expected delivery</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(47.16 143.102856)">From PO or CSV import; no-PO mode</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(47.16 154.670288)">when none exists</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="327.96" y="110.794219" transform="rotate(-0 327.96 110.794219)">Scan delivery note</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(327.96 143.102856)">AI OCR extracts supplier, lines,</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(327.96 154.781851)">quantities; receiver confirms</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="608.76" y="110.628369" transform="rotate(-0 608.76 110.628369)">Scan &amp; count</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(608.76 143.102856)">Barcode / QR. No barcode → search,</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(608.76 154.465005)">photo, print a QR label</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="889.56" y="110.794219" transform="rotate(-0 889.56 110.794219)">Live three-way match</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(889.56 143.102856)">Every line turns blue, yellow or</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(889.56 154.726069)">red as counting proceeds</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="889.56" y="341.352422" transform="rotate(-0 889.56 341.352422)">Confirm or flag</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(889.56 373.614419)">Reason + photo for exceptions;</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(889.56 385.293413)">driver co-confirms on the phone</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="608.76" y="341.028369" transform="rotate(-0 608.76 341.028369)">Manager approves</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(608.76 373.502856)">Accept, partial accept, reject, or</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(608.76 385.126069)">open a supplier claim</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="327.96" y="341.194219" transform="rotate(-0 327.96 341.194219)">Digital goods receipt</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(327.96 374.014731)">Phiếu nhập kho generated with</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(327.96 385.637944)">names, times and evidence</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #20201d" x="47.16" y="341.194219" transform="rotate(-0 47.16 341.194219)">Live stock &amp; alerts</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(47.16 373.502856)">Batch, expiry (FEFO), low stock,</text>
+    <text style="font-size: 10.5px; font-family: 'Segoe UI', 'DejaVu Sans'; fill: #555247" transform="translate(47.16 385.126069)">supplier accuracy</text>
+   </g>
+   <g id="text_25">
+    <g id="patch_17">
+     <path d="M 239.85 68.85 
+L 267.75 68.85 
+L 267.75 50.85 
+L 239.85 50.85 
+z
+" style="fill: #315c91; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #ffffff" x="264.6" y="63.225" transform="rotate(-0 264.6 63.225)">RULE</text>
+   </g>
+   <g id="text_26">
+    <g id="patch_18">
+     <path d="M 531.45 68.85 
+L 548.55 68.85 
+L 548.55 50.85 
+L 531.45 50.85 
+z
+" style="fill: #f0c642; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #20201d" x="545.4" y="63.225" transform="rotate(-0 545.4 63.225)">AI</text>
+   </g>
+   <g id="text_27">
+    <g id="patch_19">
+     <path d="M 796.05 68.85 
+L 829.35 68.85 
+L 829.35 50.85 
+L 796.05 50.85 
+z
+" style="fill: #20201d; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #f7f0e2" x="826.2" y="63.225" transform="rotate(-0 826.2 63.225)">HUMAN</text>
+   </g>
+   <g id="text_28">
+    <g id="patch_20">
+     <path d="M 1082.25 68.85 
+L 1110.15 68.85 
+L 1110.15 50.85 
+L 1082.25 50.85 
+z
+" style="fill: #315c91; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #ffffff" x="1107" y="63.225" transform="rotate(-0 1107 63.225)">RULE</text>
+   </g>
+   <g id="text_29">
+    <g id="patch_21">
+     <path d="M 1076.85 299.25 
+L 1110.15 299.25 
+L 1110.15 281.25 
+L 1076.85 281.25 
+z
+" style="fill: #20201d; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #f7f0e2" x="1107" y="293.625" transform="rotate(-0 1107 293.625)">HUMAN</text>
+   </g>
+   <g id="text_30">
+    <g id="patch_22">
+     <path d="M 796.05 299.25 
+L 829.35 299.25 
+L 829.35 281.25 
+L 796.05 281.25 
+z
+" style="fill: #20201d; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #f7f0e2" x="826.2" y="293.625" transform="rotate(-0 826.2 293.625)">HUMAN</text>
+   </g>
+   <g id="text_31">
+    <g id="patch_23">
+     <path d="M 520.65 299.25 
+L 548.55 299.25 
+L 548.55 281.25 
+L 520.65 281.25 
+z
+" style="fill: #315c91; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #ffffff" x="545.4" y="293.625" transform="rotate(-0 545.4 293.625)">RULE</text>
+   </g>
+   <g id="text_32">
+    <g id="patch_24">
+     <path d="M 250.65 299.25 
+L 267.75 299.25 
+L 267.75 281.25 
+L 250.65 281.25 
+z
+" style="fill: #f0c642; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #20201d" x="264.6" y="293.625" transform="rotate(-0 264.6 293.625)">AI</text>
+   </g>
+   <g id="text_33">
+    <g id="patch_25">
+     <path d="M 198.81 299.25 
+L 226.71 299.25 
+L 226.71 281.25 
+L 198.81 281.25 
+z
+" style="fill: #315c91; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 9px; font-family: 'IBM Plex Mono'; text-anchor: end; fill: #ffffff" x="223.56" y="293.625" transform="rotate(-0 223.56 293.625)">RULE</text>
+   </g>
+   <g id="text_34">
+    <g id="patch_26">
+     <path d="M 30.7 503.2 
+L 127.7 503.2 
+L 127.7 483.2 
+L 30.7 483.2 
+z
+" style="fill: #f0c642; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'IBM Plex Mono'; text-anchor: start; fill: #20201d" x="34.2" y="496.95" transform="rotate(-0 34.2 496.95)">AI — perception</text>
+   </g>
+   <g id="text_35">
+    <g id="patch_27">
+     <path d="M 246.7 503.2 
+L 337.7 503.2 
+L 337.7 483.2 
+L 246.7 483.2 
+z
+" style="fill: #315c91; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'IBM Plex Mono'; text-anchor: start; fill: #ffffff" x="250.2" y="496.95" transform="rotate(-0 250.2 496.95)">RULE — control</text>
+   </g>
+   <g id="text_36">
+    <g id="patch_28">
+     <path d="M 462.7 503.2 
+L 565.7 503.2 
+L 565.7 483.2 
+L 462.7 483.2 
+z
+" style="fill: #20201d; stroke: #20201d; stroke-width: 1.6; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'IBM Plex Mono'; text-anchor: start; fill: #f7f0e2" x="466.2" y="496.95" transform="rotate(-0 466.2 496.95)">HUMAN — decision</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p48f738dd88">
+   <rect x="0" y="0" width="1152" height="518.4"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -19,3 +19,10 @@ logs/
 # beside it.
 /.plugins/
 /.opencode-skills/
+
+# Local agent state (annotations from the dev overlay)
+/.omp/
+
+# Python artifacts (pitch-deck chart scripts)
+**/charts/.venv/
+__pycache__/
