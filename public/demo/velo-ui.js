@@ -60,20 +60,34 @@
   }
   const TABS = [['deliveries', 'DELIVERIES'], ['scan', 'SCAN'], ['match', 'MATCH'], ['receipt', 'RECEIPT']]
 
-  function shell({ time, zone, tab, main, back, who }) {
+  const PROG_STEPS = ['Note', 'Verify', 'Count', 'Match', 'Receipt']
+
+  function progressBar(step, mgr) {
+    if (mgr) return `<div class="ph-prog ph-prog--mgr"><span>MANAGER APPROVAL · ${D.manager.toUpperCase()}</span><b>FINAL STEP</b></div>`
+    const s = step ?? 0
+    return `<div class="ph-prog" aria-label="Receiving progress">${PROG_STEPS.map((label, i) => {
+      const cls = i < s ? 'is-done' : i === s ? 'is-now' : ''
+      return `<span class="${cls}"><i></i>${i + 1} ${label}</span>`
+    }).join('')}</div>`
+  }
+
+  function shell({ time, zone, tab, main, back, who, step, mgr, dimTabs }) {
+    const dim = new Set(dimTabs || [])
     const nav = tab === false
       ? ''
-      : `<nav class="ph-tabs">${TABS.map(([k, l]) => `<button class="ph-tab${k === tab ? ' on' : ''}" data-tab="${k}"><svg viewBox="0 0 20 20" aria-hidden="true">${ICON[k]}</svg>${l}</button>`).join('')}</nav>`
+      : `<nav class="ph-tabs">${TABS.map(([k, l]) => `<button class="ph-tab${k === tab ? ' on' : ''}${dim.has(k) ? ' is-dim' : ''}" data-tab="${k}"><svg viewBox="0 0 20 20" aria-hidden="true">${ICON[k]}</svg>${l}</button>`).join('')}</nav>`
+    const whoLabel = who === 'MN' ? 'Minh ▾' : 'Lan ▾'
     return `
       <div class="ph-status"><b>${time}</b><span class="ph-island"></span><span class="ph-sys"><span class="ph-sig"><i></i><i></i><i></i><i></i></span><span class="ph-bat"><i></i></span></span></div>
-      <div class="ph-top">${back ? '<button class="ph-back" data-act="back" aria-label="Back">←</button>' : ''}<span class="ph-brand"><img src="${LOGO}" alt=""><b>VELO</b></span><span class="v-chip v-chip--pastel">${zone}</span><button class="ph-me" data-act="menu" aria-label="Demo menu">${who || 'LT'}</button></div>
+      <div class="ph-top">${back ? '<button class="ph-back" data-act="back" aria-label="Back">←</button>' : ''}<span class="ph-brand"><img src="${LOGO}" alt=""><b>VELO</b></span><span class="v-chip v-chip--pastel">${zone}</span><button class="ph-me" data-act="menu" aria-label="Switch role or demo menu">${whoLabel}</button></div>
+      ${progressBar(step, mgr)}
       <div class="ph-main${tab === false ? ' is-bare' : ''}">${main}</div>
       ${nav}
       <span class="ph-home"></span>`
   }
 
-  function taskList(rows) {
-    return `<ol class="ph-tasks">${rows
+  function taskList(rows, cls) {
+    return `<ol class="ph-tasks${cls ? ' ' + cls : ''}">${rows
       .map(
         (r, i) => `<li class="ph-task${r.st ? ' is-' + r.st : ''} v-in v-in-${Math.min(i + 2, 5)}"${r.act ? ` data-act="${r.act}"${r.tap ? ` data-tap="${r.tap}"` : ''} role="button" tabindex="0"` : ''}>
           <span class="ph-task__n">${r.st === 'done' ? '✓' : r.n}</span>
@@ -104,18 +118,26 @@
     /* 1 · expected deliveries */
     deliveries(state) {
       const done = state === 'done'
-      const rows = [
+      const activeRow = [
         done
-          ? { n: 'A', title: `${D.supplier} · ${D.note}`, sub: 'Received 09:34 · 1 claim open', tag: 'DONE', st: 'done' }
-          : { n: 'A', title: `${D.supplier} · ${D.note}`, sub: `${D.po} · 2 lines · truck at Dock 1`, tag: 'ARRIVED', st: 'now', act: 'start', tap: 'start' },
-        { n: 'B', title: 'Supplier C · PO-1091', sub: '5 lines · expected 14:00', tag: 'EXPECTED', act: 'other' },
-        { n: 'C', title: 'Supplier B · PO-1094', sub: '3 lines · expected tomorrow', tag: 'TOMORROW', act: 'other' },
+          ? { n: '✓', title: `${D.supplier} · ${D.note}`, sub: 'Received 09:34 · 1 claim opened', tag: 'DONE', st: 'done' }
+          : { n: '1', title: `${D.supplier} · ${D.note}`, sub: `${D.po} · 2 items · Tap to start`, tag: 'ARRIVED', st: 'now', act: 'start', tap: 'start' },
+      ]
+      const laterRows = [
+        { n: '2', title: 'Supplier C · PO-1091', sub: '5 lines · expected 14:00', tag: '14:00', act: 'other' },
+        { n: '3', title: 'Supplier B · PO-1094', sub: '3 lines · expected tomorrow', tag: 'TOMORROW', act: 'other' },
       ]
       return shell({
         time: done ? '09:35' : '09:12', zone: 'DOCK 1', tab: 'deliveries',
+        step: done ? 5 : 0,
+        dimTabs: done ? [] : ['match', 'receipt'],
         main: `<div class="ph-pad">
-            <div class="ph-hello v-in"><small>${D.date} · ${D.warehouse.toUpperCase()}</small><h2>Good morning, <b>Lan</b></h2><p>Today's expected deliveries, created from purchase orders. Pick the truck at your dock.</p></div>
-            ${taskList(rows)}
+            <div class="ph-hello v-in"><small>${D.date} · ${D.warehouse.toUpperCase()}</small><h2>Good morning, <b>Lan</b></h2><p>${done ? 'Dock 1 delivery is verified and recorded.' : 'Tap the arrived truck below to verify delivery note against PO.'}</p></div>
+            ${done ? '' : `<div class="flow-mini v-in v-in-2" aria-label="How receiving works"><div><b>01 SCAN</b><span>Photo note &amp; check AI</span></div><div><b>02 COUNT</b><span>Scan items by hand</span></div><div><b>03 VERIFY</b><span>Match &amp; issue receipt</span></div></div>`}
+            <span class="ph-sec-lbl">${done ? 'COMPLETED TODAY' : 'READY AT DOCK 1'}</span>
+            ${taskList(activeRow)}
+            <span class="ph-sec-lbl">UPCOMING SCHEDULE</span>
+            ${taskList(laterRows, 'ph-tasks--sub')}
           </div>
           <div class="ph-cta v-in v-in-5">
             ${done ? '' : `<button class="v-btn v-btn--fill" data-act="start">Start receiving ${D.note} →</button>`}
@@ -128,10 +150,10 @@
     note(state, o = {}) {
       const reading = state === 'reading'
       return shell({
-        time: '09:14', zone: 'DOCK 1', tab: 'scan', back: o.back,
+        time: '09:14', zone: 'DOCK 1', tab: 'scan', back: o.back, step: 0, dimTabs: ['match', 'receipt'],
         main: `<div class="ph-cam"${reading ? '' : ' data-act="scan-note" role="button" aria-label="Photograph the delivery note"'}>
             <div class="cam-box"></div>
-            <div class="cam-top"><span class="v-chip v-chip--ink">${D.po} · ${D.supplier.toUpperCase()}</span><span class="v-chip">${reading ? 'AI READING…' : 'DELIVERY NOTE'}</span></div>
+            <div class="cam-top"><span class="v-chip v-chip--ink">STEP 1 · ${D.po}</span><span class="v-chip">${reading ? 'AI READING…' : 'DELIVERY NOTE'}</span></div>
             <div class="cam-note${reading ? ' is-read' : ''}">
               <div class="cam-note__hd"><b>PHIẾU GIAO HÀNG</b><span>No. ${D.note}</span></div>
               <div class="cam-note__sub"><span>${D.supplier}</span><span>12/11/2026</span></div>
@@ -140,15 +162,15 @@
               <div class="cam-note__ft">Người giao hàng: ………………</div>
             </div>
             <div class="cam-frame cam-frame--note${reading ? ' is-hit' : ''}"><i></i><i></i><i></i><i></i><span class="cam-beam"></span></div>
-            <div class="cam-mode"><span class="on">DELIVERY NOTE</span><span>NO PO</span></div>
+            <div class="cam-mode"><span class="on">DELIVERY NOTE</span><span data-act="nopo">NO PO</span></div>
           </div>
           <div class="ph-sheet">${
             reading
               ? `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>AI is reading the Vietnamese text…</div>
                  <p class="sheet-note">Nothing is saved yet. You confirm every line on the next screen.</p>`
-              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${o.tapHint ? 'Tap the camera to photograph the note' : 'Fit the whole note inside the frame'}</div>
-                 ${o.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan-note">Photograph note</button></div>' : ''}
-                 <p class="sheet-note">Printed or handwritten, Vietnamese or English. The photo is kept as evidence.</p>`
+              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${o.tapHint ? 'Step 1: Photograph delivery note ' + D.note : 'Fit the whole note inside the frame'}</div>
+                 ${o.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan-note">Photograph note →</button></div>' : ''}
+                 <p class="sheet-note">Printed or handwritten, Vietnamese or English. Kept as evidence.</p>`
           }</div>`,
       })
     },
@@ -156,28 +178,29 @@
     /* 2b · AI extraction review */
     extract(state, o = {}) {
       const checked = o.checked || (state === 'confirmed' ? [true, true] : [false, false])
-      const all = checked.every(Boolean)
+      const doneCount = checked.filter(Boolean).length
+      const all = doneCount === checked.length
       const lines = D.lines.map((l, i) => {
         const low = l.conf < 90
         return `<div class="xl${checked[i] ? ' is-on' : ''} v-in v-in-${i + 2}" data-act="chk:${i}" data-tap="chk${i}" role="button" tabindex="0" aria-pressed="${checked[i]}">
-          <div class="xl__top"><span class="v-lbl">ON THE NOTE</span><span class="xl__chk">${checked[i] ? '✓' : ''}</span></div>
+          <div class="xl__top"><span class="v-lbl">LINE ${i + 1} · ON NOTE</span><span class="xl__chk">${checked[i] ? '✓ CONFIRMED' : 'TAP TO CONFIRM'}</span></div>
           <div class="xl__raw">“${l.raw}” · ${l.rawUnit} · <b>${l.claimed}</b></div>
           <div class="xl__sku"><span class="v-lbl">MATCHED TO CATALOGUE</span><b>${l.name}</b><small>${l.sku} · ${l.claimed} ${l.unit}s</small></div>
           <div class="xl__conf"><span class="conf"><i style="width:${l.conf}%"></i></span><span class="v-chip${low ? ' v-chip--attn' : ''}">${l.conf}%${low ? ' · CHECK' : ''}</span></div>
         </div>`
       }).join('')
       return shell({
-        time: '09:16', zone: 'DOCK 1', tab: 'scan', back: o.back,
+        time: '09:16', zone: 'DOCK 1', tab: 'scan', back: o.back, step: 1, dimTabs: ['match', 'receipt'],
         main: `<div class="ph-pad">
-            <div class="ai-hd v-in"><span class="v-lbl ai-badge">AI · READ FROM THE NOTE</span><span class="v-chip">${D.note}</span></div>
-            <h3 class="ph-h3 v-in v-in-2">Check what AI read</h3>
-            <p class="ph-p v-in v-in-2">Tap each line to confirm it. You can correct any field. OCR never writes to stock by itself.</p>
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">STEP 2 · CONFIRM AI READ</span><span class="v-chip">${D.note}</span></div>
+            <h3 class="ph-h3 v-in v-in-2">Check both matched items</h3>
+            <p class="ph-p v-in v-in-2">Tap each card below to confirm. OCR never writes to stock without your sign-off.</p>
             <div class="xls">${lines}</div>
           </div>
           <div class="ph-actions">${
             all
               ? '<button class="v-btn v-btn--fill" data-tap="go" data-act="extract-ok">Continue to counting →</button>'
-              : '<button class="v-btn" disabled data-act="extract-ok">Confirm both lines to continue</button>'
+              : `<button class="v-btn v-btn--locked" data-act="extract-locked">${doneCount} of 2 confirmed · Tap cards above</button>`
           }</div>`,
       })
     },
@@ -191,10 +214,10 @@
       const dmg = o.dmg ?? l.dmg
       const near = l.days <= 30
       return shell({
-        time: i ? '09:23' : hit ? '09:22' : '09:19', zone: 'DOCK 1', tab: 'scan', back: o.back,
+        time: i ? '09:23' : hit ? '09:22' : '09:19', zone: 'DOCK 1', tab: 'scan', back: o.back, step: 2, dimTabs: ['match', 'receipt'],
         main: `<div class="ph-cam"${hit ? '' : ' data-act="scan" role="button" aria-label="Scan the barcode"'}>
             <div class="cam-box"></div>
-            <div class="cam-top"><span class="v-chip v-chip--ink">LINE ${i + 1} OF 2</span><span class="v-chip">${hit ? 'READ ✓' : '1D BARCODE'}</span></div>
+            <div class="cam-top"><span class="v-chip v-chip--ink">ITEM ${i + 1} OF 2</span><span class="v-chip">${hit ? 'BARCODE READ ✓' : 'READY TO SCAN'}</span></div>
             <div class="cam-label">
               <div class="cam-label__sup"><span>${D.supplier.toUpperCase()}</span><span>EAN-13</span></div>
               <div class="cam-label__name">${l.name}</div>
@@ -202,21 +225,22 @@
               ${barcode(l.ean)}
             </div>
             <div class="cam-frame${hit ? ' is-hit' : ''}"><i></i><i></i><i></i><i></i><span class="cam-beam"></span>${hit ? '<span class="cam-hit">✓</span>' : ''}</div>
-            <div class="cam-mode"><span class="on">BARCODE · EAN</span><span data-act="fallback:search">SEARCH</span><span data-act="fallback:photo">PHOTO</span></div>
+            <div class="cam-mode"><span class="on">BARCODE · EAN-13</span></div>
           </div>
           <div class="ph-sheet">${
             hit
-              ? `<div class="sheet-hd v-in"><span class="v-chip v-chip--ok">✓ FOUND ON THE NOTE</span><small>EAN-13 · LINE ${i + 1} OF 2</small></div>
+              ? `<div class="sheet-hd v-in"><span class="v-chip v-chip--ok">✓ MATCHED TO NOTE</span><small>ITEM ${i + 1} OF 2</small></div>
                  <h3 class="v-in v-in-2">${l.name}</h3>
+                 <div class="cnt-sum v-in v-in-2"><span>Expected: <b>${l.claimed} ${l.unit}s</b></span><span>Counted: <b>${good + dmg}</b> (${good} good${dmg ? `, ${dmg} dmg` : ''})</span></div>
                  <div class="cnt v-in v-in-3">${stp('COUNTED GOOD', good, 'good')}${stp('DAMAGED', dmg, 'dmg')}</div>
                  <dl class="kv v-in v-in-3"><div><dt>BATCH</dt><dd>${l.batch}</dd></div><div><dt>EXPIRES</dt><dd>${l.exp.toUpperCase()}${near ? ` · ${l.days} DAYS` : ''}</dd></div></dl>
-                 <p class="sheet-note v-in v-in-4">${dmg > 0 ? 'Damaged units need a photo on the flag screen.' : 'Condition good. Counted by hand, not copied from the note.'}${near ? ' Batch expires soon: rules will raise a FEFO alert.' : ''}</p>
-                 <div class="sheet-act v-in v-in-5"><button class="v-btn v-btn--fill" data-tap="save" data-act="save-line">${i ? 'Save · see the match →' : 'Save line →'}</button></div>`
-              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${o.tapHint ? 'Tap the camera to scan the barcode' : 'Scan the product barcode'}</div>
-                 ${o.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan">Scan barcode</button></div>' : ''}
-                 <p class="sheet-note">Expected on this line: <b>${l.claimed} ${l.unit}s</b> · ${l.sku}</p>
-                 <div class="fb v-in v-in-3"><span class="v-lbl">NO BARCODE?</span>
-                   <div class="fb__row"><button class="v-chip" data-act="fallback:search">Search by name</button><button class="v-chip" data-act="fallback:photo">Photo the label</button><button class="v-chip" data-act="fallback:qr">Print an internal QR</button></div></div>`
+                 <p class="sheet-note v-in v-in-4">${dmg > 0 ? 'Damaged units require a photo on the next step.' : 'All units in good condition.'}${near ? ' Near-expiry batch: FEFO alert queued.' : ''}</p>
+                 <div class="sheet-act v-in v-in-5"><button class="v-btn v-btn--fill" data-tap="save" data-act="save-line">${i ? 'Save & see three-way match →' : 'Save & scan item 2 →'}</button></div>`
+              : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>${o.tapHint ? 'Tap the camera or “Scan barcode”' : 'Scan the product barcode'}</div>
+                 ${o.tapHint ? '<div class="sheet-act"><button class="v-btn v-btn--fill" data-act="scan">Scan barcode →</button></div>' : ''}
+                 <p class="sheet-note">Expected on this item: <b>${l.claimed} ${l.unit}s</b> · ${l.sku}</p>
+                 <div class="fb v-in v-in-3"><span class="v-lbl">NO BARCODE ON BOX?</span>
+                   <div class="fb__row"><button class="v-chip" data-act="fallback:search">Search by name</button><button class="v-chip" data-act="fallback:photo">Photo label</button><button class="v-chip" data-act="fallback:qr">Print QR</button></div></div>`
           }</div>`,
       })
     },
@@ -245,12 +269,12 @@
           }</div>
         </div>`).join('')
       return shell({
-        time: '09:24', zone: 'DOCK 1', tab: 'match', back: o.back,
+        time: '09:24', zone: 'DOCK 1', tab: 'match', back: o.back, step: 3, dimTabs: ['receipt'],
         main: `<div class="ph-pad">
-            <div class="ai-hd v-in"><span class="v-lbl ai-badge">THREE-WAY MATCH · RULES</span><span class="v-chip">${D.note}</span></div>
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">STEP 4 · THREE-WAY MATCH</span><span class="v-chip">${D.note}</span></div>
             <div class="ph-stats v-in v-in-2"><div><b>${n.match}</b><span>MATCH</span></div><div><b>${n.attn}</b><span>ATTENTION</span></div><div><b>${n.miss}</b><span>MISMATCH</span></div></div>
             <div class="mls">${cards}</div>
-            <p class="sheet-note v-in v-in-4">Rules did the arithmetic. You judge the exceptions.</p>
+            <p class="sheet-note v-in v-in-4">Rules found the mismatch &amp; expiry alert. Tap below to record evidence.</p>
           </div>
           <div class="ph-actions"><button class="v-btn v-btn--fill" data-tap="flag" data-act="flag">Flag discrepancy →</button></div>`,
       })
@@ -265,26 +289,26 @@
       const needDriver = reasons.some((r) => ['dmg', 'short', 'over', 'wrong'].includes(r))
       const ready = (photo || !dmgSel) && (driver || !needDriver) && reasons.length > 0
       return shell({
-        time: '09:26', zone: 'DOCK 1', tab: 'match', back: o.back,
+        time: '09:26', zone: 'DOCK 1', tab: 'match', back: o.back, step: 3, dimTabs: ['receipt'],
         main: `<div class="ph-pad">
-            <div class="ai-hd v-in"><span class="v-lbl ai-badge">FLAG · ${D.lines[0].short.toUpperCase()}</span><span class="v-chip v-chip--ink">YOU DECIDE</span></div>
-            <h3 class="ph-h3 v-in v-in-2">What is wrong?</h3>
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">FLAG · ${D.lines[0].short.toUpperCase()}</span><span class="v-chip v-chip--ink">COMPLETE 1–2–3</span></div>
+            <h3 class="ph-h3 v-in v-in-2">1 · What is wrong?</h3>
             <div class="rs v-in v-in-2">${REASONS.map(([k, t]) => `<button class="rsb${reasons.includes(k) ? ' on' : ''}" data-act="reason:${k}" aria-pressed="${reasons.includes(k)}">${t}</button>`).join('')}</div>
-            <div class="ev v-in v-in-3"><span class="v-lbl">EVIDENCE${dmgSel ? ' · PHOTO REQUIRED FOR DAMAGE' : ''}</span>${
+            <div class="ev v-in v-in-3"><span class="v-lbl">2 · PHOTO EVIDENCE${dmgSel ? ' · REQUIRED FOR DAMAGE' : ''}</span>${
               photo ? photoThumb(`${o.d ?? 4} CRUSHED TUBES`) : `<button class="ev-add" data-tap="photo" data-act="photo">+ Take photo of the damage</button>`
             }</div>
-            <div class="drv v-in v-in-4${driver ? ' is-ok' : ''}"><span class="v-lbl">DRIVER CO-CONFIRMS · SAME PHONE</span>${
+            <div class="drv v-in v-in-4${driver ? ' is-ok' : ''}"><span class="v-lbl">3 · DRIVER CO-CONFIRMS · SAME PHONE</span>${
               driver
                 ? `<div class="ok-row"><span class="v-ok">✓</span><div><b>${D.driver} · ${D.supplier} driver</b><span>CONFIRMS ${o.d ?? 4} DAMAGED ON ARRIVAL · 09:27</span></div></div>`
                 : photo
-                  ? `<p>Hand the phone to the driver. He checks the photo and the count.</p><button class="v-btn" data-tap="driver" data-act="driver">Driver confirms on this phone</button>`
-                  : '<p>Unlocks after the photo, while the driver is still at the dock.</p>'
+                  ? `<p>Hand the phone to driver ${D.driver} to confirm the count at Dock 1.</p><button class="v-btn" data-tap="driver" data-act="driver">Driver confirms on this phone</button>`
+                  : '<p>Unlocks right after you attach the damage photo above.</p>'
             }</div>
           </div>
           <div class="ph-actions">${
             ready
               ? `<button class="v-btn v-btn--fill" data-tap="submit" data-act="submit">Submit for approval →</button>`
-              : `<button class="v-btn" disabled data-act="submit">${!photo && dmgSel ? 'Photo required to submit' : needDriver && !driver ? 'Driver confirmation needed' : 'Pick a reason to submit'}</button>`
+              : `<button class="v-btn v-btn--locked" data-act="submit-locked">${!reasons.length ? '1. Pick at least one reason' : !photo && dmgSel ? '2. Take damage photo to continue' : '3. Get driver confirmation to submit'}</button>`
           }</div>`,
       })
     },
@@ -292,20 +316,20 @@
     /* 6 · submitted, waiting for approval */
     submitted(state, o = {}) {
       return shell({
-        time: '09:27', zone: 'DOCK 1', tab: 'match',
+        time: '09:27', zone: 'DOCK 1', tab: 'match', step: 3, dimTabs: ['receipt'],
         main: `<div class="ph-pad">
             <div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Sent to ${D.manager} for approval</b><span>${D.note} · 09:27</span></div></div>
             <ol class="steps v-in v-in-2">
               <li class="is-done"><i>✓</i>Counted and matched by rules<span>09:24</span></li>
               <li class="is-done"><i>✓</i>Photo + driver confirmation<span>09:27</span></li>
-              <li class="is-now"><i>3</i>Manager approval<span>WAITING</span></li>
+              <li class="is-now"><i>3</i>Manager approval<span>NEXT</span></li>
               <li><i>4</i>Receipt (phiếu nhập kho)<span>AFTER APPROVAL</span></li>
             </ol>
-            <ul class="why v-in v-in-3"><li><span><b>Nothing enters stock yet.</b> Only a named approver can accept an exception.</span></li><li><span><b>The 4 damaged tubes</b> will exist only as a documented claim.</span></li></ul>
+            <ul class="why v-in v-in-3"><li><span><b>Nothing enters stock yet.</b> Only a named manager can approve an exception.</span></li><li><span><b>The 4 damaged tubes</b> stay separated as a documented claim.</span></li></ul>
           </div>
           <div class="ph-actions">${
             o.demo
-              ? `<span class="v-lbl">DEMO CONTROL</span><button class="v-btn v-btn--fill" data-tap="switch" data-act="to-manager">Switch to ${D.manager}, manager →</button>`
+              ? `<span class="v-lbl">NEXT · STEP INTO MANAGER VIEW</span><button class="v-btn v-btn--fill" data-tap="switch" data-act="to-manager">Open ${D.manager}'s approval screen →</button>`
               : `<div class="sheet-wait"><span class="v-dots"><i></i><i></i><i></i></span>Waiting for ${D.manager.split(' ')[0]}…</div>`
           }</div>`,
       })
@@ -315,7 +339,7 @@
     receipt(state, o = {}) {
       const l0 = D.lines[0], l1 = D.lines[1]
       return shell({
-        time: '09:34', zone: 'DOCK 1', tab: 'receipt',
+        time: '09:34', zone: 'DOCK 1', tab: 'receipt', step: 5,
         main: `<div class="ph-pad">
             <div class="ok-row v-in"><span class="v-ok">✓</span><div><b>Receipt issued</b><span>APPROVED BY ${D.manager.toUpperCase()} · 09:34</span></div></div>
             <div class="rc v-in v-in-2">
@@ -326,7 +350,7 @@
               <div class="rc__row"><div><b>${l1.name}</b><small>BATCH ${l1.batch} · EXP ${l1.exp.toUpperCase()}</small></div><div class="rc__q"><b>20</b><small>ACCEPTED</small></div></div>
               <div class="rc__sig"><span>Received · ${D.receiver} · 09:27</span><span>Approved · ${D.manager} · 09:34</span></div>
             </div>
-            <p class="sheet-note v-in v-in-3">Stock is updated with batch and expiry. Every step is in the audit trail.</p>
+            <p class="sheet-note v-in v-in-3">Stock is updated with batch and expiry. Every step is saved in the audit trail.</p>
           </div>
           ${o.next ? '<div class="ph-actions"><button class="v-btn v-btn--fill" data-act="home">Back to deliveries →</button></div>' : ''}`,
       })
@@ -338,9 +362,9 @@
       const g = o.good ?? 96
       const d = o.dmg ?? 4
       return shell({
-        time: done ? '09:34' : '09:28', zone: 'MANAGER', tab: false, who: 'MN',
+        time: done ? '09:34' : '09:28', zone: 'MANAGER', tab: false, who: 'MN', step: 4, mgr: true,
         main: `<div class="ph-pad">
-            <div class="ai-hd v-in"><span class="v-lbl ai-badge">APPROVAL QUEUE · 1</span><span class="v-chip v-chip--ink">${D.manager.toUpperCase()}</span></div>
+            <div class="ai-hd v-in"><span class="v-lbl ai-badge">APPROVAL QUEUE · 1 WAITING</span><span class="v-chip v-chip--ink">${D.manager.toUpperCase()}</span></div>
             <h3 class="ph-h3 v-in v-in-2">${D.supplier} · ${D.note}</h3>
             <dl class="kv v-in v-in-2"><div><dt>RECEIVED</dt><dd>${g} OF 100 TUBES</dd></div><div><dt>DAMAGED</dt><dd>${d} · DRIVER OK</dd></div><div><dt>CEMENT</dt><dd>20 OF 20 ✓</dd></div><div><dt>BATCH L2406-A</dt><dd>20 DAYS LEFT</dd></div></dl>
             <div class="ev v-in v-in-3" style="margin-top:var(--space-12)">${photoThumb(`${d} CRUSHED TUBES`)}</div>
@@ -353,9 +377,10 @@
           </div>
           <div class="ph-actions">${
             done
-              ? `<span class="v-lbl">DEMO CONTROL</span><button class="v-btn v-btn--fill" data-act="to-receiver">Back to Lan's phone →</button>`
-              : `<button class="v-btn v-btn--fill" data-tap="approve" data-act="approve">${d ? `Accept ${g}, claim ${d}` : `Accept ${g}`}</button>
-                 <div class="act2"><button class="v-btn" data-act="mgr-other">Accept as-is</button><button class="v-btn" data-act="mgr-other">Partial accept</button><button class="v-btn" data-act="mgr-other">Reject line</button><button class="v-btn" data-act="mgr-other">Open claim only</button></div>`
+              ? `<span class="v-lbl">NEXT · VIEW RECEIPT</span><button class="v-btn v-btn--fill" data-act="to-receiver">Back to Lan's phone →</button>`
+              : `<button class="v-btn v-btn--fill" data-tap="approve" data-act="approve">${d ? `Accept ${g}, claim ${d} →` : `Accept ${g} →`}</button>
+                 <span class="v-lbl" style="margin-top:var(--space-4)">OTHER OPTIONS</span>
+                 <div class="act2"><button class="v-btn" data-act="mgr-other">Accept as-is</button><button class="v-btn" data-act="mgr-other">Partial accept</button><button class="v-btn" data-act="mgr-other">Reject line</button><button class="v-btn" data-act="mgr-other">Claim only</button></div>`
           }</div>`,
       })
     },

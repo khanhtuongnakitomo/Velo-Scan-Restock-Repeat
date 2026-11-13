@@ -13,28 +13,198 @@
 <script src="/motion.js" defer></script>
 <link rel="stylesheet" href="velo-ui.css">
 <style>
-  html,body{min-height:100%}
-  .app-wrap{min-height:100vh;display:grid;grid-template-columns:minmax(0,440px) auto;gap:72px;align-items:center;justify-content:center;padding:40px}
-  .app-intro .v-chip{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-color:var(--fog);background:var(--fog);color:var(--slate);padding:var(--space-6) var(--space-12)}
-  .app-intro h1{font-family:var(--sans);font-size:var(--text-heading-lg);line-height:1.1;font-weight:400;color:var(--ink);letter-spacing:-.02em;margin:var(--space-20) 0 var(--space-16)}
-  .app-intro h1 b{color:var(--violet);font-style:normal;font-weight:400}
-  .app-intro p{font-family:var(--serif);font-size:var(--text-heading-sm);line-height:1.35;font-weight:300;color:var(--mist);letter-spacing:-.01em}
-  .app-intro ol{margin-top:var(--space-24);border-radius:24px;background:var(--fog);overflow:hidden}
-  .app-intro li{display:grid;grid-template-columns:34px 1fr;gap:var(--space-10);padding:var(--space-14) var(--space-20);font-size:var(--text-small);line-height:1.5;color:var(--slate)}
+  html,body{min-height:100%;background:var(--white);color:var(--ink)}
+  body{display:flex;flex-direction:column}
+
+  /* Studio top navigation */
+  .app-topbar{
+    position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;justify-content:space-between;gap:var(--space-16);
+    padding:var(--space-12) var(--space-32);
+    background:color-mix(in srgb,var(--white) 92%,transparent);
+    backdrop-filter:blur(12px);
+    border-bottom:var(--hairline-strong);
+  }
+  .app-topbar__l,.app-topbar__r{display:flex;align-items:center;gap:var(--space-12);flex-wrap:wrap}
+  .app-brand{display:inline-flex;align-items:center;gap:var(--space-8);text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:600;font-size:var(--text-lead);letter-spacing:-.02em}
+  .app-brand img{width:26px;height:26px;object-fit:contain}
+  .app-sep{width:1px;height:20px;background:var(--mist);opacity:.45}
+  .app-topbadge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:var(--space-4) var(--space-10);border-radius:var(--radius-pill);background:var(--fog);color:var(--slate)}
+
+  /* Role switcher */
+  .role-switch{display:inline-flex;padding:var(--space-4);border-radius:var(--radius-pill);background:var(--fog);border:var(--hairline-strong);gap:var(--space-4)}
+  .role-btn{
+    display:inline-flex;align-items:center;gap:var(--space-6);
+    padding:var(--space-6) var(--space-14);border-radius:var(--radius-pill);
+    font-size:var(--text-caption);font-weight:500;color:var(--ash);
+    transition:background-color .2s,color .2s,box-shadow .2s;
+  }
+  .role-btn i{width:7px;height:7px;border-radius:50%;background:var(--mist);transition:background-color .2s}
+  .role-btn.is-active{background:var(--ink);color:var(--white)}
+  .role-btn.is-active i{background:var(--mint)}
+  .role-btn.is-ready:not(.is-active){background:var(--tint);color:var(--ink);box-shadow:0 0 0 2px var(--violet)}
+  .role-btn.is-ready:not(.is-active) i{background:var(--violet)}
+
+  .app-topbtn{
+    display:inline-flex;align-items:center;gap:var(--space-6);
+    padding:var(--space-8) var(--space-14);border-radius:var(--radius-pill);
+    font-size:var(--text-caption);font-weight:500;text-decoration:none;
+    color:var(--ink);background:var(--white);border:var(--hairline-strong);
+    transition:background-color .15s,border-color .15s;
+  }
+  .app-topbtn:hover{background:var(--fog);border-color:var(--ink)}
+  .app-topbtn--ghost{border-color:transparent;background:var(--fog);color:var(--ash)}
+
+  /* Main 2-column studio layout */
+  .app-wrap{
+    flex:1;display:grid;grid-template-columns:minmax(0,500px) auto;
+    gap:var(--space-48);align-items:center;justify-content:center;
+    max-width:1280px;width:100%;margin:0 auto;
+    padding:var(--space-24) var(--space-32) var(--space-32);
+  }
+  .app-intro{display:flex;flex-direction:column;gap:var(--space-16)}
+  .app-head h1{
+    font-family:var(--display);font-size:var(--text-heading);line-height:1.15;
+    font-weight:600;color:var(--ink);letter-spacing:-.025em;
+  }
+  .app-head h1 b{color:var(--violet);font-weight:600}
+  .app-head p{margin-top:var(--space-8);font-size:var(--text-body);line-height:1.55;color:var(--slate)}
+
+  /* Scenario snapshot strip */
+  .app-scenario{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-8);
+    padding:var(--space-12);border-radius:var(--radius-card);background:var(--fog);border:var(--hairline);
+  }
+  .app-scenario div{padding:var(--space-4) var(--space-6)}
+  .app-scenario span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)}
+  .app-scenario strong{display:block;margin-top:var(--space-2);font-size:var(--text-small);font-weight:600;color:var(--ink)}
+
+  /* Live "Start / Next Action" spotlight card */
+  .app-now{
+    padding:var(--space-20);border-radius:20px;
+    background:var(--tint);border:1px solid var(--violet);
+    display:flex;flex-direction:column;gap:var(--space-10);
+  }
+  .app-now.is-done{background:var(--fog);border-color:var(--success)}
+  .app-now__top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);flex-wrap:wrap}
+  .app-now__step{
+    font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    padding:var(--space-4) var(--space-10);border-radius:var(--radius-pill);
+    background:var(--violet);color:var(--white);
+  }
+  .app-now.is-done .app-now__step{background:var(--success)}
+  .app-now__role{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+  .app-now h2{font-family:var(--display);font-size:var(--text-subheading);line-height:1.25;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+  .app-now p{font-size:var(--text-small);line-height:1.5;color:var(--ash)}
+  .app-now__acts{display:flex;align-items:center;gap:var(--space-12);flex-wrap:wrap;margin-top:var(--space-4)}
+  .app-now__btn{width:auto;padding:var(--space-8) var(--space-16);font-size:var(--text-small)}
+  .app-now__hint{font-size:var(--text-caption);color:var(--ash);display:inline-flex;align-items:center;gap:var(--space-6)}
+  .app-now__hint i{width:7px;height:7px;border-radius:50%;background:var(--violet)}
+
+  /* Clickable 4-phase stepper */
+  .app-steps-wrap{display:flex;flex-direction:column;gap:var(--space-8)}
+  .app-steps-hd{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)}
+  .app-intro ol{border-radius:20px;background:var(--fog);overflow:hidden;border:var(--hairline)}
+  .app-intro li{
+    display:grid;grid-template-columns:32px 1fr auto;gap:var(--space-12);align-items:center;
+    padding:var(--space-12) var(--space-16);font-size:var(--text-small);line-height:1.4;color:var(--slate);
+    cursor:pointer;transition:background-color .18s ease;
+  }
   .app-intro li+li{border-top:1px solid var(--white)}
-  .app-intro li b{color:var(--ink);font-weight:400}
-  .app-intro li > b{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em;padding-top:2px;color:var(--violet)}
-  .app-intro li.is-now{background:var(--tint);color:var(--ash)}
-  .app-intro li.is-done{color:var(--slate)}
-  .app-intro li.is-done > b{color:var(--success)}
-  .app-intro .app-links{display:flex;gap:var(--space-10);flex-wrap:wrap;margin-top:var(--space-20)}
-  .app-intro .app-links a,.app-intro .app-links button{text-decoration:none;width:auto}
-  .app-intro .app-links a:first-child,.app-intro .app-links button{background:var(--white);border-color:var(--fog);background:var(--fog)}
-  .app-intro .app-links a:nth-child(2){background:var(--violet);border-color:var(--violet);color:var(--white)}
-  .app-intro .app-links button{background:var(--ink);border-color:var(--ink);color:var(--white)}
+  .app-intro li:hover{background:color-mix(in srgb,var(--tint) 55%,var(--fog))}
+  .app-intro li > b{
+    display:grid;place-items:center;width:28px;height:28px;border-radius:50%;
+    font-family:var(--mono);font-size:11px;font-weight:600;background:var(--white);color:var(--slate);
+  }
+  .app-intro li .st-txt strong{display:block;font-weight:600;color:var(--ink)}
+  .app-intro li .st-txt span{display:block;font-size:var(--text-caption);color:var(--slate)}
+  .app-intro li .st-tag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+  .app-intro li.is-now{background:var(--white);box-shadow:inset 3px 0 0 var(--violet)}
+  .app-intro li.is-now > b{background:var(--violet);color:var(--white)}
+  .app-intro li.is-now .st-tag{color:var(--violet);font-weight:600}
+  .app-intro li.is-done > b{background:var(--success);color:var(--white)}
+  .app-intro li.is-done .st-tag{color:var(--success)}
+
+  /* Compact utility row */
+  .app-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--space-12);flex-wrap:wrap;font-size:var(--text-caption);color:var(--slate)}
+  .app-foot__links{display:inline-flex;align-items:center;gap:var(--space-12);flex-wrap:wrap}
+  .app-copy{display:inline-flex;align-items:center;gap:var(--space-6);padding:var(--space-6) var(--space-12);border-radius:var(--radius-pill);background:var(--fog);color:var(--ink);font-size:var(--text-caption);font-weight:500}
+  .app-copy:hover{background:var(--tint)}
+  .app-jump-walk{font-size:var(--text-caption);font-weight:500;color:var(--violet);text-decoration:none}
+  .app-jump-walk:hover{text-decoration:underline;text-underline-offset:3px}
+
+  /* Full-width Walkthrough Showcase Section below studio */
+  .walk-band{width:100%;max-width:1180px;margin:0 auto var(--space-48);padding:0 var(--space-32)}
+  .walk-card{
+    display:grid;grid-template-columns:1.15fr 0.85fr;gap:var(--space-40);align-items:center;
+    padding:var(--space-40) var(--space-48);border-radius:28px;
+    background:var(--ink);color:var(--white);
+  }
+  .walk-eyebrow{
+    display:inline-flex;align-items:center;gap:var(--space-8);
+    padding:var(--space-4) var(--space-12);border-radius:var(--radius-pill);
+    background:color-mix(in srgb,var(--white) 10%,transparent);
+    font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--white);
+  }
+  .walk-eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--mint)}
+  .walk-copy h2{
+    margin:var(--space-16) 0 var(--space-12);
+    font-family:var(--display);font-size:clamp(26px,2.8vw,36px);line-height:1.15;
+    font-weight:600;letter-spacing:-.025em;color:var(--white);
+  }
+  .walk-copy p{font-size:var(--text-body);line-height:1.6;color:var(--mist);max-width:52ch}
+  .walk-acts{display:flex;align-items:center;gap:var(--space-20);flex-wrap:wrap;margin-top:var(--space-24)}
+  .walk-btn{
+    display:inline-flex;align-items:center;gap:var(--space-10);
+    padding:var(--space-14) var(--space-28);border-radius:var(--radius-pill);
+    background:var(--violet);color:var(--white);text-decoration:none;
+    font-family:var(--sans);font-size:var(--text-body);font-weight:500;
+    transition:transform .2s cubic-bezier(.22,1,.36,1),opacity .2s ease;
+  }
+  .walk-btn:hover{opacity:.9}
+  .walk-meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--mist)}
+
+  /* Visual dual-device preview inside walkthrough card */
+  .walk-preview{
+    display:grid;grid-template-columns:1.35fr 0.75fr;gap:var(--space-14);align-items:end;
+    padding:var(--space-20);border-radius:20px;
+    background:color-mix(in srgb,var(--white) 6%,var(--ink));
+    border:1px solid color-mix(in srgb,var(--white) 14%,transparent);
+  }
+  .walk-mini{
+    border-radius:var(--radius-card);padding:var(--space-14);
+    background:color-mix(in srgb,var(--white) 8%,var(--ink));
+    border:1px solid color-mix(in srgb,var(--white) 12%,transparent);
+  }
+  .walk-mini__k{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--mist)}
+  .walk-mini__k b{color:var(--mint);font-weight:600}
+  .walk-mini__stat{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8);margin-top:var(--space-12)}
+  .walk-mini__stat div{padding:var(--space-8);border-radius:var(--radius-input);background:color-mix(in srgb,var(--white) 7%,transparent)}
+  .walk-mini__stat strong{display:block;font-family:var(--display);font-size:var(--text-heading-sm);line-height:1.1;color:var(--white)}
+  .walk-mini__stat span{display:block;margin-top:var(--space-2);font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+  .walk-mini__bars{display:flex;flex-direction:column;gap:var(--space-6);margin-top:var(--space-12)}
+  .walk-mini__bars i{display:block;height:6px;border-radius:var(--radius-pill);background:color-mix(in srgb,var(--white) 16%,transparent)}
+  .walk-mini__bars i:first-child{width:88%;background:var(--violet)}
+  .walk-mini__bars i:nth-child(2){width:64%}
+  .walk-mini--phone{padding:var(--space-12);border-radius:20px;background:var(--white);color:var(--ink)}
+  .walk-mini--phone .walk-mini__k{color:var(--slate)}
+  .walk-mini--phone .walk-mini__k b{color:var(--violet)}
+  .walk-mini__pill{margin-top:var(--space-10);padding:var(--space-8);border-radius:var(--radius-input);background:var(--tint);font-size:11px;font-weight:600;color:var(--ink)}
+  .walk-mini__pill span{display:block;margin-top:var(--space-2);font-size:10px;font-weight:400;color:var(--ash)}
+  .walk-mini__cta{margin-top:var(--space-10);padding:var(--space-6);border-radius:var(--radius-pill);background:var(--violet);color:var(--white);font-size:10px;font-weight:600;text-align:center}
+
+  /* Right phone studio frame */
+  .app-stage{
+    display:flex;flex-direction:column;align-items:center;gap:var(--space-12);
+    padding:var(--space-16) var(--space-24) var(--space-24);
+    border-radius:28px;background:var(--fog);border:var(--hairline);
+  }
+  .app-stage__hd{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--space-12)}
+  .app-stage__live{display:inline-flex;align-items:center;gap:var(--space-8);font-size:var(--text-caption);font-weight:500;color:var(--ash)}
+  .app-stage__live i{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 2px var(--ink)}
+  .app-stage__screen{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:var(--space-4) var(--space-10);border-radius:var(--radius-pill);background:var(--white);color:var(--ink);border:var(--hairline-strong)}
+
   .app-back{display:none}
-  .app-intro .app-url{margin-top:var(--space-24);font-family:var(--sans);font-size:var(--text-caption);line-height:1.6;font-weight:400;letter-spacing:-.017em;color:var(--slate)}
-  .app-intro .app-url code{display:inline-block;margin-top:var(--space-4);padding:var(--space-2) var(--space-10);background:var(--fog);border-radius:var(--radius-input);font-family:var(--sans);color:var(--ink);word-break:break-all}
   .app-device{transform-origin:center}
 
   #screen.no-anim .v-in{animation:none}
@@ -45,7 +215,7 @@
   .ov-toast b{color:var(--white)}
   .ov-scrim{position:absolute;inset:0;z-index:45;background:rgba(0,0,0,.45);animation:v-fade .2s both}
   .ov-sheet{position:absolute;z-index:50;left:0;right:0;bottom:0;max-height:82%;overflow-y:auto;padding:var(--space-20) var(--space-16) calc(var(--space-20) + var(--safe-b,0px));background:var(--white);border-top:var(--hairline-strong);border-radius:24px 24px 0 0;animation:v-up .28s cubic-bezier(.2,.8,.2,1) both}
-  .ov-sheet h3{font-size:var(--text-lead);font-weight:400;line-height:1.25;color:var(--ink);margin:var(--space-8) 0;letter-spacing:-.017em}
+  .ov-sheet h3{font-size:var(--text-lead);font-weight:600;line-height:1.25;color:var(--ink);margin:var(--space-8) 0;letter-spacing:-.017em}
   .ov-sheet p{font-size:var(--text-small);line-height:1.55;color:var(--ash)}
   .ov-sheet .kv{margin-top:var(--space-12)}
   .ov-sheet .v-btn+.v-btn{margin-top:var(--space-8)}
@@ -55,13 +225,28 @@
   @keyframes v-up{from{transform:translateY(100%)}to{transform:none}}
   @keyframes v-fade{from{opacity:0}to{opacity:1}}
 
+  @media (max-width:980px){
+    .app-topbar{padding:var(--space-12) var(--space-16)}
+    .app-sep,.app-topbadge{display:none}
+    .app-wrap{grid-template-columns:1fr;gap:var(--space-28);padding:var(--space-20) var(--space-16) var(--space-40)}
+    .app-stage{justify-self:center;width:min(100%,460px)}
+    .walk-band{padding:0 var(--space-16);margin-bottom:var(--space-32)}
+    .walk-card{grid-template-columns:1fr;padding:var(--space-28) var(--space-24);gap:var(--space-24)}
+    .walk-preview{grid-template-columns:1.2fr 0.8fr}
+  }
+
   /* phone sized screens: the app takes the whole viewport */
   @media (max-width:560px){
     html,body{height:100%;overflow:hidden;overscroll-behavior:none}
     body{display:flex;flex-direction:column}
+    .app-topbar{display:none}
     .app-wrap{display:block;flex:1;min-height:0;padding:0}
     .app-intro{display:none}
-    .app-back{display:flex;align-items:center;flex:none;height:calc(44px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 16px 0;background:var(--white);border-bottom:var(--hairline);color:var(--ink);font-weight:400;font-size:var(--text-small);text-decoration:none}
+    .walk-band{display:none}
+    .velo-bgm{display:none}
+    .app-stage{display:block;height:100%;padding:0;border-radius:0;border:0;background:var(--white)}
+    .app-stage__hd{display:none}
+    .app-back{display:flex;align-items:center;flex:none;height:calc(44px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 16px 0;background:var(--white);border-bottom:var(--hairline);color:var(--ink);font-weight:500;font-size:var(--text-small);text-decoration:none}
     .app-device{height:100%;transform:none!important}
     .phone{width:100%;height:100%;padding:0;border-radius:0;box-shadow:none;background:var(--white)}
     .ph-screen{width:100%;height:100%;border-radius:0;--safe-b:env(safe-area-inset-bottom)}
@@ -79,27 +264,106 @@
 </style>
 </head>
 <body>
+<header class="app-topbar">
+  <div class="app-topbar__l">
+    <a class="app-brand" href="/"><img src="../assets/Logo.png" alt=""><span>VELO</span></a>
+    <span class="app-sep" aria-hidden="true"></span>
+    <span class="app-topbadge">Interactive App Demo · Illustrative Data</span>
+  </div>
+  <div class="role-switch" role="group" aria-label="Switch user role">
+    <button type="button" class="role-btn is-active" id="roleReceiver"><i></i>Lan · Receiver</button>
+    <button type="button" class="role-btn" id="roleManager"><i></i>Minh · Manager</button>
+  </div>
+  <div class="app-topbar__r">
+    <button type="button" class="app-topbtn app-topbtn--ghost" id="resetBtn">↻ Reset</button>
+    <a class="app-topbtn" href="/">← Website</a>
+  </div>
+</header>
+
 <a class="app-back" href="/">← Website</a>
 <main class="app-wrap">
   <section class="app-intro">
-    <span class="v-chip v-chip--pastel">Try it · receiving demo · prototype mockup</span>
-    <h1>One delivery as <b>Lan</b>, receiver</h1>
-    <p>Supplier A is at Dock 1 with 100 tubes of SikaFlex-11FC and 20 bags of cement. Everything is tappable and the data is illustrative. On a phone it opens full-screen, like a real app.</p>
-    <ol id="steps">
-      <li><b>01</b><span><b>Scan the note.</b> Photograph delivery note #DN-2481, check what AI read, confirm each line.</span></li>
-      <li><b>02</b><span><b>Count the goods.</b> Scan each barcode, count good and damaged units, then watch the three-way match.</span></li>
-      <li><b>03</b><span><b>Flag the damage.</b> Pick the reason, add the photo, hand the phone to the driver to confirm.</span></li>
-      <li><b>04</b><span><b>Approve &amp; issue the receipt.</b> Switch to Minh, the manager, accept 96 and claim 4, then see the phiếu nhập kho.</span></li>
-    </ol>
-    <div class="app-links">
-      <a class="v-btn v-btn--sm" href="/">← Website</a>
-      <a class="v-btn v-btn--sm" href="index.html">Watch the demo</a>
-      <button class="v-btn v-btn--sm" id="resetBtn">Reset</button>
+    <div class="app-head">
+      <h1>Try one delivery, <b>end to end</b></h1>
+      <p>Follow the highlighted step below or tap directly inside the phone on the right to verify a live dock delivery.</p>
     </div>
-    <p class="app-url">Open this link on your phone:<br><code id="appUrl"></code></p>
+
+    <div class="app-scenario" aria-label="Demo scenario summary">
+      <div><span>Order</span><strong>PO-1087</strong></div>
+      <div><span>Note · Supplier</span><strong>DN-2481 · Supplier A</strong></div>
+      <div><span>Expected</span><strong>100 SikaFlex + 20 Cement</strong></div>
+    </div>
+
+    <div class="app-now" id="guideCard" aria-live="polite">
+      <div class="app-now__top">
+        <span class="app-now__step" id="guideStep">STEP 1 OF 8 · START HERE</span>
+        <span class="app-now__role" id="guideRole">PHONE · LAN (RECEIVER)</span>
+      </div>
+      <h2 id="guideTitle">Tap “Start receiving DN-2481 →”</h2>
+      <p id="guideDesc">Supplier A's truck is waiting at Dock 1. Begin checking the paper note against the purchase order.</p>
+      <div class="app-now__acts">
+        <button type="button" class="v-btn v-btn--fill app-now__btn" id="guideDoBtn">Do this step →</button>
+        <span class="app-now__hint" id="guideHint"><i></i>Target highlighted on phone</span>
+      </div>
+    </div>
+
+    <div class="app-steps-wrap">
+      <div class="app-steps-hd"><span>4-Phase Journey</span><span>Click any phase to jump</span></div>
+      <ol id="steps">
+        <li data-jump="0" role="button" tabindex="0"><b>01</b><div class="st-txt"><strong>Scan delivery note</strong><span>Photo #DN-2481 and confirm AI extraction</span></div><span class="st-tag">Start</span></li>
+        <li data-jump="1" role="button" tabindex="0"><b>02</b><div class="st-txt"><strong>Count &amp; 3-way match</strong><span>Scan barcodes, count good vs damaged units</span></div><span class="st-tag">Phase 2</span></li>
+        <li data-jump="2" role="button" tabindex="0"><b>03</b><div class="st-txt"><strong>Flag damage &amp; evidence</strong><span>Attach photo &amp; get driver confirmation</span></div><span class="st-tag">Phase 3</span></li>
+        <li data-jump="3" role="button" tabindex="0"><b>04</b><div class="st-txt"><strong>Approve &amp; issue receipt</strong><span>Switch to Minh (Manager) → Phiếu nhập kho</span></div><span class="st-tag">Finish</span></li>
+      </ol>
+    </div>
+
+    <div class="app-foot">
+      <div class="app-foot__links">
+        <button type="button" class="app-copy" id="copyUrlBtn">Copy mobile link</button>
+        <a class="app-jump-walk" href="#walkthrough">Prefer a guided tour? Watch below ↓</a>
+      </div>
+      <span>Opens full-screen on mobile screens</span>
+    </div>
   </section>
-  <div class="app-device" id="device"><div class="phone"><div class="ph-screen" id="screen"></div></div></div>
+
+  <div class="app-stage">
+    <div class="app-stage__hd">
+      <span class="app-stage__live"><i></i>Interactive screen · Tap inside the phone</span>
+      <span class="app-stage__screen" id="screenTag">Deliveries</span>
+    </div>
+    <div class="app-device" id="device"><div class="phone"><div class="ph-screen" id="screen"></div></div></div>
+  </div>
 </main>
+
+<section class="walk-band" id="walkthrough" aria-label="2-minute walkthrough">
+  <div class="walk-card">
+    <div class="walk-copy">
+      <span class="walk-eyebrow"><i></i>GUIDED WALKTHROUGH · 2 MINUTES</span>
+      <h2>Watch the full warehouse receiving flow side-by-side.</h2>
+      <p>Prefer to sit back instead of tapping step-by-step? Launch the automated 2-minute walkthrough to watch Lan’s receiver app sync live with Minh’s manager dashboard — from delivery note scan to discrepancy sign-off and final receipt.</p>
+      <div class="walk-acts">
+        <a class="walk-btn" href="index.html">▶ Watch 2-minute walkthrough →</a>
+        <span class="walk-meta">8 SCENES · AUTO-PLAYS BOTH SCREENS</span>
+      </div>
+    </div>
+
+    <div class="walk-preview" aria-hidden="true">
+      <div class="walk-mini">
+        <div class="walk-mini__k"><span>Manager Dashboard</span><b>LIVE SYNC</b></div>
+        <div class="walk-mini__stat">
+          <div><strong>3/3</strong><span>Lines verified</span></div>
+          <div><strong>1</strong><span>Damage flag</span></div>
+        </div>
+        <div class="walk-mini__bars"><i></i><i></i><i></i></div>
+      </div>
+      <div class="walk-mini walk-mini--phone">
+        <div class="walk-mini__k"><span>Receiver</span><b>LAN</b></div>
+        <div class="walk-mini__pill">PO-2026-0419<span>Dock 1 · Ready</span></div>
+        <div class="walk-mini__cta">Approve &amp; issue</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script src="velo-ui.js"></script>
 <script>
@@ -118,6 +382,214 @@
   let S = fresh()
   let lastKey = ''
   let toastTimer = 0, readTimer = 0
+
+  /* ---------- guided spotlight state ---------- */
+  function getGuide() {
+    if (S.role === 'manager') {
+      if (!S.approved) {
+        return {
+          step: 'STEP 7 OF 8 · MANAGER DECISION',
+          role: 'MINH · WAREHOUSE MANAGER',
+          screen: 'Approval Queue',
+          title: 'Tap “Accept 96, claim 4” to approve',
+          desc: 'Minh reviews the damage photo, driver sign-off, and AI warning before releasing the receipt.',
+          sel: '[data-tap="approve"]',
+          btnLabel: 'Approve (Accept 96, claim 4) →',
+          doAct: 'approve',
+        }
+      }
+      return {
+        step: 'STEP 8 OF 8 · RECEIPT ISSUED',
+        role: 'MINH · APPROVED',
+        screen: 'Approved',
+        title: 'Switch back to Lan to view the receipt',
+        desc: 'The claim is opened and Phiếu nhập kho PNK-20261112-01 is ready on the receiver’s phone.',
+        sel: '[data-act="to-receiver"]',
+        btnLabel: 'View receipt on Lan’s phone →',
+        doAct: 'to-receiver',
+      }
+    }
+
+    switch (S.view) {
+      case 'note':
+        if (S.note === 'reading') {
+          return {
+            step: 'STEP 2 OF 8 · AI OCR',
+            role: 'AI PROCESSING',
+            screen: 'Reading Note',
+            title: 'AI is reading delivery note #DN-2481…',
+            desc: 'Extracting supplier, Vietnamese product lines, and quantities. Nothing is saved automatically.',
+            sel: '',
+            btnLabel: '',
+            doAct: '',
+          }
+        }
+        return {
+          step: 'STEP 2 OF 8 · SCAN NOTE',
+          role: 'LAN · RECEIVER',
+          screen: 'Camera · Note',
+          title: 'Tap “Photograph note” or the camera frame',
+          desc: 'Captures paper delivery note #DN-2481 so AI can pre-fill the lines for your review.',
+          sel: '.ph-sheet [data-act="scan-note"]',
+          btnLabel: 'Photograph note →',
+          doAct: 'scan-note',
+        }
+      case 'extract': {
+        if (!S.ext[0]) {
+          return {
+            step: 'STEP 3 OF 8 · CONFIRM OCR',
+            role: 'AI + LAN',
+            screen: 'AI Extraction',
+            title: 'Tap Line 1 (“Keo Sika 11FC”) to confirm',
+            desc: 'Verify AI matched the Vietnamese note text to catalogue SKU SKF-11FC-600 (96% confidence).',
+            sel: '[data-tap="chk0"]',
+            btnLabel: 'Confirm Line 1 →',
+            doAct: 'chk:0',
+          }
+        }
+        if (!S.ext[1]) {
+          return {
+            step: 'STEP 3 OF 8 · CONFIRM OCR',
+            role: 'AI + LAN',
+            screen: 'AI Extraction',
+            title: 'Tap Line 2 (“Xi măng PCB40”) to confirm',
+            desc: 'Check the 88% confidence match before unlocking physical counting.',
+            sel: '[data-tap="chk1"]',
+            btnLabel: 'Confirm Line 2 →',
+            doAct: 'chk:1',
+          }
+        }
+        return {
+          step: 'STEP 3 OF 8 · CONFIRMED',
+          role: 'LAN · RECEIVER',
+          screen: 'AI Extraction',
+          title: 'Tap “Continue to counting →”',
+          desc: 'Both extracted lines are verified by a human. Ready to scan physical items at the dock.',
+          sel: '[data-tap="go"]',
+          btnLabel: 'Continue to counting →',
+          doAct: 'extract-ok',
+        }
+      }
+      case 'count': {
+        const lineName = S.line === 0 ? 'SikaFlex-11FC (1/2)' : 'PCB40 Cement (2/2)'
+        if (!S.scanned) {
+          return {
+            step: 'STEP 4 OF 8 · SCAN & COUNT',
+            role: 'LAN · RECEIVER',
+            screen: 'Barcode · Line ' + (S.line + 1),
+            title: 'Tap “Scan barcode” for ' + lineName,
+            desc: 'Reads the EAN-13 label and batch/expiry details before you enter physical counts.',
+            sel: '.ph-sheet [data-act="scan"]',
+            btnLabel: 'Scan barcode →',
+            doAct: 'scan',
+          }
+        }
+        return {
+          step: 'STEP 4 OF 8 · RECORD COUNT',
+          role: 'LAN · RECEIVER',
+          screen: 'Count · Line ' + (S.line + 1),
+          title: S.line === 0 ? 'Verify 96 good + 4 damaged, then save' : 'Verify 20 good bags, then see match',
+          desc: S.line === 0 ? 'Use + / − if you want to test other quantities, then tap “Save line →”.' : 'This completes all lines so rules can run the live three-way match.',
+          sel: '[data-tap="save"]',
+          btnLabel: S.line === 0 ? 'Save line →' : 'See three-way match →',
+          doAct: 'save-line',
+        }
+      }
+      case 'match':
+        return {
+          step: 'STEP 5 OF 8 · THREE-WAY MATCH',
+          role: 'RULES ENGINE',
+          screen: 'Three-Way Match',
+          title: 'Review the mismatch & tap “Flag discrepancy →”',
+          desc: 'Ordered (100) vs Claimed (100) vs Received (96 good + 4 damaged) + 20-day expiry alert.',
+          sel: '[data-tap="flag"]',
+          btnLabel: 'Flag discrepancy →',
+          doAct: 'flag',
+        }
+      case 'flag':
+        if (!S.photo) {
+          return {
+            step: 'STEP 6 OF 8 · EVIDENCE',
+            role: 'LAN · RECEIVER',
+            screen: 'Flag Discrepancy',
+            title: 'Tap “+ Take photo of the damage”',
+            desc: 'Damage claims require visual evidence at the dock before submission.',
+            sel: '[data-tap="photo"]',
+            btnLabel: '+ Take photo →',
+            doAct: 'photo',
+          }
+        }
+        if (!S.driver) {
+          return {
+            step: 'STEP 6 OF 8 · DRIVER SIGN-OFF',
+            role: 'LAN + DRIVER HÙNG',
+            screen: 'Flag Discrepancy',
+            title: 'Tap “Driver confirms on this phone”',
+            desc: 'Hand the phone to driver Hùng while he is still at Dock 1 to co-confirm the 4 crushed tubes.',
+            sel: '[data-tap="driver"]',
+            btnLabel: 'Driver confirms →',
+            doAct: 'driver',
+          }
+        }
+        return {
+          step: 'STEP 6 OF 8 · SUBMIT',
+          role: 'LAN · RECEIVER',
+          screen: 'Ready to Submit',
+          title: 'Tap “Submit for approval →”',
+          desc: 'Sends the documented discrepancy to warehouse manager Minh. Stock does not change yet.',
+          sel: '[data-tap="submit"]',
+          btnLabel: 'Submit for approval →',
+          doAct: 'submit',
+        }
+      case 'submitted':
+        return {
+          step: 'STEP 7 OF 8 · HANDOVER TO MANAGER',
+          role: 'WAITING FOR MINH',
+          screen: 'Waiting Approval',
+          title: 'Switch to Minh (Manager) to approve',
+          desc: 'Tap “Switch to Minh N., manager →” on the phone or use the role switch at the top bar.',
+          sel: '[data-tap="switch"]',
+          btnLabel: 'Switch to Minh, manager →',
+          doAct: 'to-manager',
+        }
+      case 'receipt':
+        return {
+          step: 'DEMO COMPLETE ✓',
+          role: 'PHIẾU NHẬP KHO ISSUED',
+          screen: 'Goods Receipt',
+          title: '96 entered stock · 4 opened as a claim',
+          desc: 'Phiếu nhập kho PNK-20261112-01 is signed with receiver, driver, photo evidence, and manager approval.',
+          sel: '[data-act="home"]',
+          btnLabel: 'Restart demo ↻',
+          doAct: 'reset',
+          done: true,
+        }
+      default:
+        if (S.issued) {
+          return {
+            step: 'DEMO COMPLETE ✓',
+            role: 'LAN · DOCK 1',
+            screen: 'Deliveries Done',
+            title: 'Delivery DN-2481 completed!',
+            desc: 'You walked through the full VELO receiving workflow from dock arrival to signed receipt.',
+            sel: '',
+            btnLabel: 'Run demo again ↻',
+            doAct: 'reset',
+            done: true,
+          }
+        }
+        return {
+          step: 'STEP 1 OF 8 · START HERE',
+          role: 'LAN · RECEIVER',
+          screen: 'Deliveries',
+          title: 'Tap “Start receiving DN-2481 →”',
+          desc: 'Supplier A has arrived at Dock 1 with 100 SikaFlex tubes and 20 bags of cement.',
+          sel: '.ph-cta [data-act="start"]',
+          btnLabel: 'Start receiving DN-2481 →',
+          doAct: 'start',
+        }
+    }
+  }
 
   /* ---------- views ---------- */
   function view() {
@@ -145,27 +617,67 @@
     const x = '<button class="ov-sheet__x" data-act="close" aria-label="Close">✕</button>'
     const mgr = S.role === 'manager'
     return `<div class="ov-sheet__hd"><span class="v-lbl">${mgr ? D.manager.toUpperCase() + ' · WAREHOUSE MANAGER' : D.receiver.toUpperCase() + ' · RECEIVER'} · ${D.warehouse.toUpperCase()}</span>${x}</div>
-      <h3>Demo controls</h3><p>Prototype mockup with illustrative data. These buttons stand in for things that happen elsewhere in the warehouse.</p>
+      <h3>Demo controls</h3><p>Prototype mockup with illustrative data. Switch roles or reset the delivery.</p>
       <div class="ov-sheet__acts">
         ${mgr
           ? `<button class="v-btn v-btn--fill" data-act="to-receiver">Switch back to Lan, receiver</button>`
           : `<button class="v-btn v-btn--fill" data-act="to-manager"${S.submitted && !S.issued ? '' : ' disabled'}>Switch to Minh, manager${S.submitted && !S.issued ? '' : ' (after submitting)'}</button>`}
         <button class="v-btn" data-act="reset">Reset the delivery</button>
-        <a class="v-btn" href="index.html" style="text-decoration:none">Watch the 2-minute demo</a>
+        <a class="v-btn" href="index.html" style="text-decoration:none">Watch the 2-minute walkthrough</a>
         <a class="v-btn" href="/" style="text-decoration:none">Back to the website</a>
       </div>`
   }
 
-  /* ---------- render ---------- */
+  /* ---------- render & guide sync ---------- */
   const STEP_OF = { deliveries: 0, note: 0, extract: 0, count: 1, match: 1, flag: 2, submitted: 3, receipt: 4 }
 
   function syncSteps() {
-    const idx = S.role === 'manager' ? 3 : STEP_OF[S.view]
+    const idx = S.role === 'manager' ? 3 : S.issued && S.view === 'deliveries' ? 4 : STEP_OF[S.view]
     document.querySelectorAll('#steps li').forEach((li, i) => {
-      li.classList.toggle('is-done', i < idx)
-      li.classList.toggle('is-now', i === idx)
-      li.querySelector('b').textContent = i < idx ? '✓' : '0' + (i + 1)
+      const done = i < idx
+      const now = i === idx
+      li.classList.toggle('is-done', done)
+      li.classList.toggle('is-now', now)
+      li.querySelector('b').textContent = done ? '✓' : '0' + (i + 1)
+      li.querySelector('.st-tag').textContent = done ? 'Done' : now ? 'Now' : 'Jump'
     })
+  }
+
+  function syncGuide() {
+    const g = getGuide()
+    const card = document.getElementById('guideCard')
+    card.classList.toggle('is-done', Boolean(g.done))
+    document.getElementById('guideStep').textContent = g.step
+    document.getElementById('guideRole').textContent = g.role
+    document.getElementById('guideTitle').textContent = g.title
+    document.getElementById('guideDesc').textContent = g.desc
+    document.getElementById('screenTag').textContent = g.screen
+
+    const doBtn = document.getElementById('guideDoBtn')
+    const hint = document.getElementById('guideHint')
+    if (g.btnLabel) {
+      doBtn.style.display = ''
+      doBtn.textContent = g.btnLabel
+      doBtn.dataset.guideAct = g.doAct
+    } else {
+      doBtn.style.display = 'none'
+      doBtn.dataset.guideAct = ''
+    }
+    hint.style.display = g.sel ? '' : 'none'
+
+    // Role switcher state
+    const rBtn = document.getElementById('roleReceiver')
+    const mBtn = document.getElementById('roleManager')
+    rBtn.classList.toggle('is-active', S.role === 'receiver')
+    mBtn.classList.toggle('is-active', S.role === 'manager')
+    mBtn.classList.toggle('is-ready', S.role === 'receiver' && S.view === 'submitted')
+
+    // Apply visual spotlight pulse inside phone screen
+    screen.querySelectorAll('.v-guided').forEach((el) => el.classList.remove('v-guided'))
+    if (g.sel && !S.sheet) {
+      const target = screen.querySelector(g.sel)
+      if (target) target.classList.add('v-guided')
+    }
   }
 
   function render() {
@@ -181,6 +693,7 @@
     const t = screen.querySelector('.ph-status b')
     if (t) t.textContent = new Date().toTimeString().slice(0, 5)
     syncSteps()
+    syncGuide()
   }
 
   function toast(msg) {
@@ -200,6 +713,34 @@
     return [...set]
   }
 
+  /* Jump cleanly to any of the 4 phases with realistic state pre-seeded */
+  function jumpPhase(phase) {
+    clearTimeout(toastTimer); clearTimeout(readTimer)
+    S = fresh()
+    if (phase === 1) {
+      S.ext = [true, true]
+      S.view = 'count'
+    } else if (phase === 2) {
+      S.ext = [true, true]
+      S.saved = [true, true]
+      S.scanned = true
+      S.reasons = claimedIssues()
+      S.view = 'flag'
+    } else if (phase === 3) {
+      S.ext = [true, true]
+      S.saved = [true, true]
+      S.scanned = true
+      S.reasons = claimedIssues()
+      S.photo = true
+      S.driver = true
+      S.submitted = true
+      S.view = 'submitted'
+      S.role = 'manager'
+    }
+    lastKey = ''
+    render()
+  }
+
   /* ---------- actions ---------- */
   function act(a) {
     const [k, v] = a.split(':')
@@ -211,10 +752,11 @@
         if (S.note === 'reading') break
         S.note = 'reading'; navigator.vibrate?.(40)
         clearTimeout(readTimer)
-        readTimer = setTimeout(() => { S.view = 'extract'; render() }, 1600)
+        readTimer = setTimeout(() => { S.view = 'extract'; render() }, 1400)
         break
       case 'chk': S.ext[+v] = !S.ext[+v]; break
       case 'extract-ok': if (!S.ext.every(Boolean)) break; go('count'); S.line = 0; S.scanned = false; break
+      case 'extract-locked': toast('Tap both <b>item cards above</b> to confirm what AI extracted first.'); break
       case 'scan': S.scanned = true; navigator.vibrate?.(40); break
       case 'inc': case 'dec': {
         const arr = S[v], d = k === 'inc' ? 1 : -1
@@ -231,6 +773,11 @@
       case 'photo': S.photo = true; navigator.vibrate?.(40); break
       case 'driver': S.driver = true; navigator.vibrate?.(40); break
       case 'submit': S.submitted = true; go('submitted'); break
+      case 'submit-locked':
+        if (!S.reasons.length) toast('Step 1: Pick at least one <b>discrepancy reason</b> above.')
+        else if (!S.photo) toast('Step 2: Tap <b>+ Take photo of the damage</b> before continuing.')
+        else toast('Step 3: Let driver <b>' + D.driver + '</b> tap confirm on this phone.')
+        break
       case 'to-manager': S.role = 'manager'; S.sheet = null; break
       case 'approve': S.approved = true; navigator.vibrate?.(40); break
       case 'mgr-other': toast('Only <b>Accept ' + S.good[0] + (S.dmg[0] ? ', claim ' + S.dmg[0] : '') + '</b> is wired in this mockup. The others follow the same pattern.'); break
@@ -282,11 +829,44 @@
   screen.addEventListener('keydown', (e) => {
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-act][role=button]')) { e.preventDefault(); act(e.target.dataset.act) }
   })
+
+  document.getElementById('guideDoBtn').addEventListener('click', () => {
+    const a = document.getElementById('guideDoBtn').dataset.guideAct
+    if (a) act(a)
+  })
+
+  document.querySelectorAll('#steps li[data-jump]').forEach((li) => {
+    const run = () => jumpPhase(Number(li.dataset.jump))
+    li.addEventListener('click', run)
+    li.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); run() }
+    })
+  })
+
+  document.getElementById('roleReceiver').addEventListener('click', () => {
+    if (S.role === 'receiver') return
+    act('to-receiver')
+  })
+  document.getElementById('roleManager').addEventListener('click', () => {
+    if (S.role === 'manager') return
+    if (S.submitted) { act('to-manager'); return }
+    jumpPhase(3)
+  })
+
   document.getElementById('resetBtn').addEventListener('click', reset)
-  const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:'
-  document.getElementById('appUrl').textContent = local
-    ? 'http://<Network address from pnpm dev>' + (location.port ? '' : ':8443') + '/demo/app.html'
-    : location.href.split('#')[0]
+
+  const copyBtn = document.getElementById('copyUrlBtn')
+  copyBtn.addEventListener('click', () => {
+    const url = location.href.split('#')[0]
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        copyBtn.textContent = '✓ Mobile link copied'
+        setTimeout(() => { copyBtn.textContent = 'Copy mobile link' }, 2200)
+      }).catch(() => { copyBtn.textContent = url })
+    } else {
+      copyBtn.textContent = url
+    }
+  })
 
   const device = document.getElementById('device')
   const phoneFrame = device.querySelector('.phone')
@@ -297,8 +877,7 @@
       phoneFrame.style.transform = ''
       return
     }
-    const k = Math.min(1, Math.max(0.3, (innerHeight - 80) / 868))
-    // Reserve the rendered size in the grid, not the unscaled 868px box.
+    const k = Math.min(0.92, Math.max(0.35, (innerHeight - 180) / 868))
     device.style.width = `${414 * k}px`
     device.style.height = `${868 * k}px`
     phoneFrame.style.transformOrigin = 'top left'

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VELO Vietnam — Receive. Verify. Record. · 2-minute demo</title>
+<title>VELO Vietnam — Receive. Verify. Record. · 2-minute walkthrough</title>
 <meta name="description" content="Prototype mockup: one delivery received, verified and recorded on a phone. Illustrative data.">
 <link rel="icon" type="image/png" href="../assets/Logo.png">
 <link rel="stylesheet" href="/tokens.css">
@@ -14,88 +14,133 @@
   html,body{height:100%;overflow:hidden}
   .stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--white);overflow:hidden}
 
-  .st-top{position:absolute;left:50%;transform:translateX(-50%);top:16px;height:56px;width:max-content;max-width:calc(100% - 112px);display:flex;align-items:center;gap:var(--space-20);padding:0 var(--space-12) 0 var(--space-24);border-radius:var(--radius-pill);background:var(--white);box-shadow:var(--shadow-float);z-index:5}
-  .st-brand{display:flex;align-items:center;gap:var(--space-10);font-size:var(--text-subheading);font-weight:400;letter-spacing:-.017em;color:var(--ink);text-decoration:none}
-  .st-brand img{width:32px;height:32px;object-fit:contain}
-  .st-title{font-size:var(--text-small);font-weight:400;color:var(--mist);margin-right:auto}
-  .st-top .v-chip{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-color:var(--fog);background:var(--fog);color:var(--slate)}
+  .st-top{
+    position:absolute;left:56px;right:56px;top:16px;height:60px;
+    display:flex;align-items:center;gap:var(--space-16);
+    padding:0 var(--space-12) 0 var(--space-24);
+    border-radius:var(--radius-pill);background:var(--white);box-shadow:var(--shadow-float);z-index:5;
+  }
+  .st-brand{display:flex;align-items:center;gap:var(--space-10);font-family:var(--display);font-size:var(--text-subheading);font-weight:600;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+  .st-brand img{width:30px;height:30px;object-fit:contain}
+  .st-sep{width:1px;height:22px;background:var(--mist);opacity:.45}
+  .st-title{font-size:var(--text-small);font-weight:400;color:var(--slate);margin-right:auto}
+  .st-top .v-chip{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-color:var(--fog);background:var(--fog);color:var(--slate)}
+  .st-try{
+    display:inline-flex;align-items:center;gap:var(--space-6);
+    padding:var(--space-8) var(--space-16);border-radius:var(--radius-pill);
+    background:var(--violet);color:var(--white);font-size:var(--text-small);font-weight:500;text-decoration:none;
+    transition:transform .15s ease,opacity .15s ease;
+  }
+  .st-try:hover{opacity:.9}
 
-  .st-cap{position:absolute;left:56px;top:124px;width:470px;bottom:118px;display:flex;flex-direction:column}
-  .cap-num{font-family:var(--serif);font-variant-numeric:lining-nums;font-size:96px;line-height:.9;font-weight:300;color:var(--violet);letter-spacing:-.02em}
-  .cap-stage{display:block;margin:var(--space-12) 0 var(--space-16);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)}
+  .st-cap{position:absolute;left:56px;top:116px;width:470px;bottom:108px;display:flex;flex-direction:column}
+  .cap-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-12)}
+  .cap-num{font-family:var(--display);font-variant-numeric:lining-nums;font-size:80px;line-height:.95;font-weight:600;color:var(--violet);letter-spacing:-.03em}
+  .cap-focus{
+    font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    padding:var(--space-6) var(--space-12);border-radius:var(--radius-pill);
+    background:var(--tint);color:var(--ink);border:1px solid var(--violet);
+  }
+  .cap-stage{display:block;margin:var(--space-10) 0 var(--space-12);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)}
   .cap-tags{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-8)}
   .cap-tags #capTags{display:contents}
-  .cap-zone,.tg{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
-  .tg{display:inline-flex;align-items:center;gap:var(--space-6);font-weight:400}
+  .cap-zone,.tg{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+  .tg{display:inline-flex;align-items:center;gap:var(--space-6);font-weight:500}
   .tg::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--violet)}
   .tg--ai{background:var(--tint);border-color:var(--violet)}
   .tg--rule{background:var(--white)}
   .tg--rule::before{background:var(--white);border:2px solid var(--ink)}
   .tg--human{background:var(--ink);border-color:var(--ink);color:var(--white)}
   .tg--human::before{background:var(--white)}
-  .cap-title{margin:var(--space-24) 0 var(--space-16);font-family:var(--sans);font-size:var(--text-heading-lg);line-height:1.1;font-weight:400;letter-spacing:-.02em;color:var(--ink)}
-  .cap-text{font-family:var(--serif);font-size:var(--text-heading-sm);line-height:1.35;font-weight:300;letter-spacing:-.01em;color:var(--mist)}
+  .cap-title{margin:var(--space-20) 0 var(--space-12);font-family:var(--display);font-size:var(--text-heading-lg);line-height:1.12;font-weight:600;letter-spacing:-.025em;color:var(--ink)}
+  .cap-text{font-family:var(--sans);font-size:var(--text-lead);line-height:1.6;font-weight:400;letter-spacing:-.005em;color:var(--slate)}
   .cap-anim > *{animation:v-rise .55s cubic-bezier(.2,.7,.2,1) both}
   .cap-anim > :nth-child(2){animation-delay:.05s}.cap-anim > :nth-child(3){animation-delay:.1s}.cap-anim > :nth-child(4){animation-delay:.15s}.cap-anim > :nth-child(5){animation-delay:.2s}
-  .loop{margin-top:auto;border-radius:24px;background:var(--fog);overflow:hidden}
-  .loop li{display:grid;grid-template-columns:48px 1fr;align-items:center;padding:var(--space-6) var(--space-16);font-size:var(--text-small);font-weight:400;color:var(--ash);transition:background-color .4s}
-  .loop li+li{border-top:1px solid var(--white)}
-  .loop li b{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em;font-weight:400;color:var(--slate)}
-  .loop li.on{background:var(--tint);color:var(--ink)}
-  .loop li.on b{color:var(--violet)}
 
-  .st-devs{position:absolute;left:566px;top:108px;width:1320px;height:880px}
-  .dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s ease,z-index 0s .35s}
-  .stage[data-focus=phone] .dev--phone{transform:translate(830px,6px) scale(1);z-index:3}
-  .stage[data-focus=phone] .dev--dash{transform:translate(0,170px) scale(.62);opacity:.35;z-index:1}
-  .stage[data-focus=dash] .dev--dash{transform:translate(0,46px) scale(.86);z-index:3}
-  .stage[data-focus=dash] .dev--phone{transform:translate(1104px,236px) scale(.56);opacity:.45;z-index:1}
-  .stage[data-focus=both] .dev--dash{transform:translate(0,160px) scale(.64);z-index:2}
-  .stage[data-focus=both] .dev--phone{transform:translate(944px,24px) scale(.96);z-index:3}
+  .loop-wrap{margin-top:auto;display:flex;flex-direction:column;gap:var(--space-8)}
+  .loop-hd{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);padding:0 var(--space-4)}
+  .loop{border-radius:20px;background:var(--fog);overflow:hidden;border:var(--hairline)}
+  .loop li{display:grid;grid-template-columns:40px 1fr;align-items:center;padding:var(--space-8) var(--space-16);font-size:var(--text-small);font-weight:400;color:var(--ash);cursor:pointer;transition:background-color .25s,color .25s}
+  .loop li+li{border-top:1px solid var(--white)}
+  .loop li:hover{background:color-mix(in srgb,var(--tint) 50%,var(--fog));color:var(--ink)}
+  .loop li b{font-family:var(--mono);font-size:11px;letter-spacing:.08em;font-weight:500;color:var(--slate)}
+  .loop li.on{background:var(--tint);color:var(--ink);font-weight:500;box-shadow:inset 3px 0 0 var(--violet)}
+  .loop li.on b{color:var(--violet);font-weight:600}
+
+  /* Un-cluttered studio stage: Phone and Dashboard never overlap awkwardly */
+  .st-devs-window{
+    position:absolute;left:566px;top:104px;width:1298px;height:880px;
+    border-radius:28px;background:var(--fog);border:var(--hairline);overflow:hidden;
+  }
+  .st-devs{position:relative;width:1298px;height:880px}
+  .dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s ease,z-index 0s .25s}
+  .dev-badge{
+    position:absolute;left:0;top:-34px;
+    display:inline-flex;align-items:center;gap:var(--space-6);
+    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    padding:var(--space-4) var(--space-12);border-radius:var(--radius-pill);
+    background:var(--white);color:var(--slate);border:var(--hairline-strong);
+  }
+  .dev-badge i{width:7px;height:7px;border-radius:50%;background:var(--mist)}
+
+  .stage[data-focus=phone] .dev--phone{transform:translate(868px,20px) scale(.96);opacity:1;z-index:3}
+  .stage[data-focus=phone] .dev--dash{transform:translate(24px,164px) scale(.55);opacity:.48;z-index:1}
+  .stage[data-focus=phone] .dev--phone .dev-badge{background:var(--ink);color:var(--white);border-color:var(--ink)}
+  .stage[data-focus=phone] .dev--phone .dev-badge i{background:var(--mint)}
+
+  .stage[data-focus=dash] .dev--dash{transform:translate(24px,74px) scale(.73);opacity:1;z-index:3}
+  .stage[data-focus=dash] .dev--phone{transform:translate(1094px,218px) scale(.44);opacity:.5;z-index:1}
+  .stage[data-focus=dash] .dev--dash .dev-badge{background:var(--ink);color:var(--white);border-color:var(--ink)}
+  .stage[data-focus=dash] .dev--dash .dev-badge i{background:var(--mint)}
+
+  .stage[data-focus=both] .dev--dash{transform:translate(24px,152px) scale(.58);opacity:1;z-index:2}
+  .stage[data-focus=both] .dev--phone{transform:translate(888px,24px) scale(.95);opacity:1;z-index:3}
+  .stage[data-focus=both] .dev-badge{background:var(--ink);color:var(--white);border-color:var(--ink)}
+  .stage[data-focus=both] .dev-badge i{background:var(--mint)}
+
   .dev--dash .db{position:relative}
   .stage.is-instant .dev{transition:none}
 
   .st-ctl{position:absolute;left:56px;right:56px;bottom:16px;height:64px;display:flex;align-items:center;gap:var(--space-12);padding:0 var(--space-16);border-radius:var(--radius-pill);background:var(--fog);z-index:5;transition:transform .3s}
   .st-ctl .v-btn{width:auto;padding:var(--space-8) var(--space-16);font-size:var(--text-small);text-decoration:none;background:var(--white);border-color:var(--white)}
   .st-ctl .v-btn--fill{background:var(--violet);border-color:var(--violet);color:var(--white)}
-  /* Stays full size when the 1920 stage is scaled down on a phone. */
-  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 var(--space-16);background:var(--ink);border-radius:var(--radius-pill);color:var(--white);font-weight:400;font-size:var(--text-small);text-decoration:none}
+  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 var(--space-16);background:var(--ink);border-radius:var(--radius-pill);color:var(--white);font-weight:500;font-size:var(--text-small);text-decoration:none}
   @media (max-width:1100px){.site-back{display:inline-flex}}
   .st-ctl #play{min-width:112px}
   .dots{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--space-6);margin:0 var(--space-10)}
-  .dots button{position:relative;height:32px;border:1px solid var(--white);border-radius:var(--radius-pill);background:var(--white);overflow:hidden;font-size:var(--text-caption);font-weight:400;color:var(--ink);text-align:left;padding:0 var(--space-12);white-space:nowrap;text-overflow:ellipsis}
+  .dots button{position:relative;height:32px;border:1px solid var(--white);border-radius:var(--radius-pill);background:var(--white);overflow:hidden;font-size:var(--text-caption);font-weight:500;color:var(--ash);text-align:left;padding:0 var(--space-10);white-space:nowrap;text-overflow:ellipsis}
   .dots button span{position:relative;z-index:1}
   .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--tint)}
   .dots button.is-past i{width:100%;background:var(--tint)}
   .dots button[aria-current="step"]{background:var(--violet);border-color:var(--violet);color:var(--white)}
   .dots button[aria-current="step"] i{background:transparent}
-  .st-count{font-size:var(--text-small);font-weight:400;min-width:70px;text-align:right;color:var(--ink)}
-  .st-hint{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;font-weight:400;color:var(--mist)}
+  .st-count{font-family:var(--mono);font-size:var(--text-caption);font-weight:500;min-width:60px;text-align:right;color:var(--ink)}
+  .st-hint{font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:400;color:var(--slate)}
   .stage.is-clean .st-ctl{transform:translateY(150%)}
   .stage.is-clean .st-demo{visibility:hidden}
-  /* Keep captions and playback controls readable instead of shrinking them
-     together with the 1920px presentation on phones and small tablets. */
+
   @media(max-width:900px){
     html,body{height:auto;overflow:auto}
     .site-back{display:none}
     .stage{position:relative;left:auto;top:auto;width:100%;height:auto;min-height:100vh}
-    .st-top{position:relative;left:auto;right:auto;top:auto;transform:none;width:auto;max-width:none;margin:var(--space-12);height:auto;min-height:56px;padding:var(--space-12) var(--space-20);border-radius:28px;flex-wrap:wrap;gap:var(--space-10)}
+    .st-top{position:relative;left:auto;right:auto;top:auto;transform:none;width:auto;max-width:none;margin:var(--space-12);height:auto;min-height:56px;padding:var(--space-12) var(--space-16);border-radius:28px;flex-wrap:wrap;gap:var(--space-10)}
+    .st-sep{display:none}
     .st-brand{font-size:var(--text-lead)}
-    .st-title{order:1;flex-basis:100%;font-size:var(--text-small);line-height:1.5}
+    .st-title{order:2;flex-basis:100%;font-size:var(--text-small);line-height:1.5}
     .st-top>.v-chip{display:none}
-    .st-top>.st-demo{display:inline-block;margin-left:auto}
-    .st-cap{position:relative;left:auto;top:auto;bottom:auto;width:auto;padding:var(--space-20)}
-    .cap-num{font-size:64px}
+    .st-try{margin-left:auto}
+    .st-cap{position:relative;left:auto;top:auto;bottom:auto;width:auto;padding:var(--space-16) var(--space-20)}
+    .cap-num{font-size:56px}
     .cap-stage{font-size:var(--text-small);margin:var(--space-6) 0 var(--space-12)}
-    .cap-title{font-size:var(--text-heading);margin:var(--space-16) 0 var(--space-12)}
-    .cap-text{font-size:var(--text-lead)}
-    .loop{display:none}
-    .st-devs-window{position:relative;width:100%;height:calc(880px * var(--mobile-scale));overflow:hidden}
-    .st-devs{left:0;top:0;width:1360px;height:880px;transform-origin:top left;transform:scale(var(--mobile-scale))}
+    .cap-title{font-size:var(--text-heading);margin:var(--space-14) 0 var(--space-10)}
+    .cap-text{font-size:var(--text-body)}
+    .loop-wrap{display:none}
+    .st-devs-window{position:relative;left:auto;top:auto;width:calc(100% - 24px);margin:0 auto;height:calc(880px * var(--mobile-scale));border-radius:20px}
+    .st-devs{left:0;top:0;width:1298px;height:880px;transform-origin:top left;transform:scale(var(--mobile-scale))}
     .st-ctl{position:relative;left:auto;right:auto;bottom:auto;margin:var(--space-12);height:auto;padding:var(--space-16);border-radius:24px;gap:var(--space-8);flex-wrap:wrap}
     .st-ctl .v-btn{min-height:44px;padding:var(--space-10) var(--space-12)}
     .dots{order:2;flex-basis:100%;margin:0;grid-auto-flow:row;grid-template-columns:repeat(5,minmax(0,1fr))}
-    .dots button{height:44px}
+    .dots button{height:40px}
     .st-count{margin-left:auto;min-width:0}
     .st-hint{display:none}
     .stage.is-clean .st-ctl{transform:none}
@@ -106,37 +151,44 @@
 </head>
 <body>
 <a class="site-back" href="/">← Website</a>
-<div class="stage" id="stage" data-focus="dash">
+<div class="stage" id="stage" data-focus="both">
   <header class="st-top">
     <a class="st-brand" href="/" aria-label="Back to the website"><img src="../assets/Logo.png" alt=""><span>VELO</span></a>
-    <span class="st-title">VELO Vietnam · Receive. Verify. Record. · one delivery, eight steps</span>
-    <span class="v-chip">Prototype mockup · illustrative data</span>
-    <span class="v-chip v-chip--pastel st-demo">Mockup</span>
+    <span class="st-sep" aria-hidden="true"></span>
+    <span class="st-title">2-minute walkthrough · One delivery, end to end</span>
+    <span class="v-chip st-demo">Illustrative mockup</span>
+    <a class="st-try" href="app.html">Try interactive app →</a>
   </header>
 
   <aside class="st-cap">
     <div id="cap">
-      <div class="cap-num" id="capNum">01</div>
+      <div class="cap-head">
+        <div class="cap-num" id="capNum">01</div>
+        <span class="cap-focus" id="capFocus">Watch: Phone + Dashboard</span>
+      </div>
       <span class="cap-stage" id="capStage"></span>
       <div class="cap-tags"><span class="v-chip v-chip--pastel cap-zone" id="capZone"></span><span id="capTags"></span></div>
       <h1 class="cap-title" id="capTitle"></h1>
       <p class="cap-text" id="capText"></p>
     </div>
-    <ol class="loop" id="loop">
-      <li data-step="1"><b>01</b>Expected delivery</li>
-      <li data-step="2"><b>02</b>Scan the delivery note</li>
-      <li data-step="3"><b>03</b>Scan &amp; count</li>
-      <li data-step="4"><b>04</b>Live three-way match</li>
-      <li data-step="5"><b>05</b>Confirm or flag</li>
-      <li data-step="6"><b>06</b>Manager approves</li>
-      <li data-step="7"><b>07</b>Digital goods receipt</li>
-      <li data-step="8"><b>08</b>Live stock &amp; alerts</li>
-    </ol>
+    <div class="loop-wrap">
+      <div class="loop-hd"><span>8 Receiving Steps</span><span>Click to jump</span></div>
+      <ol class="loop" id="loop">
+        <li data-step="1" role="button" tabindex="0"><b>01</b>Expected delivery</li>
+        <li data-step="2" role="button" tabindex="0"><b>02</b>Scan delivery note</li>
+        <li data-step="3" role="button" tabindex="0"><b>03</b>Scan &amp; count</li>
+        <li data-step="4" role="button" tabindex="0"><b>04</b>Live three-way match</li>
+        <li data-step="5" role="button" tabindex="0"><b>05</b>Flag discrepancy</li>
+        <li data-step="6" role="button" tabindex="0"><b>06</b>Manager approves</li>
+        <li data-step="7" role="button" tabindex="0"><b>07</b>Digital goods receipt</li>
+        <li data-step="8" role="button" tabindex="0"><b>08</b>Live stock &amp; alerts</li>
+      </ol>
+    </div>
   </aside>
 
   <div class="st-devs-window" role="img" aria-label="Animated receiver phone and manager dashboard previews"><div class="st-devs" inert>
-    <div class="dev dev--dash"><div class="db" id="dash"></div></div>
-    <div class="dev dev--phone"><div class="phone"><div class="ph-screen" id="phone"></div></div></div>
+    <div class="dev dev--dash"><span class="dev-badge"><i></i>Manager Dashboard · Minh</span><div class="db" id="dash"></div></div>
+    <div class="dev dev--phone"><span class="dev-badge"><i></i>Receiver App · Lan</span><div class="phone"><div class="ph-screen" id="phone"></div></div></div>
   </div></div>
 
   <footer class="st-ctl">
@@ -146,7 +198,7 @@
     <button class="v-btn" id="next" aria-label="Next step">→</button>
     <div class="dots" id="dots"></div>
     <span class="st-count" id="count"></span>
-    <span class="st-hint">SPACE · ← → · E END · H HIDE</span>
+    <span class="st-hint">SPACE · ← →</span>
   </footer>
 </div>
 
@@ -156,6 +208,7 @@
   'use strict'
 
   const STAGES = { 1: 'Expected delivery', 2: 'Scan the delivery note', 3: 'Scan & count', 4: 'Live three-way match', 5: 'Confirm or flag', 6: 'Manager approves', 7: 'Digital goods receipt', 8: 'Live stock & alerts' }
+  const FOCUS_LABEL = { phone: 'Watch: Lan’s Phone', dash: 'Watch: Manager Dashboard', both: 'Watch: Phone + Dashboard' }
   const TAG = { AI: 'tg--ai', RULE: 'tg--rule', HUMAN: 'tg--human' }
 
   // phone: [screen, state, opts] · dash: state · tap / dtap: selector tapped on the phone / dashboard
@@ -166,7 +219,7 @@
     { step: 2, short: 'NOTE', zone: '09:14 · Dock 1', tags: ['AI'], title: 'Scan the delivery note', focus: 'phone', dur: 5600,
       text: 'Lan photographs note #DN-2481. AI reads the Vietnamese text: supplier, document number, product lines and quantities. Nothing is saved yet.',
       beats: [{ t: 0, phone: ['note', 'aim'] }, { t: 1800, tap: '.ph-cam' }, { t: 2300, phone: ['note', 'reading'] }] },
-    { step: 2, short: 'CONFIRM', zone: '09:16 · Dock 1', tags: ['AI', 'HUMAN'], title: 'AI reads. Lan confirms.', focus: 'phone', dur: 7000,
+    { step: 2, short: 'OCR', zone: '09:16 · Dock 1', tags: ['AI', 'HUMAN'], title: 'AI reads. Lan confirms.', focus: 'phone', dur: 7000,
       text: 'Each line is matched to the catalogue, "Keo Sika 11FC 600ml" to SKF-11FC-600, with a confidence score. Lan confirms or corrects every line. OCR never writes silently.',
       beats: [{ t: 0, phone: ['extract', 'review'] }, { t: 1800, tap: '[data-tap=chk0]' }, { t: 2300, phone: ['extract', 'review', { checked: [true, false] }] },
         { t: 3400, tap: '[data-tap=chk1]' }, { t: 3900, phone: ['extract', 'confirmed'] }, { t: 5400, tap: '[data-tap=go]' }] },
@@ -201,8 +254,156 @@
   const params = new URLSearchParams(location.search)
   const n = SCENES.length
 
+  // Lightweight Web Audio API sound engine for interactive walkthrough feedback (always enabled by default)
+  const SoundFX = (() => {
+    const AC = window.AudioContext || window.webkitAudioContext
+    let ctx = null, master = null, noiseBuf = null
+
+    function ensure() {
+      if (!AC) return null
+      if (!ctx) {
+        try {
+          ctx = new AC()
+          const comp = ctx.createDynamicsCompressor()
+          master = ctx.createGain()
+          master.gain.value = 0.36
+          master.connect(comp)
+          comp.connect(ctx.destination)
+          const len = Math.floor(ctx.sampleRate * 0.14)
+          noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate)
+          const data = noiseBuf.getChannelData(0)
+          for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1
+        } catch {
+          ctx = null
+        }
+      }
+      return ctx
+    }
+
+    function unlock() {
+      const c = ensure()
+      if (!c) return
+      if (c.state === 'suspended') {
+        void c.resume().catch(() => {})
+      }
+    }
+
+    function ready() {
+      const c = ensure()
+      if (!c || c.state !== 'running') return null
+      return c
+    }
+
+    function tone(freq, opts = {}) {
+      const c = ready()
+      if (!c) return
+      const t = c.currentTime + (opts.delay || 0)
+      const dur = opts.dur || 0.08
+      const vol = opts.vol ?? 0.22
+      const osc = c.createOscillator()
+      const gain = c.createGain()
+      osc.type = opts.type || 'sine'
+      osc.frequency.setValueAtTime(freq, t)
+      if (opts.to) osc.frequency.exponentialRampToValueAtTime(Math.max(30, opts.to), t + dur)
+      gain.gain.setValueAtTime(0.0001, t)
+      gain.gain.linearRampToValueAtTime(vol, t + 0.006)
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur)
+      osc.connect(gain)
+      gain.connect(master)
+      osc.start(t)
+      osc.stop(t + dur + 0.01)
+    }
+
+    function noise(opts = {}) {
+      const c = ready()
+      if (!c || !noiseBuf) return
+      const t = c.currentTime + (opts.delay || 0)
+      const dur = opts.dur || 0.045
+      const src = c.createBufferSource()
+      src.buffer = noiseBuf
+      const filter = c.createBiquadFilter()
+      filter.type = opts.band || 'bandpass'
+      filter.frequency.setValueAtTime(opts.freq || 1800, t)
+      if (opts.to) filter.frequency.exponentialRampToValueAtTime(opts.to, t + dur)
+      filter.Q.value = opts.q || 1.2
+      const gain = c.createGain()
+      gain.gain.setValueAtTime(0.0001, t)
+      gain.gain.linearRampToValueAtTime(opts.vol ?? 0.14, t + 0.004)
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur)
+      src.connect(filter)
+      filter.connect(gain)
+      gain.connect(master)
+      src.start(t)
+      src.stop(t + dur + 0.01)
+    }
+
+    const cues = {
+      tap: () => {
+        tone(540, { to: 260, dur: 0.055, vol: 0.22 })
+        noise({ freq: 2200, dur: 0.018, vol: 0.06 })
+      },
+      dtap: () => {
+        tone(390, { to: 195, dur: 0.065, vol: 0.24, type: 'triangle' })
+        noise({ freq: 1400, dur: 0.02, vol: 0.05 })
+      },
+      shutter: () => {
+        noise({ freq: 2400, q: 1.4, dur: 0.026, vol: 0.22 })
+        tone(960, { to: 320, dur: 0.024, vol: 0.16, type: 'triangle' })
+        noise({ delay: 0.055, freq: 1850, q: 1.6, dur: 0.022, vol: 0.16 })
+        tone(760, { delay: 0.055, to: 280, dur: 0.022, vol: 0.12, type: 'triangle' })
+      },
+      scan: () => {
+        tone(783.99, { dur: 0.13, vol: 0.14, type: 'triangle' })
+        tone(1174.66, { delay: 0.075, dur: 0.2, vol: 0.16, type: 'sine' })
+      },
+      check1: () => {
+        tone(587.33, { dur: 0.07, vol: 0.18 })
+        tone(880, { delay: 0.045, dur: 0.11, vol: 0.18 })
+      },
+      check2: () => {
+        tone(659.25, { dur: 0.07, vol: 0.18 })
+        tone(987.77, { delay: 0.045, dur: 0.12, vol: 0.2 })
+      },
+      flag: () => {
+        tone(523.25, { dur: 0.11, vol: 0.2, type: 'triangle' })
+        tone(392.0, { delay: 0.095, dur: 0.16, vol: 0.2, type: 'triangle' })
+      },
+      submit: () => {
+        tone(523.25, { dur: 0.09, vol: 0.16 })
+        tone(659.25, { delay: 0.06, dur: 0.1, vol: 0.16 })
+        tone(783.99, { delay: 0.12, dur: 0.18, vol: 0.18 })
+      },
+      approve: () => {
+        tone(523.25, { dur: 0.18, vol: 0.15, type: 'triangle' })
+        tone(659.25, { delay: 0.055, dur: 0.2, vol: 0.15, type: 'triangle' })
+        tone(783.99, { delay: 0.11, dur: 0.24, vol: 0.16, type: 'sine' })
+        tone(1046.5, { delay: 0.165, dur: 0.3, vol: 0.18, type: 'sine' })
+      },
+      complete: () => {
+        tone(523.25, { dur: 0.22, vol: 0.14 })
+        tone(659.25, { delay: 0.08, dur: 0.24, vol: 0.14 })
+        tone(783.99, { delay: 0.16, dur: 0.26, vol: 0.15 })
+        tone(1046.5, { delay: 0.24, dur: 0.42, vol: 0.18 })
+      },
+      step: () => {
+        noise({ freq: 650, to: 1600, q: 0.8, dur: 0.06, vol: 0.05 })
+        tone(360, { to: 480, dur: 0.055, vol: 0.07 })
+      },
+      ui: () => {
+        tone(720, { to: 420, dur: 0.032, vol: 0.12 })
+      },
+    }
+
+    function play(kind) {
+      if (cues[kind]) cues[kind]()
+    }
+
+    unlock()
+    return { unlock, play }
+  })()
+
   let idx = 0, elapsed = 0, playing = !params.has('paused') && !matchMedia('(prefers-reduced-motion: reduce)').matches, last = performance.now()
-  let fired = new Set(), shown = { phone: '', dash: '' }
+  let fired = new Set(), shown = { phone: '', dash: '' }, readyAudio = false
 
   function stateAt(i, t) {
     let phone = null, dash = null
@@ -214,14 +415,35 @@
     return { phone, dash }
   }
 
-  function render(t) {
+  function render(t, emitCues) {
     const s = stateAt(idx, t)
     const pk = JSON.stringify(s.phone)
-    if (pk !== shown.phone) { phoneEl.innerHTML = VeloUI.phone(s.phone[0], s.phone[1], s.phone[2]); shown.phone = pk }
-    if (s.dash !== shown.dash) { dashEl.innerHTML = VeloUI.dash(s.dash); shown.dash = s.dash }
+    if (pk !== shown.phone) {
+      phoneEl.innerHTML = VeloUI.phone(s.phone[0], s.phone[1], s.phone[2])
+      shown.phone = pk
+      if (emitCues && s.phone && ((s.phone[0] === 'note' && s.phone[1] === 'reading') || (s.phone[0] === 'count' && s.phone[1] === 'counted'))) {
+        SoundFX.play('scan')
+      }
+    }
+    if (s.dash !== shown.dash) {
+      dashEl.innerHTML = VeloUI.dash(s.dash)
+      shown.dash = s.dash
+      if (emitCues && s.dash === 'receipt') SoundFX.play('approve')
+      else if (emitCues && s.dash === 'stock' && SCENES[idx].step === 8) SoundFX.play('scan')
+    }
   }
 
-  function tap(root, sel) {
+  function soundForTap(sel, isDash) {
+    if (sel === '.ph-cam' || sel === '[data-tap=photo]') return 'shutter'
+    if (sel === '[data-tap=chk0]') return 'check1'
+    if (sel === '[data-tap=chk1]' || sel === '[data-tap=driver]' || sel === '[data-tap=save]') return 'check2'
+    if (sel === '[data-tap=flag]') return 'flag'
+    if (sel === '[data-tap=submit]') return 'submit'
+    if (sel === '[data-tap=approve]') return 'approve'
+    return isDash ? 'dtap' : 'tap'
+  }
+
+  function tap(root, sel, emitCue) {
     const el = root.querySelector(sel)
     if (!el) return
     const rr = root.getBoundingClientRect(), er = el.getBoundingClientRect()
@@ -232,12 +454,14 @@
     fx.style.top = (er.top - rr.top + er.height / 2) * k + 'px'
     root.appendChild(fx)
     setTimeout(() => fx.remove(), 800)
+    if (emitCue) SoundFX.play(soundForTap(sel, root === dashEl))
   }
 
   function caption() {
     const s = SCENES[idx]
     $('capNum').textContent = s.step ? '0' + s.step : '✓'
-    $('capStage').textContent = s.step ? STAGES[s.step] : 'The whole delivery'
+    $('capFocus').textContent = FOCUS_LABEL[s.focus]
+    $('capStage').textContent = s.step ? 'STEP 0' + s.step + ' · ' + STAGES[s.step] : 'COMPLETE · THE WHOLE DELIVERY'
     $('capZone').textContent = s.zone
     $('capTags').innerHTML = s.tags.map((t) => `<span class="v-chip tg ${TAG[t]}">${t}</span>`).join('')
     $('capTitle').textContent = s.title
@@ -254,7 +478,8 @@
     fired = new Set(s.beats.map((b, j) => (b.t <= elapsed && (b.tap || b.dtap) ? j : -1)).filter((j) => j >= 0))
     stage.dataset.focus = s.focus
     caption()
-    render(elapsed)
+    render(elapsed, false)
+    if (readyAudio && !atEnd) SoundFX.play(s.step === 0 ? 'complete' : 'step')
     dots()
     history.replaceState(null, '', location.search + '#' + (idx + 1))
     if (innerWidth <= 900) fit()
@@ -283,10 +508,10 @@
       s.beats.forEach((b, j) => {
         if ((b.tap || b.dtap) && b.t <= elapsed && !fired.has(j)) {
           fired.add(j)
-          b.tap ? tap(phoneEl, b.tap) : tap(dashEl, b.dtap)
+          b.tap ? tap(phoneEl, b.tap, true) : tap(dashEl, b.dtap, true)
         }
       })
-      render(elapsed)
+      render(elapsed, true)
       if (elapsed >= s.dur) go(idx + 1)
       else dots()
     }
@@ -294,7 +519,7 @@
   }
 
   function fit() {
-    stage.style.setProperty('--mobile-scale', String(document.querySelector('.st-devs-window').clientWidth / 1360))
+    stage.style.setProperty('--mobile-scale', String(document.querySelector('.st-devs-window').clientWidth / 1298))
     if (innerWidth <= 900) {
       stage.style.transform = 'none'
       return
@@ -304,17 +529,34 @@
   }
 
   $('dots').innerHTML = SCENES.map((s, j) => `<button title="${s.title}" aria-label="Step ${j + 1}: ${s.title}"><i></i><span>${String(j + 1).padStart(2, '0')} ${s.short}</span></button>`).join('')
-  document.querySelectorAll('#dots button').forEach((b, j) => b.addEventListener('click', () => go(j)))
-  $('prev').addEventListener('click', () => go(idx - 1))
-  $('next').addEventListener('click', () => go(idx + 1))
-  playBtn.addEventListener('click', () => setPlaying(!playing))
+  document.querySelectorAll('#dots button').forEach((b, j) => b.addEventListener('click', () => { SoundFX.unlock(); SoundFX.play('ui'); go(j) }))
+
+  document.querySelectorAll('#loop li[data-step]').forEach((li) => {
+    const jump = () => {
+      SoundFX.unlock()
+      SoundFX.play('ui')
+      const targetStep = +li.dataset.step
+      const targetIdx = SCENES.findIndex((s) => s.step === targetStep)
+      if (targetIdx >= 0) go(targetIdx)
+    }
+    li.addEventListener('click', jump)
+    li.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump() }
+    })
+  })
+
+  $('prev').addEventListener('click', () => { SoundFX.unlock(); SoundFX.play('ui'); go(idx - 1) })
+  $('next').addEventListener('click', () => { SoundFX.unlock(); SoundFX.play('ui'); go(idx + 1) })
+  playBtn.addEventListener('click', () => { SoundFX.unlock(); SoundFX.play('ui'); setPlaying(!playing) })
+  addEventListener('pointerdown', () => SoundFX.unlock(), { capture: true, passive: true })
   addEventListener('keydown', (e) => {
+    SoundFX.unlock()
     if (e.target.closest('button,a,input,textarea,select')) return
-    if (e.key === ' ') { e.preventDefault(); setPlaying(!playing) }
-    else if (e.key === 'ArrowRight') go(idx + 1)
-    else if (e.key === 'ArrowLeft') go(idx - 1)
-    else if (e.key === 'Home') go(0)
-    else if (e.key === 'e' || e.key === 'E') { setPlaying(false); go(idx, true) }
+    if (e.key === ' ') { e.preventDefault(); SoundFX.play('ui'); setPlaying(!playing) }
+    else if (e.key === 'ArrowRight') { SoundFX.play('ui'); go(idx + 1) }
+    else if (e.key === 'ArrowLeft') { SoundFX.play('ui'); go(idx - 1) }
+    else if (e.key === 'Home') { SoundFX.play('ui'); go(0) }
+    else if (e.key === 'e' || e.key === 'E') { SoundFX.play('ui'); setPlaying(false); go(idx, true) }
     else if (e.key === 'h' || e.key === 'H') stage.classList.toggle('is-clean')
   })
   addEventListener('resize', fit)
@@ -324,6 +566,7 @@
   setPlaying(playing)
   stage.classList.add('is-instant')
   go((parseInt(location.hash.slice(1), 10) || 1) - 1)
+  readyAudio = true
   requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.remove('is-instant')))
   requestAnimationFrame(frame)
 })()

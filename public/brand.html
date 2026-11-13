@@ -13,7 +13,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:clip}
-body{font-family:var(--sans);background:var(--white);color:var(--ink);line-height:1.4;font-size:var(--text-body);letter-spacing:-.017em;font-weight:400;font-feature-settings:var(--font-features);-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);line-height:1.6;font-size:var(--text-body);letter-spacing:-.006em;font-weight:400;font-feature-settings:var(--font-features);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .wrap{max-width:var(--page-max);margin-inline:auto;padding-inline:var(--space-24)}
@@ -38,10 +38,10 @@ a{color:inherit;text-decoration:none}
 /* hero */
 .hero{padding:var(--space-80) 0 var(--space-48);text-align:center}
 .kicker{display:inline-block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;background:var(--fog);color:var(--slate);border-radius:var(--radius-pill);padding:var(--space-8) var(--space-16)}
-h1{font-family:var(--sans);font-weight:400;font-size:clamp(40px,7vw,64px);letter-spacing:-.03em;margin-top:var(--space-24);line-height:1.02}
-h1 b{font-weight:400;color:var(--violet)}
-.hero p{max-width:60ch;margin:var(--space-20) auto 0;font-family:var(--serif);font-weight:300;font-size:clamp(19px,2.2vw,24px);color:var(--mist);line-height:1.4;letter-spacing:-.01em}
-.hero p b{color:var(--slate);font-weight:300}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(40px,6.5vw,64px);letter-spacing:-.03em;margin-top:var(--space-24);line-height:1.08}
+h1 b{font-weight:600;color:var(--violet)}
+.hero p{max-width:56ch;margin:var(--space-24) auto 0;font-family:var(--sans);font-weight:400;font-size:clamp(17px,1.8vw,20px);color:var(--slate);line-height:1.7;letter-spacing:.005em}
+.hero p b{color:var(--ink);font-weight:600}
 
 /* tiles */
 .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-20);margin:var(--space-48) 0 var(--space-20)}
@@ -70,9 +70,9 @@ h1 b{font-weight:400;color:var(--violet)}
 
 /* sections */
 .sec-title,.type__serif{font-variant-numeric:lining-nums}
-.sec-title{font-family:var(--sans);font-weight:400;font-size:clamp(30px,4vw,48px);letter-spacing:-.02em;line-height:1.08;margin:var(--space-120) auto 0;max-width:900px;text-align:center}
-.sec-title small{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;font-weight:400;letter-spacing:.08em;color:var(--slate);margin-bottom:var(--space-16)}
-.sec-lede{font-family:var(--serif);font-weight:300;color:var(--mist);font-size:clamp(19px,2.2vw,24px);max-width:62ch;margin:var(--space-16) auto 0;line-height:1.4;letter-spacing:-.01em;text-align:center}
+.sec-title{font-family:var(--display);font-weight:600;font-size:clamp(30px,4vw,46px);letter-spacing:-.025em;line-height:1.12;margin:var(--space-120) auto 0;max-width:900px;text-align:center}
+.sec-title small{display:block;font-family:var(--mono);font-size:11px;text-transform:uppercase;font-weight:500;letter-spacing:.08em;color:var(--slate);margin-bottom:var(--space-16)}
+.sec-lede{font-family:var(--sans);font-weight:400;color:var(--slate);font-size:clamp(17px,1.8vw,20px);max-width:58ch;margin:var(--space-20) auto 0;line-height:1.7;letter-spacing:.005em;text-align:center}
 
 /* palette */
 .pal{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);margin:var(--space-24) 0 var(--space-16)}
@@ -98,9 +98,9 @@ h1 b{font-weight:400;color:var(--violet)}
 .type__card:first-child{background:var(--ink);color:var(--white)}
 .type__card:first-child small,.type__card:first-child p{color:var(--mist)}
 .type__card small{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:400;color:var(--slate);margin-bottom:var(--space-16)}
-.type__serif{font-family:var(--serif);font-weight:300;font-size:var(--text-heading-lg);line-height:1.1;letter-spacing:-.02em}
-.type__serif i{font-style:italic}
-.type__sans{font-family:var(--sans);font-weight:400;font-size:var(--text-heading-sm);line-height:1.2;letter-spacing:-.017em}
+.type__serif{font-family:var(--display);font-weight:600;font-size:var(--text-heading-lg);line-height:1.12;letter-spacing:-.025em}
+.type__serif i{font-style:italic;font-weight:400}
+.type__sans{font-family:var(--sans);font-weight:400;font-size:var(--text-heading-sm);line-height:1.5;letter-spacing:-.005em}
 .type__card--wide{grid-column:1/-1}
 .type__card p{margin-top:var(--space-12);color:var(--slate)}
 
@@ -118,7 +118,7 @@ h1 b{font-weight:400;color:var(--violet)}
 .band .cta{text-align:center}
 
 footer{background:var(--violet);color:var(--white);padding:var(--space-64) 0 var(--space-48)}
-.foot-brand{display:flex;align-items:center;gap:var(--space-10);font-size:var(--text-subheading);letter-spacing:-.02em;margin-bottom:var(--space-24)}
+.foot-brand{display:flex;align-items:center;gap:var(--space-10);font-size:var(--text-subheading);letter-spacing:-.02em;margin-bottom:var(--space-24);color:var(--white)}
 .foot-brand img{width:28px;height:28px;object-fit:contain}
 .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-10);font-size:var(--text-small);color:var(--tint)}
 
@@ -144,7 +144,7 @@ footer{background:var(--violet);color:var(--white);padding:var(--space-64) 0 var
     <div class="wrap">
       <span class="kicker">Team DNKTV · AI for Business Innovation 2026</span>
       <h1>Bright floor <b>identity</b></h1>
-      <p>Official VELO marks and palette. A calm canvas of white, black and grey with <b>Signal Violet</b> for every action, <b>Mint Pulse</b> for status and Tint Wash for highlighted panels. Set in OS Studio Grotesk and OS Chronik.</p>
+      <p>Official VELO marks and palette. A calm canvas of white, black and grey with <b>Signal Violet</b> for every action, <b>Mint Pulse</b> for status and Tint Wash for highlighted panels. Set in Plus Jakarta Sans, Inter and JetBrains Mono.</p>
     </div>
   </header>
 
@@ -233,21 +233,21 @@ footer{background:var(--violet);color:var(--white);padding:var(--space-64) 0 var
       <div class="swatch" role="listitem"><div class="chipc" style="background:var(--success)"></div><div class="meta"><b>Success</b><span>#1A7F45</span><em>Match, confirmed; product status only</em></div></div>
     </div>
 
-    <h2 class="sec-title"><small>02 / Type</small>OS Chronik for headlines, OS Studio Grotesk for everything else</h2>
+    <h2 class="sec-title"><small>02 / Type</small>Plus Jakarta Sans for headlines, Inter for UI &amp; body</h2>
     <div class="type">
       <div class="type__card">
-        <small>OS Chronik Light 300 + Light Italic</small>
+        <small>Plus Jakarta Sans SemiBold 600</small>
         <div class="type__serif">Receive. Verify. <i>Record.</i></div>
-        <p>Editorial headlines and section openers only (72px at 0.9 line height, smaller at 18, 24 and 34px). Never above weight 300, never uppercase.</p>
+        <p>Display titles, section headlines, card headings and key benchmark numbers with full English and Vietnamese glyph support.</p>
       </div>
       <div class="type__card">
-        <small>OS Studio Grotesk Regular 400</small>
+        <small>Inter Regular 400 / Medium 500</small>
         <div class="type__sans">Every delivery checked against what was ordered.</div>
-        <p>All functional UI: navigation, buttons, labels, body copy and numbers (tabular). No monospace.</p>
+        <p>All functional UI: navigation, buttons, body copy, subtitles with generous line-height and tabular product data.</p>
       </div>
       <div class="type__card type__card--wide">
-        <small>Source</small>
-        <p style="margin-top:0">Both families come from the OpenServ media kit (openserv.ai/media-kit) and are self-hosted from /fonts.</p>
+        <small>Monospace &amp; Source</small>
+        <p style="margin-top:0">JetBrains Mono handles micro-labels, data readouts and code cards. Typography is served via Google Fonts in <code>/tokens.css</code> with system sans/mono fallbacks.</p>
       </div>
     </div>
 

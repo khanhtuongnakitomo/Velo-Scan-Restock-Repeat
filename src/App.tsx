@@ -1,6 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import html from './landing.html?raw'
 import './landing.css'
+import { GhostFibers } from './components/reactbits/GhostFibers'
+import { ClickSpark } from './components/reactbits/ClickSpark'
+import { setupReactBitsEffects } from './components/reactbits/effects'
+
+const MARKUP = { __html: html }
 
 const ease = (t: number) => 1 - Math.pow(1 - t, 4)
 
@@ -13,7 +19,7 @@ function counterFormat(el: HTMLElement) {
 }
 
 // Counters ship their final value in the HTML (readable without JS); with motion allowed
-// they reset to zero on mount and count up once they scroll into view.
+// they reset to zero and recount each time they scroll into view.
 function runCounter(el: HTMLElement) {
   const end = parseFloat(el.dataset.c || '0')
   const format = counterFormat(el)
@@ -140,15 +146,38 @@ declare global {
   }
 }
 
+function resolveTokenColor(expr: string, fallback: string) {
+  const probe = document.createElement('span')
+  probe.style.color = expr
+  document.body.appendChild(probe)
+  const resolved = getComputedStyle(probe).color || fallback
+  probe.remove()
+  return resolved
+}
+
 export default function App() {
   const root = useRef<HTMLDivElement>(null)
+  const [heroFibersEl, setHeroFibersEl] = useState<HTMLElement | null>(null)
+  const [fiberTheme, setFiberTheme] = useState({
+    glowColor: 'rgb(95, 121, 255)',
+    lineColor: 'rgb(74, 94, 200)',
+    secondaryColor: 'rgb(59, 75, 158)',
+  })
 
   useEffect(() => {
     const r = root.current
     if (!r) return
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-    const counterCleanup: Array<() => void> = []
+    const activeCounters = new Map<HTMLElement, () => void>()
     let disposed = false
+
+    setFiberTheme({
+      glowColor: resolveTokenColor('var(--violet)', 'rgb(95, 121, 255)'),
+      lineColor: resolveTokenColor('color-mix(in srgb, var(--violet) 78%, var(--ink))', 'rgb(74, 94, 200)'),
+      secondaryColor: resolveTokenColor('color-mix(in srgb, var(--violet) 62%, var(--ink))', 'rgb(59, 75, 158)'),
+    })
+    setHeroFibersEl(r.querySelector<HTMLElement>('#heroFibers'))
+    const rbCleanup = setupReactBitsEffects(r, reduce)
 
     // Functional data triggers only (counters and charts), not decorative scroll reveals.
     const counters = Array.from(r.querySelectorAll<HTMLElement>('[data-c]'))
@@ -159,12 +188,31 @@ export default function App() {
           if (!e.isIntersecting) return
           const el = e.target as HTMLElement
           el.classList.add('in')
-          if (el.matches('[data-c]') && !reduce) counterCleanup.push(runCounter(el))
           io.unobserve(el)
         }),
       { threshold: 0.18, rootMargin: '0px 0px -40px 0px' },
     )
-    r.querySelectorAll('.pcard, .phases, [data-c]').forEach((el) => io.observe(el))
+    r.querySelectorAll('.pcard, .phases').forEach((el) => io.observe(el))
+
+    const counterIo = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const el = e.target as HTMLElement
+          if (e.isIntersecting) {
+            el.classList.add('in')
+            if (!reduce) {
+              activeCounters.get(el)?.()
+              activeCounters.set(el, runCounter(el))
+            }
+          } else if (!reduce) {
+            activeCounters.get(el)?.()
+            activeCounters.delete(el)
+            el.textContent = counterFormat(el)(0)
+          }
+        }),
+      { threshold: 0.15 },
+    )
+    counters.forEach((el) => counterIo.observe(el))
 
     const flowCleanup = setupFlow(r, reduce)
     // The landing markup is injected after public/motion.js ran its first pass.
@@ -172,6 +220,7 @@ export default function App() {
 
     // Scroll progress bar and the nav highlight pill, both GPU-composited transforms.
     const bar = r.querySelector<HTMLElement>('.progress')
+    const navEl = r.querySelector<HTMLElement>('.nav')
     const ink = r.querySelector<HTMLElement>('.nav__ink')
     const navLinks = Array.from(r.querySelectorAll<HTMLAnchorElement>('.nav__links a[href^="#"]'))
 
@@ -212,6 +261,7 @@ export default function App() {
 
     const onScroll = () => {
       const h = document.documentElement
+      navEl?.classList.toggle('is-scrolled', scrollY > 12)
       const ratio = Math.min(1, Math.max(0, h.scrollTop / (h.scrollHeight - h.clientHeight || 1)))
       if (bar) bar.style.transform = `scaleX(${ratio})`
       let cur: HTMLElement | null = null
@@ -247,8 +297,11 @@ export default function App() {
     return () => {
       disposed = true
       io.disconnect()
+      counterIo.disconnect()
       flowCleanup()
-      counterCleanup.forEach((cancel) => cancel())
+      rbCleanup()
+      activeCounters.forEach((cancel) => cancel())
+      activeCounters.clear()
       hoverHandlers.forEach(({ a, enter, leave }) => {
         a.removeEventListener('mouseenter', enter)
         a.removeEventListener('mouseleave', leave)
@@ -261,5 +314,35 @@ export default function App() {
     }
   }, [])
 
-  return <div ref={root} dangerouslySetInnerHTML={{ __html: html }} />
+  return (
+    <>
+      <div ref={root} dangerouslySetInnerHTML={MARKUP} />
+      {heroFibersEl
+        ? createPortal(
+            <GhostFibers
+              glowColor={fiberTheme.glowColor}
+              lineColor={fiberTheme.lineColor}
+              secondaryColor={fiberTheme.secondaryColor}
+              layers={3}
+              twist={1.2}
+              threads={72}
+              fiberStyle="dots"
+              thickness={1.15}
+              density={1.15}
+              foldGlow={1.55}
+              depthOfField={0.85}
+              hoverEffect="focus"
+              intro={true}
+              mouseInteraction={true}
+              lightMode={true}
+              brightness={2.25}
+              vignette={0.18}
+              grain={0.04}
+            />,
+            heroFibersEl,
+          )
+        : null}
+      <ClickSpark />
+    </>
+  )
 }
