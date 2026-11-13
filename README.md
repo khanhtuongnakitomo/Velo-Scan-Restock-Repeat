@@ -1,50 +1,54 @@
 # VELO — Receive. Verify. Record.
 
-VELO's website for **LIKELION — AI for Business Innovation 2026**, by Team DNKTV: AI-assisted goods receiving for Vietnamese warehouses (three-way match of purchase order, delivery note and physical count). The product story is `docs/proposals/VELO_Vietnam_Receiving_Story.md`; the pitch deck kit is `docs/pitch-deck/`. The runnable frontend uses React 19, TypeScript, Vite 8, and Tailwind CSS 4.
+**VELO - AI hỗ trợ nhận hàng cho kho Việt: quét phiếu giao hàng, khớp 3 chiều, ghi nhận không sai sót.**
 
-This repository contains a presentation website, a scripted prototype demo with illustrative data, and design materials. The receiving MVP described on the page (OCR, three-way match, approvals, inventory) is the build target; it is not implemented here.
+VELO is Team DNKTV's entry for **LIKELION — AI for Business Innovation 2026**: AI-assisted goods receiving for Vietnamese warehouses. When a truck arrives, the receiver photographs the delivery note; AI reads the Vietnamese text and matches each line to the catalogue; the receiver counts the physical goods by barcode; deterministic rules run a three-way match (purchase order vs delivery note vs physical count); discrepancies are flagged with photo evidence and driver co-confirmation; a named manager approves; and only then is the goods receipt note (phiếu nhập kho) issued and stock recorded with batch and expiry.
+
+AI reads and suggests. Rules do the arithmetic. People decide.
+
+The product story is `docs/proposals/VELO_Vietnam_Receiving_Story.md`; the pitch deck kit is `docs/pitch-deck/`.
+
+## What's in this repo
+
+- **Landing page** (`src/landing.html`, rendered by `src/App.tsx`): the product story, a live three-way-match flow model, a 74-second promo film (`public/assets/velo-promo.mp4`), and two ways into the demo — *Use it yourself* or *Watch the demo unfold*.
+- **Interactive demo** (`public/demo/app.html`): receive delivery DN-2481 on Lan's phone, then approve as Minh.
+- **Walkthrough** (`public/demo/index.html`): the same delivery plays itself, phone and manager dashboard side by side.
+- **Screen board** (`public/demo/screens.html`): every prototype screen state.
+- **Supporting pages**: `public/brand.html` (brand assets), `public/strategy.html` (product strategy).
+
+The demos are scripted prototypes with illustrative data. The receiving MVP described on the page (OCR, three-way match, approvals, inventory) is the build target; it is not implemented here.
 
 ## Run the frontend
 
-The toolchain is declared in `.mise.toml`: Node.js 22 and pnpm 10.34.3. Git LFS is used for reference images and documents. Runtime images under `public/assets/` are stored directly in Git so static deployments can serve them without Git LFS retrieval.
+The toolchain is declared in `.mise.toml`: Node.js 22 and pnpm 10.34.3. Git LFS is used for reference images and documents. Runtime images and video under `public/assets/` are stored directly in Git so static deployments can serve them without Git LFS retrieval.
 
 From this repository's root:
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm dev
-```
-
-The development URL defaults to `http://localhost:8443`. Set `PORT` to choose another port. A separate development server is unnecessary when Figma Make is already serving the project.
-
-```sh
-pnpm build          # Production output in dist/
+pnpm dev        # http://localhost:8443 (set PORT to choose another port)
+pnpm build      # production output in dist/
 pnpm exec tsc --noEmit
-pnpm preview        # Serve the production build; stop dev first if using the same port
+pnpm lint:tokens
 ```
 
-The site self-hosts OS Studio Grotesk and OS Chronik (WOFF2 in `public/fonts/`, from the OpenServ media kit at openserv.ai/media-kit), declared in `public/tokens.css`; no font CDN is needed.
+## Design
 
-## Files needed by the frontend
+Liquid glass in the VELO palette (Pure White, Ink, Signal Violet, Mint Pulse, Tint Wash), defined once in `public/tokens.css` and guarded by `pnpm lint:tokens`. Buttons use the `--btn-glass-*` tokens: translucent, no outline, soft inner light. Full rules: `design/design.md`; audit reports and before/after screenshots: `design/audit/`.
+
+## Key files
 
 - `index.html` mounts `src/main.tsx`, which loads `src/App.tsx` and `src/index.css`.
-- `src/App.tsx` renders `src/landing.html` and adds the page's scroll effects. `src/landing.css` supplies the page styles, and `src/vite-env.d.ts` supplies Vite's TypeScript declarations.
-- `public/assets/` contains the runtime logos and team photos. Vite copies these files into the build without changing their paths.
-- `public/tokens.css` is the single source of design tokens (colors, fonts, spacing). `index.html`, `public/brand.html`, `public/strategy.html` and every `public/demo/*.html` page link it, and it declares the self-hosted fonts from `public/fonts/`.
-- `public/brand.html` is the brand and logo download page linked from the footer. Its assets are also in `public/assets/`.
-- `public/demo/` holds the static clerk-app and store-hub demo pages (`velo-ui.css`, `velo-ui.js`) opened from the landing page.
-- `package.json` and `pnpm-lock.yaml` define the dependencies and commands. `vite.config.ts`, `tsconfig.json`, and `.mise.toml` configure the build and toolchain.
-- `.figma/make/site.json` is imported directly by the current Vite configuration and must remain available for builds. The remaining `.figma/make/` files support the Figma Make environment.
-
-Keep these paths together at the repository root. The folders below provide supporting material and are not required to build the React frontend.
+- `src/App.tsx` renders `src/landing.html`, wires its interactions (flow model, demo picker, film playback) and the ReactBits effects in `src/components/reactbits/`.
+- `public/tokens.css` is the single source of design tokens (colors, fonts, spacing, glass). Fonts are Plus Jakarta Sans, Inter and JetBrains Mono.
+- `public/demo/` holds the prototype pages and their shared renderer (`velo-ui.js`, `velo-ui.css`).
+- `public/motion.js` / `public/motion.css`: site shell, preloader, background music and motion.
+- `.figma/make/site.json` is imported directly by the current Vite configuration and must remain available for builds.
 
 ## Supporting material
 
-- `docs/challenge/` — original competition brief PDF. It includes a confidentiality notice; review it before sharing the brief.
+- `docs/challenge/` — original competition brief PDF (includes a confidentiality notice; review before sharing).
 - `docs/proposals/` — VELO proposal and the ten-slide proposal blueprint.
-- `design/` — visual direction and design rules: the team's DESIGN.md (OpenServ style reference) applied as-is — white canvas, fog cards, Signal Violet actions, Mint highlights. Tokens live in `public/tokens.css`; `pnpm lint:tokens` catches hardcoded colors and raw spacing.
-- `design/figcraft/` — the earlier Primary Workshop (Bauhaus) design rebuilt in [FigCraft](https://github.com/storytold/figcraft); it does not reflect the current design. `velo.figcraft` (open it in the FigCraft app) and `renders/` PNGs; `node design/figcraft/build.mjs` regenerates both from code (needs `figcraft-cli` via `FIGCRAFT_CLI` and the Archivo Black / IBM Plex fonts via `FIGCRAFT_FONTS`).
-- `website/` — earlier standalone HTML website, brand sheet, visual variants, and Figma import materials. It is preserved separately from the current React source. Its `website/assets/` logos match `public/assets/` because `website/serve.py` only serves the `website/` folder.
-- `designHACK/` — supplied frontend and motion design toolkit, templates, and reference material. These files are reference resources, not installed agent skills or runtime dependencies.
-
-To view the standalone reference website, run `python website/serve.py` from the repository root, then open `http://localhost:8321`. Its Figma snapshot builder reads `website/index.html`, rather than the current React landing page.
+- `docs/pitch-deck/` — pitch deck kit.
+- `design/` — visual direction, design rules and audit reports.
+- `website/`, `designHACK/`, `design/figcraft/` — earlier standalone site, supplied design toolkit, and an earlier FigCraft exploration. Preserved separately; not required to build the frontend.

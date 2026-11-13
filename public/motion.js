@@ -165,7 +165,7 @@
     function tick(now) {
       if (!loaderEl) return
       var p = Math.min(1, (now - t0) / dur)
-      var eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2
+      var eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2 // easeInOutCubic: slow start, fast middle, slow end
       setProgress(el, from + (to - from) * eased)
       if (p < 1) loaderRaf = requestAnimationFrame(tick)
       else if (onDone) onDone()
@@ -179,7 +179,7 @@
     cancelAnimationFrame(loaderRaf)
     var loaded = false
     var completed = false
-    var vel = 28
+    var vel = 14 // start slow; the profile below accelerates through the middle and eases into 86
     var last = performance.now()
 
     function tick(now) {
@@ -189,12 +189,12 @@
 
       var targetVel
       if (!loaded) {
-        targetVel = Math.max(6, (86 - loaderProgress) * 0.65)
+        targetVel = 18 + 104 * Math.sin(Math.PI * Math.min(1, loaderProgress / 86))
         vel += (targetVel - vel) * Math.min(1, dt * 6)
         setProgress(el, Math.min(86, loaderProgress + vel * dt))
       } else {
         var rem = 100 - loaderProgress
-        targetVel = Math.min(72, Math.max(18, rem * 1.9))
+        targetVel = Math.min(110, Math.max(20, rem * 3.1))
         vel += (targetVel - vel) * Math.min(1, dt * 5)
         var next = loaderProgress + vel * dt
         if (next >= 99.6) {
@@ -259,7 +259,7 @@
         clickEffect: 'wave',
         lightMode: true,
         intro: !instant,
-        introDuration: 0.9,
+        introDuration: 0.55,
       })
     }
     setProgress(el, pct || 0)
@@ -292,7 +292,7 @@
       ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 320) })])
       : Promise.resolve()
     var countDone = new Promise(function (resolve) {
-      animateProgress(el, startPct, 100, saved ? 1050 : 1250, resolve)
+      animateProgress(el, startPct, 100, saved ? 680 : 800, resolve)
     })
 
     Promise.all([fontsReady, countDone]).then(function () {
@@ -304,8 +304,8 @@
         el.classList.add('is-open')
         void el.offsetWidth
         el.classList.add('is-leaving')
-        setTimeout(removeLoader, 660)
-      }, 180)
+        setTimeout(removeLoader, 460)
+      }, 90)
     })
   }
 
@@ -455,8 +455,8 @@
           return
         }
         el.classList.add('is-leaving')
-        setTimeout(closeLoader, 600)
-      }, 150)
+        setTimeout(closeLoader, 460)
+      }, 80)
     })
 
     void el.offsetWidth
@@ -470,7 +470,7 @@
       // Safety cap so slow/stalled routes cannot pin the overlay indefinitely
       setTimeout(function () {
         if (shellLoadToken === loadTokenSnapshot && loaderEl) closeLoader()
-      }, 4500)
+      }, 3000)
       mountShellFrame(target.href, function () {
         if (!loaderEl) {
           navPending = false
@@ -478,7 +478,7 @@
         }
         markLoaded()
       })
-    }, 380)
+    }, 200)
   }
 
   function onLinkClick(e) {
