@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" href="/assets/Logo.png?v=velo-logo-2">
 <link rel="stylesheet" href="/tokens.css">
 <link rel="stylesheet" href="/motion.css">
+<script src="/gradient-ascii.js" defer></script>
 <script src="/motion.js" defer></script>
 <style>
   *{box-sizing:border-box}
@@ -24,15 +25,15 @@
   .progress{position:fixed;inset:0 0 auto;height:2px;background:var(--violet);transform-origin:left;transform:scaleX(0);z-index:60;pointer-events:none}
 
   /* ---------- buttons: liquid glass (violet = primary, ink = dark, white = ghost); hover brightens + raises, active presses ---------- */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);font-family:var(--sans);font-weight:500;font-size:var(--text-small);letter-spacing:-.01em;text-decoration:none;border-radius:var(--radius-pill);padding:var(--space-12) var(--space-24);border:1px solid transparent;cursor:pointer;white-space:nowrap;background:var(--btn-glass-clear);color:var(--ink);box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);transition:background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease}
-  .btn:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);font-family:var(--sans);font-weight:500;font-size:var(--text-small);letter-spacing:-.01em;text-decoration:none;border-radius:var(--radius-pill);padding:var(--space-12) var(--space-24);border:1px solid transparent;cursor:pointer;white-space:nowrap;background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);color:var(--ink);box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);transition:background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease}
+  .btn:hover{background-color:var(--btn-glass-clear-hover);box-shadow:var(--btn-glass-shadow-hover)}
   .btn:active{transform:scale(.98)}
-  .btn--primary{background:var(--btn-glass-violet);color:var(--btn-glass-violet-text);box-shadow:var(--btn-glass-shadow-violet)}
-  .btn--primary:hover{background:color-mix(in srgb,var(--btn-glass-violet),var(--violet) 12%);color:var(--btn-glass-violet-text);box-shadow:var(--btn-glass-shadow-hover)}
-  .btn--dark{background:var(--btn-glass-ink);color:var(--white);box-shadow:var(--btn-glass-shadow)}
-  .btn--dark:hover{background:color-mix(in srgb,var(--btn-glass-ink),var(--ink) 20%);color:var(--white);box-shadow:var(--btn-glass-shadow-hover)}
-  footer .btn,footer .btn--primary,footer .btn--dark{background:var(--btn-glass-on-color);color:var(--white);box-shadow:var(--btn-glass-shadow)}
-  footer .btn:hover,footer .btn--primary:hover,footer .btn--dark:hover{background:color-mix(in srgb,var(--btn-glass-on-color),var(--white) 20%);color:var(--white);box-shadow:var(--btn-glass-shadow-hover)}
+  .btn--primary{border-radius:var(--btn-solid-radius);background-image:none;background-color:var(--btn-glass-violet);-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--btn-glass-violet-text);box-shadow:var(--btn-glass-shadow-violet)}
+  .btn--primary:hover{background-color:var(--btn-glass-violet-hover);color:var(--btn-glass-violet-text);box-shadow:var(--btn-glass-shadow-violet-hover)}
+  .btn--dark{border-radius:var(--btn-solid-radius);background-image:none;background-color:var(--btn-glass-ink);-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--white);box-shadow:var(--btn-glass-shadow-ink)}
+  .btn--dark:hover{background-color:var(--btn-glass-ink-hover);color:var(--white);box-shadow:var(--btn-glass-shadow-ink-hover)}
+  footer .btn,footer .btn--primary,footer .btn--dark{border-radius:var(--btn-solid-radius);background-image:none;background-color:var(--btn-glass-on-color);-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--white);box-shadow:var(--btn-glass-shadow-ink)}
+  footer .btn:hover,footer .btn--primary:hover,footer .btn--dark:hover{background-color:var(--btn-glass-on-color-hover);color:var(--white);box-shadow:var(--btn-glass-shadow-ink-hover)}
 
   /* ---------- floating nav synced with Home ---------- */
   .nav{position:fixed;inset:var(--space-16) var(--space-16) auto;z-index:50;display:flex;justify-content:center;align-items:center;pointer-events:none}
@@ -46,8 +47,8 @@
   .nav__links a:hover{color:var(--ink);background:var(--glass-fill-fog)}
   .nav__links a.on{background:var(--glass-tint);box-shadow:var(--glass-rim);color:color-mix(in srgb,var(--violet) 70%,var(--ink))}
   .nav__mobile-only,.nav__toggle{display:none}
-  .nav__back{pointer-events:auto;position:absolute;left:0;display:inline-flex;align-items:center;gap:var(--space-6);padding:var(--space-12) var(--space-20);border-radius:var(--radius-pill);font-size:var(--text-small);font-weight:500;text-decoration:none;color:var(--ink);background:var(--btn-glass-clear);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);transition:background-color .2s ease,box-shadow .2s ease,transform .2s ease}
-  .nav__back:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .nav__back{pointer-events:auto;position:absolute;left:0;display:inline-flex;align-items:center;gap:var(--space-6);padding:var(--space-12) var(--space-20);border-radius:var(--radius-pill);font-size:var(--text-small);font-weight:500;text-decoration:none;color:var(--ink);background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);transition:background-color .2s ease,box-shadow .2s ease,transform .2s ease}
+  .nav__back:hover{background-color:var(--btn-glass-clear-hover);box-shadow:var(--btn-glass-shadow-hover)}
   .nav__back:active{transform:scale(.98)}
   .nav__cta{pointer-events:auto;position:absolute;right:0;padding:var(--space-12) var(--space-24)}
 
@@ -117,8 +118,8 @@
 
   /* ripple band (the one coloured band: violet with white shapes) */
   section.band{position:relative;overflow:hidden;background:var(--violet);color:var(--white);padding-bottom:var(--space-120);text-align:center}
-  .band .pill-cta{display:inline-flex;align-items:center;gap:var(--space-8);margin-top:var(--space-32);background:var(--btn-glass-on-color);color:var(--white);box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;border-radius:var(--radius-pill);padding:var(--space-12) var(--space-24);text-decoration:none;font-size:var(--text-body);transition:background-color .2s,box-shadow .2s,transform .2s}
-  .band .pill-cta:hover{background:color-mix(in srgb,var(--btn-glass-on-color),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .band .pill-cta{display:inline-flex;align-items:center;gap:var(--space-8);margin-top:var(--space-32);background-color:var(--btn-glass-on-color);color:var(--white);box-shadow:var(--btn-glass-shadow-ink);border:1px solid transparent;border-radius:var(--btn-solid-radius);padding:var(--space-12) var(--space-24);text-decoration:none;font-size:var(--text-body);transition:background-color .2s,box-shadow .2s,transform .2s}
+  .band .pill-cta:hover{background-color:var(--btn-glass-on-color-hover);box-shadow:var(--btn-glass-shadow-ink-hover)}
   .band .pill-cta:active{transform:scale(.98)}
   .band .sec-num,.band .sec-head h2,.band .big-quote{color:var(--white)}
   .band .in{position:relative;z-index:1}
@@ -177,14 +178,14 @@
   .ph-line.red{background:var(--alert);border-color:var(--alert);color:var(--white)}
   .ph-foot{margin-top:auto;font-size:var(--text-caption);color:var(--slate)}
   .scene-btns{display:grid;gap:var(--space-10)}
-  .scene-btn{display:grid;grid-template-columns:44px 1fr;gap:var(--space-12);text-align:left;color:var(--ink);border:1px solid transparent;border-radius:var(--radius-panel);padding:var(--space-16);cursor:pointer;font-family:var(--sans);background:var(--btn-glass-clear);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);box-shadow:var(--btn-glass-shadow)}
-  .scene-btn:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .scene-btn{display:grid;grid-template-columns:44px 1fr;gap:var(--space-12);text-align:left;color:var(--ink);border:1px solid transparent;border-radius:var(--radius-panel);padding:var(--space-16);cursor:pointer;font-family:var(--sans);background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);box-shadow:var(--btn-glass-shadow)}
+  .scene-btn:hover{background-color:var(--btn-glass-clear-hover);box-shadow:var(--btn-glass-shadow-hover)}
   .scene-btn b{color:var(--violet)}
   .scene-btn b{font-family:var(--display);font-weight:600;font-size:var(--text-heading-sm);line-height:1.1}
   .scene-btn span{font-size:var(--text-small);color:var(--ash)}
   .scene-btn span strong{display:block;font-size:var(--text-body);font-weight:400;color:var(--ink)}
-  .scene-btn.on{background:var(--btn-glass-ink);box-shadow:var(--btn-glass-shadow);color:var(--white)}
-  .scene-btn.on:hover{background:color-mix(in srgb,var(--btn-glass-ink),var(--ink) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .scene-btn.on{background-image:none;background-color:var(--btn-glass-ink);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:var(--btn-glass-shadow-ink);color:var(--white)}
+  .scene-btn.on:hover{background-color:var(--btn-glass-ink-hover);box-shadow:var(--btn-glass-shadow-ink-hover)}
   .scene-btn.on b{color:var(--mint)}
   .scene-btn.on span{color:color-mix(in srgb,var(--white) 82%,transparent)}
   .scene-btn.on span strong{color:var(--white)}
@@ -269,7 +270,7 @@
     .nav__pill{flex:1;justify-content:space-between;padding:var(--space-10) var(--space-10) var(--space-10) var(--space-20)}
     .nav .brand{font-size:var(--text-subheading)}
     .nav .brand img{width:32px;height:32px}
-    .nav__toggle{display:block;position:relative;width:40px;height:40px;border-radius:50%;background:var(--btn-glass-violet);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow-violet);flex-shrink:0;transition:transform .2s ease,box-shadow .2s ease}
+    .nav__toggle{display:block;position:relative;width:40px;height:40px;border-radius:50%;background-color:var(--btn-glass-violet);border:1px solid transparent;box-shadow:var(--btn-glass-shadow-violet);flex-shrink:0;transition:transform .2s ease,box-shadow .2s ease}
     .nav__toggle:active{transform:scale(.96)}
     .nav__toggle span{position:absolute;left:12px;right:12px;height:1.5px;background:var(--btn-glass-violet-text);transition:transform .2s ease}
     .nav__toggle span:first-child{top:16px}

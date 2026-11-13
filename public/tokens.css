@@ -41,9 +41,9 @@
   --text-display: 72px;
 
   /* Shape */
-  --radius-card: 16px;
-  --radius-panel: 24px; /* large feature panels and cards, as on openserv.ai */
-  --radius-input: 12px;
+  --radius-card: 10px;
+  --radius-panel: 12px;
+  --radius-input: 8px;
   --radius-pill: 100px;
   --hairline: 1px solid var(--line);
   --hairline-strong: 1px solid var(--mist);
@@ -113,36 +113,41 @@
     inset 0 0 16px color-mix(in srgb, var(--violet) 40%, transparent),
     0 6px 20px color-mix(in srgb, var(--violet) 22%, transparent);
 
-  /* Button glass (reference: ui-layouts.com/components/liquid-glass). Buttons only.
-     Translucent, no outline, no bevel, no gloss band: a light wash + backdrop blur + a soft, symmetric inner
-     highlight (equal on both diagonals, so the capsule curve reads evenly) + a faint diffuse shadow.
-       clear:    background: var(--btn-glass-clear);  color: var(--ink);
-       primary:  background: var(--btn-glass-violet); color: var(--btn-glass-violet-text);
-       dark:     background: var(--btn-glass-ink);    color: var(--white);
-       on a coloured/dark band: background: var(--btn-glass-on-color); color: var(--white);
-       all:      border: 1px solid transparent; backdrop-filter: var(--btn-glass-blur); box-shadow: var(--btn-glass-shadow)
-                 (primary uses --btn-glass-shadow-violet); hover: --btn-glass-shadow-hover; press: scale(.98). */
-  --btn-glass-blur: blur(16px) saturate(180%);
-  --btn-glass-clear: color-mix(in srgb, var(--white) 34%, transparent);
-  --btn-glass-violet: color-mix(in srgb, color-mix(in srgb, var(--violet) 30%, var(--tint)) 72%, transparent);
-  --btn-glass-violet-text: color-mix(in srgb, var(--violet) 55%, var(--ink));
-  --btn-glass-ink: color-mix(in srgb, var(--ink) 62%, transparent);
-  --btn-glass-on-color: color-mix(in srgb, color-mix(in srgb, var(--violet) 40%, var(--ink)) 30%, transparent); /* deep-violet smoked wash: white text >= 4.5:1 on the violet band */
+  /* Button materials — colorless buttons keep frosted Liquid Glass (--btn-glass-clear);
+     colored buttons (Signal Violet & Obsidian Ink) are normal solid rounded-corner buttons
+     (--btn-solid-radius) without Liquid Glass blur or sheen. */
+  --btn-solid-radius: var(--radius-card);
+  --btn-glass-blur: blur(24px) saturate(195%) brightness(1.04);
+  --btn-glass-sheen-clear: radial-gradient(125% 110% at 14% 0%, color-mix(in srgb, var(--white) 62%, transparent) 0%, color-mix(in srgb, var(--white) 14%, transparent) 46%, color-mix(in srgb, var(--tint) 22%, transparent) 100%);
+  --btn-glass-sheen-tint: none;
+  --btn-glass-sheen-ink: none;
+  --btn-glass-clear: color-mix(in srgb, var(--white) 28%, transparent);
+  --btn-glass-clear-hover: color-mix(in srgb, var(--white) 46%, transparent);
+  --btn-glass-violet: var(--violet);
+  --btn-glass-violet-hover: color-mix(in srgb, var(--violet) 86%, var(--ink));
+  --btn-glass-violet-text: var(--white);
+  --btn-glass-ink: var(--ink);
+  --btn-glass-ink-hover: color-mix(in srgb, var(--ink) 82%, var(--white));
+  --btn-glass-on-color: var(--ink);
+  --btn-glass-on-color-hover: color-mix(in srgb, var(--ink) 84%, var(--white));
   --btn-glass-shadow:
-    inset 3px 3px 3px 0 color-mix(in srgb, var(--white) 45%, transparent),
-    inset -3px -3px 3px 0 color-mix(in srgb, var(--white) 45%, transparent),
-    0 2px 4px color-mix(in srgb, var(--ink) 6%, transparent),
-    0 0 12px color-mix(in srgb, var(--ink) 5%, transparent);
-  --btn-glass-shadow-violet:
-    inset 3px 3px 3px 0 color-mix(in srgb, var(--white) 55%, transparent),
-    inset -3px -3px 3px 0 color-mix(in srgb, var(--white) 40%, transparent),
-    0 2px 4px color-mix(in srgb, var(--violet) 10%, transparent),
-    0 4px 16px color-mix(in srgb, var(--violet) 16%, transparent);
+    inset 1.5px 1.5px 0.5px -0.5px color-mix(in srgb, var(--white) 98%, transparent),
+    inset -1.5px -1.5px 0.5px -0.5px color-mix(in srgb, var(--white) 68%, transparent),
+    inset 0 0 14px color-mix(in srgb, var(--white) 34%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent),
+    0 4px 16px color-mix(in srgb, var(--ink) 6%, transparent),
+    0 1px 3px color-mix(in srgb, var(--ink) 4%, transparent);
+  --btn-glass-shadow-violet: 0 2px 10px color-mix(in srgb, var(--violet) 26%, transparent);
+  --btn-glass-shadow-ink: 0 2px 8px color-mix(in srgb, var(--ink) 14%, transparent);
   --btn-glass-shadow-hover:
-    inset 3px 3px 3px 0 color-mix(in srgb, var(--white) 55%, transparent),
-    inset -3px -3px 3px 0 color-mix(in srgb, var(--white) 55%, transparent),
-    0 4px 8px color-mix(in srgb, var(--ink) 8%, transparent),
-    0 0 20px color-mix(in srgb, var(--ink) 6%, transparent);
+    inset 1.5px 1.5px 0.5px -0.5px var(--white),
+    inset -1.5px -1.5px 0.5px -0.5px color-mix(in srgb, var(--white) 82%, transparent),
+    inset 0 0 16px color-mix(in srgb, var(--white) 46%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--violet) 26%, transparent),
+    0 8px 22px color-mix(in srgb, var(--violet) 14%, transparent),
+    0 2px 6px color-mix(in srgb, var(--ink) 6%, transparent);
+  --btn-glass-shadow-violet-hover: 0 6px 18px color-mix(in srgb, var(--violet) 34%, transparent);
+  --btn-glass-shadow-ink-hover: 0 6px 16px color-mix(in srgb, var(--ink) 22%, transparent);
   /* Page-level colour field the glass refracts: white at the top, violet/tint/mint washes lower down, as in the
      reference's light variant. Apply to body/page roots: background: var(--ambient), var(--white); */
   --ambient:
@@ -181,9 +186,9 @@
 /* Glass fallbacks: no backdrop-filter support, or the user asks for less transparency → near-opaque fills. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   :root { --glass-fill: color-mix(in srgb, var(--white) 92%, transparent); --glass-fill-fog: var(--fog); --glass-violet: var(--violet); --glass-ink: var(--ink); --glass-tint: var(--tint);
-    --btn-glass-clear: color-mix(in srgb, var(--white) 92%, transparent); --btn-glass-violet: var(--tint); --btn-glass-ink: color-mix(in srgb, var(--ink) 80%, var(--white)); --btn-glass-on-color: color-mix(in srgb, var(--white) 24%, transparent); }
+    --btn-glass-clear: color-mix(in srgb, var(--white) 94%, transparent); --btn-glass-clear-hover: var(--white); }
 }
 @media (prefers-reduced-transparency: reduce) {
   :root { --glass-fill: color-mix(in srgb, var(--white) 94%, transparent); --glass-fill-strong: var(--white); --glass-fill-fog: var(--fog); --glass-violet: var(--violet); --glass-ink: var(--ink); --glass-tint: var(--tint);
-    --btn-glass-clear: var(--white); --btn-glass-violet: var(--tint); --btn-glass-ink: color-mix(in srgb, var(--ink) 80%, var(--white)); --btn-glass-on-color: color-mix(in srgb, var(--white) 24%, transparent); }
+    --btn-glass-clear: var(--white); --btn-glass-clear-hover: var(--fog); }
 }

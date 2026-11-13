@@ -4,7 +4,11 @@
 
 /* scroll reveal: fade + rise, staggered by motion.js via --rv-delay */
 .motion .rv { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-delay, 0ms), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-delay, 0ms); }
-.motion .rv--scale { transform: translateY(20px) scale(0.97); }
+.motion .rv--scale {
+  transform: translate3d(0, 26px, 0) scale(0.90);
+  transform-origin: center bottom;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--rv-delay, 0ms), transform 0.65s cubic-bezier(0.22, 1.18, 0.36, 1) var(--rv-delay, 0ms);
+}
 .motion .rv--left { transform: translateX(-28px); }
 .motion .rv.rv-in { opacity: 1; transform: none; }
 
@@ -15,11 +19,20 @@
 /* buttons and links: steady hover color/border transitions without shifting position */
 .btn, [class*='btn'], .link { transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.15s ease; }
 
-/* cards and tiles lift on hover */
-.card, .member, .kpi, .tile, .swatch, [class*='card'] { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--rv-delay, 0ms); }
-.motion .card.rv-in:hover, .motion .member.rv-in:hover, .motion .tile.rv-in:hover, .motion .swatch.rv-in:hover, .motion [class*='card'].rv-in:hover { transform: translateY(-4px); }
-.motion .rv-in:is(.card, .member, .tile, .swatch, [class*='card'], .btn) { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease var(--rv-delay, 0ms), background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.25s ease; }
-.card:hover, .member:hover, .tile:hover, .swatch:hover { transform: translateY(-4px); }
+/* boxes (cards, tiles, swatches, columns, roadmap): pop-up + zoom-in on hover */
+.card, .member, .kpi, .tile, .swatch, .col, .road, .step, .match-box, .status, .proof-item, .chain-item, [class*='card'], [class*='tile'], [class*='swatch'] {
+  transition: transform 0.36s cubic-bezier(0.22, 1.2, 0.36, 1), box-shadow 0.3s ease, border-color 0.25s ease, opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--rv-delay, 0ms);
+}
+.motion .rv-in:is(.card, .member, .kpi, .tile, .swatch, .col, .road, .step, .match-box, .status, .proof-item, .chain-item, [class*='card'], [class*='tile'], [class*='swatch'], .btn) {
+  transition: transform 0.36s cubic-bezier(0.22, 1.2, 0.36, 1), opacity 0.55s ease var(--rv-delay, 0ms), background-color 0.15s ease, border-color 0.25s ease, color 0.15s ease, box-shadow 0.3s ease;
+}
+@media (hover: hover) {
+  .card:hover, .member:hover, .kpi:hover, .tile:hover, .swatch:hover, .col:hover, .road:hover, .step:hover, .match-box:hover, .status:hover, .proof-item:hover, .chain-item:hover, [class*='card']:hover, [class*='tile']:hover, [class*='swatch']:hover,
+  .motion .card.rv-in:hover, .motion .member.rv-in:hover, .motion .kpi.rv-in:hover, .motion .tile.rv-in:hover, .motion .swatch.rv-in:hover, .motion .col.rv-in:hover, .motion .road.rv-in:hover, .motion .step.rv-in:hover, .motion .match-box.rv-in:hover, .motion .status.rv-in:hover, .motion .proof-item.rv-in:hover, .motion .chain-item.rv-in:hover, .motion [class*='card'].rv-in:hover, .motion [class*='tile'].rv-in:hover, .motion [class*='swatch'].rv-in:hover {
+    transform: translate3d(0, -6px, 0) scale(1.025);
+    z-index: 3;
+  }
+}
 
 /* scroll-linked parallax for decorative layers (motion.js sets --py) */
 [data-parallax] { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
@@ -36,21 +49,42 @@
   .motion .rv, .motion .split .w { opacity: 1 !important; filter: none !important; transform: none !important; transition: none !important; }
   [data-parallax] { transform: none !important; }
   .live-dot, .hero__meta i, .badge__dot { animation: none; }
-  .btn:hover, .card:hover, .member:hover, .tile:hover, .swatch:hover { transform: none; }
+  .btn:hover, .card:hover, .member:hover, .kpi:hover, .tile:hover, .swatch:hover, .col:hover, .road:hover, .step:hover, .match-box:hover, .status:hover, .proof-item:hover, .chain-item:hover, [class*='card']:hover, [class*='tile']:hover, [class*='swatch']:hover { transform: none; }
   .velo-loader { display: none !important; }
 }
 
-/* Editorial Ink Curtain Preloader — bespoke Swiss monochrome wipe */
+/* React Bits GradientASCII Curtain Preloader — Light-mode VELO Signal Violet, Tint Wash & Mint Pulse over Pure White */
 .velo-loader {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: var(--ink);
-  color: var(--white);
+  overflow: hidden;
+  background: var(--ambient), var(--white);
+  color: var(--ink);
   transform: translate3d(0, 100%, 0);
   pointer-events: none;
   will-change: transform;
   transition: transform 0.56s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.velo-loader__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.velo-loader__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 76% 50% at 50% 50%, color-mix(in srgb, var(--white) 48%, transparent), transparent 74%);
+}
+.velo-loader__bg .gradient-ascii-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .velo-loader.is-instant {
   transition: none;
@@ -67,6 +101,9 @@
   transition: transform 0.64s cubic-bezier(0.76, 0, 0.24, 1);
 }
 .velo-loader__inner {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
   height: 100%;
   width: 100%;
   display: flex;
@@ -88,7 +125,7 @@
   font-size: var(--text-lead);
   font-weight: 600;
   letter-spacing: -0.025em;
-  color: var(--white);
+  color: var(--ink);
 }
 .velo-loader__brand i {
   display: inline-block;
@@ -102,7 +139,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--mist);
+  color: var(--slate);
 }
 .velo-loader__center {
   overflow: hidden;
@@ -114,7 +151,7 @@
   line-height: 1.08;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: var(--white);
+  color: var(--ink);
   transform: translate3d(0, 110%, 0);
   opacity: 0;
   will-change: transform, opacity;
@@ -135,27 +172,27 @@
   justify-content: space-between;
   gap: var(--space-32);
   padding-top: var(--space-20);
-  border-top: 1px solid color-mix(in srgb, var(--white) 14%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
 }
 .velo-loader__track {
   flex: 1;
   height: 2px;
   margin-bottom: var(--space-10);
-  background: color-mix(in srgb, var(--white) 14%, transparent);
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
   overflow: hidden;
 }
 .velo-loader__fill {
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--white);
+  background: var(--ink);
   transform-origin: left center;
   transform: scaleX(0);
   will-change: transform;
   transition: background-color 0.25s ease;
 }
 .velo-loader.is-ready .velo-loader__fill {
-  background: var(--mint);
+  background: var(--violet);
 }
 .velo-loader__num {
   font-family: var(--display);
@@ -164,13 +201,14 @@
   line-height: 0.9;
   font-weight: 600;
   letter-spacing: -0.04em;
-  color: var(--white);
+  color: var(--ink);
   min-width: 3ch;
   text-align: right;
   transition: color 0.25s ease;
 }
 .velo-loader.is-ready .velo-loader__num {
-  color: var(--mint);
+  color: var(--violet);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--violet) 22%, transparent);
 }
 @media (max-width: 640px) {
   .velo-loader__inner { padding: var(--space-24); }
@@ -188,7 +226,8 @@
   gap: var(--space-10);
   padding: var(--space-10) var(--space-16);
   border-radius: var(--radius-pill);
-  background: var(--btn-glass-clear);
+  background-image: var(--btn-glass-sheen-clear);
+  background-color: var(--btn-glass-clear);
   backdrop-filter: var(--btn-glass-blur);
   -webkit-backdrop-filter: var(--btn-glass-blur);
   border: 1px solid transparent;
@@ -202,7 +241,7 @@
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .velo-bgm:hover {
-  background: color-mix(in srgb, var(--btn-glass-clear), var(--white) 20%);
+  background-color: var(--btn-glass-clear-hover);
   box-shadow: var(--btn-glass-shadow-hover);
 }
 .velo-bgm:active {
@@ -279,6 +318,15 @@ html.velo-shell body {
 
 body.velo-on-walkthrough .velo-bgm {
   display: none;
+}
+
+@media (pointer: coarse) {
+  html.motion:not(.velo-shell) {
+    scroll-snap-type: y proximity;
+  }
+  html.motion:not(.velo-shell) :is(header.hero, section.section, section.band, footer.site-foot) {
+    scroll-snap-align: start;
+  }
 }
 
 @media (max-width: 640px) {

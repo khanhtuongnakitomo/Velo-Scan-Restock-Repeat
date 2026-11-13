@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" href="../assets/Logo.png">
 <link rel="stylesheet" href="/tokens.css">
 <link rel="stylesheet" href="/motion.css">
+<script src="/gradient-ascii.js" defer></script>
 <script src="/motion.js" defer></script>
 <link rel="stylesheet" href="velo-ui.css">
 <style>
@@ -22,8 +23,8 @@
   .row{display:flex;flex-wrap:wrap;gap:var(--space-40) var(--space-40);margin-bottom:var(--space-60)}
   figure{display:flex;flex-direction:column;gap:var(--space-12)}
   figcaption{display:flex;gap:var(--space-8);align-items:center;font-size:var(--text-small);font-weight:400;color:var(--slate)}
-  figcaption a{color:var(--ink);background:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);border-radius:var(--radius-pill);padding:var(--space-4) var(--space-12);text-decoration:none;transition:box-shadow .2s ease,transform .15s ease,background-color .2s ease}
-  figcaption a:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  figcaption a{color:var(--ink);background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);border-radius:var(--radius-pill);padding:var(--space-4) var(--space-12);text-decoration:none;transition:box-shadow .2s ease,transform .15s ease,background-color .2s ease}
+  figcaption a:hover{background-color:var(--btn-glass-clear-hover);box-shadow:var(--btn-glass-shadow-hover)}
   figcaption a:active{transform:scale(.98)}
   figcaption a:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
   .dashes{display:flex;flex-direction:column;gap:var(--space-48)}

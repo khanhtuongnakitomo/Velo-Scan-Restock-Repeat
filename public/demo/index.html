@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" href="../assets/Logo.png">
 <link rel="stylesheet" href="/tokens.css">
 <link rel="stylesheet" href="/motion.css">
+<script src="/gradient-ascii.js" defer></script>
 <script src="/motion.js" defer></script>
 <link rel="stylesheet" href="velo-ui.css">
 <style>
@@ -27,12 +28,12 @@
   .st-top .v-chip{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
   .st-try{
     display:inline-flex;align-items:center;gap:var(--space-6);
-    padding:var(--space-8) var(--space-16);border-radius:var(--radius-pill);
-    background:var(--btn-glass-violet);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);color:var(--btn-glass-violet-text);font-size:var(--text-small);font-weight:500;text-decoration:none;
+    padding:var(--space-8) var(--space-16);border-radius:var(--btn-solid-radius);
+    background-color:var(--btn-glass-violet);color:var(--btn-glass-violet-text);font-size:var(--text-small);font-weight:500;text-decoration:none;
     border:1px solid transparent;box-shadow:var(--btn-glass-shadow-violet);
     transition:transform .15s ease,box-shadow .2s ease,background-color .2s ease;
   }
-  .st-try:hover{background:color-mix(in srgb,var(--btn-glass-violet),var(--violet) 12%);box-shadow:var(--btn-glass-shadow-hover)}
+  .st-try:hover{background-color:var(--btn-glass-violet-hover);box-shadow:var(--btn-glass-shadow-violet-hover)}
   .st-try:active{transform:scale(.98)}
   .st-try:focus-visible,.st-ctl .v-btn:focus-visible,.dots button:focus-visible,.loop li:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
 
@@ -73,7 +74,7 @@
   /* Un-cluttered studio stage: Phone and Dashboard never overlap awkwardly */
   .st-devs-window{
     position:absolute;left:566px;top:104px;width:1298px;height:880px;
-    border-radius:32px;background:var(--glass-sheen),var(--glass-fill);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:var(--glass-border);box-shadow:var(--glass-shadow-raised);overflow:hidden;
+    border-radius:var(--radius-panel);background:var(--glass-sheen),var(--glass-fill);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:var(--glass-border);box-shadow:var(--glass-shadow-raised);overflow:hidden;
   }
   .st-devs{position:relative;width:1298px;height:880px}
   .dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s ease,z-index 0s .25s}
@@ -106,18 +107,18 @@
 
   .st-ctl{position:absolute;left:56px;right:56px;bottom:16px;height:64px;display:flex;align-items:center;gap:var(--space-12);padding:0 var(--space-16);border-radius:var(--radius-pill);background:var(--glass-sheen),var(--glass-fill);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:var(--glass-border);box-shadow:var(--glass-rim-control);z-index:5;transition:transform .3s}
   .st-ctl .v-btn{width:auto;padding:var(--space-8) var(--space-16);font-size:var(--text-small);text-decoration:none}
-  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 var(--space-16);background:var(--btn-glass-ink);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);border-radius:var(--radius-pill);color:var(--white);font-weight:500;font-size:var(--text-small);text-decoration:none}
+  .site-back{display:none;position:fixed;z-index:40;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));align-items:center;min-height:44px;padding:0 var(--space-16);background-color:var(--btn-glass-ink);border:1px solid transparent;box-shadow:var(--btn-glass-shadow-ink);border-radius:var(--btn-solid-radius);color:var(--white);font-weight:500;font-size:var(--text-small);text-decoration:none}
   @media (max-width:1100px){.site-back{display:inline-flex}}
   .st-ctl #play{min-width:112px}
   .dots{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--space-6);margin:0 var(--space-10)}
-  .dots button{position:relative;height:32px;border:1px solid transparent;border-radius:var(--radius-pill);background:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);box-shadow:var(--btn-glass-shadow);overflow:hidden;font-size:var(--text-caption);font-weight:500;color:var(--ink);text-align:left;padding:0 var(--space-10);white-space:nowrap;text-overflow:ellipsis;transition:transform .15s ease,background-color .2s,box-shadow .2s}
-  .dots button:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .dots button{position:relative;height:32px;border:1px solid transparent;border-radius:var(--radius-pill);background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);box-shadow:var(--btn-glass-shadow);overflow:hidden;font-size:var(--text-caption);font-weight:500;color:var(--ink);text-align:left;padding:0 var(--space-10);white-space:nowrap;text-overflow:ellipsis;transition:transform .15s ease,background-color .2s,box-shadow .2s}
+  .dots button:hover{background-color:var(--btn-glass-clear-hover);box-shadow:var(--btn-glass-shadow-hover)}
   .dots button:active{transform:scale(.98)}
   .dots button span{position:relative;z-index:1}
   .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--glass-tint)}
   .dots button.is-past i{width:100%;background:var(--glass-tint)}
-  .dots button[aria-current="step"]{background:var(--btn-glass-violet);color:var(--btn-glass-violet-text);box-shadow:var(--btn-glass-shadow-violet)}
-  .dots button[aria-current="step"] i{background:transparent}
+  .dots button[aria-current="step"]{background-image:none;background-color:var(--btn-glass-violet);-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--btn-glass-violet-text);box-shadow:var(--btn-glass-shadow-violet)}
+  .dots button[aria-current="step"] i{background:color-mix(in srgb,var(--white) 20%,transparent)}
   .st-count{font-family:var(--mono);font-size:var(--text-caption);font-weight:500;min-width:60px;text-align:right;color:var(--ink)}
   .st-hint{font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:400;color:var(--slate)}
   .stage.is-clean .st-ctl{transform:translateY(150%)}
@@ -139,9 +140,9 @@
     .cap-title{font-size:var(--text-heading);margin:var(--space-14) 0 var(--space-10)}
     .cap-text{font-size:var(--text-body)}
     .loop-wrap{display:none}
-    .st-devs-window{position:relative;left:auto;top:auto;width:calc(100% - 24px);margin:0 auto;height:calc(880px * var(--mobile-scale));border-radius:20px}
+    .st-devs-window{position:relative;left:auto;top:auto;width:calc(100% - 24px);margin:0 auto;height:calc(880px * var(--mobile-scale));border-radius:var(--radius-panel)}
     .st-devs{left:0;top:0;width:1298px;height:880px;transform-origin:top left;transform:scale(var(--mobile-scale))}
-    .st-ctl{position:relative;left:auto;right:auto;bottom:auto;margin:var(--space-12);height:auto;padding:var(--space-16);border-radius:24px;gap:var(--space-8);flex-wrap:wrap}
+    .st-ctl{position:relative;left:auto;right:auto;bottom:auto;margin:var(--space-12);height:auto;padding:var(--space-16);border-radius:var(--radius-panel);gap:var(--space-8);flex-wrap:wrap}
     .st-ctl .v-btn{min-height:44px;padding:var(--space-10) var(--space-12)}
     .dots{order:2;flex-basis:100%;margin:0;grid-auto-flow:row;grid-template-columns:repeat(5,minmax(0,1fr))}
     .dots button{height:40px}

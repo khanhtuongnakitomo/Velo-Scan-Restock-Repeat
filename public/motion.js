@@ -85,7 +85,7 @@
     picked.forEach(function (el) {
       if (el.matches('h1, .head h2, .sec-head h2, h2.h-left')) splitWords(el)
       else el.classList.add('rv')
-      if (el.matches('img, figure, [class*="card"], .card, .member, .panel, [class*="tile"], .step, .match-box, .status, .proof-item, .chain-item')) el.classList.add('rv--scale')
+      if (el.matches('img, figure, [class*="card"], .card, .member, .panel, .col, .road, .kpi, .bench > div, [class*="tile"], [class*="swatch"], .step, .match-box, .status, .proof-item, .chain-item')) el.classList.add('rv--scale')
       io.observe(el)
     })
   }
@@ -117,6 +117,8 @@
   var soloMode = /[?&]only=/.test(location.search)
   var inFrame = (function () { try { return window.self !== window.top } catch (e) { return true } })()
   var loaderEl = null
+  var loaderAscii = null
+  var loaderProgress = 0
   var navPending = false
   var enterPlayed = false
   var loaderRaf = 0
@@ -139,12 +141,18 @@
   function removeLoader() {
     cancelAnimationFrame(loaderRaf)
     navPending = false
+    loaderProgress = 0
+    if (loaderAscii) {
+      loaderAscii.dispose()
+      loaderAscii = null
+    }
     if (loaderEl && loaderEl.parentNode) loaderEl.parentNode.removeChild(loaderEl)
     loaderEl = null
   }
 
   function setProgress(el, pct) {
     var v = Math.max(0, Math.min(100, pct))
+    loaderProgress = v
     var fill = el.querySelector('.velo-loader__fill')
     var num = el.querySelector('.velo-loader__num')
     if (fill) fill.style.transform = 'scaleX(' + (v / 100).toFixed(4) + ')'
@@ -157,12 +165,55 @@
     function tick(now) {
       if (!loaderEl) return
       var p = Math.min(1, (now - t0) / dur)
-      var eased = 1 - Math.pow(1 - p, 3)
+      var eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2
       setProgress(el, from + (to - from) * eased)
       if (p < 1) loaderRaf = requestAnimationFrame(tick)
       else if (onDone) onDone()
     }
     loaderRaf = requestAnimationFrame(tick)
+  }
+
+  // Smooth velocity-continuous progress controller: climbs steadily during load
+  // without sudden bursts, then glides smoothly into 100 once the frame is ready.
+  function runLoaderProgress(el, onComplete) {
+    cancelAnimationFrame(loaderRaf)
+    var loaded = false
+    var completed = false
+    var vel = 28
+    var last = performance.now()
+
+    function tick(now) {
+      if (!loaderEl) return
+      var dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000))
+      last = now
+
+      var targetVel
+      if (!loaded) {
+        targetVel = Math.max(6, (86 - loaderProgress) * 0.65)
+        vel += (targetVel - vel) * Math.min(1, dt * 6)
+        setProgress(el, Math.min(86, loaderProgress + vel * dt))
+      } else {
+        var rem = 100 - loaderProgress
+        targetVel = Math.min(72, Math.max(18, rem * 1.9))
+        vel += (targetVel - vel) * Math.min(1, dt * 5)
+        var next = loaderProgress + vel * dt
+        if (next >= 99.6) {
+          setProgress(el, 100)
+          if (!completed) {
+            completed = true
+            onComplete()
+          }
+          return
+        }
+        setProgress(el, next)
+      }
+      loaderRaf = requestAnimationFrame(tick)
+    }
+    loaderRaf = requestAnimationFrame(tick)
+
+    return function markLoaded() {
+      loaded = true
+    }
   }
 
   function buildLoader(title, pathText, pct, instant) {
@@ -172,6 +223,7 @@
     el.setAttribute('aria-live', 'polite')
     el.setAttribute('aria-label', title)
     el.innerHTML =
+      '<div class="velo-loader__bg" aria-hidden="true"></div>' +
       '<div class="velo-loader__inner">' +
         '<div class="velo-loader__top">' +
           '<span class="velo-loader__brand">VELO<i></i></span>' +
@@ -185,6 +237,31 @@
       '</div>'
     document.body.appendChild(el)
     loaderEl = el
+    var bg = el.querySelector('.velo-loader__bg')
+    if (bg && window.VeloGradientASCII && !reduce) {
+      loaderAscii = window.VeloGradientASCII.mount(bg, {
+        colors: window.VeloGradientASCII.defaultVeloColors(true),
+        shape: 'horizon',
+        characters: ' =+xX0S8#@',
+        cellSize: 18,
+        density: 0.8,
+        glyphOpacity: 0.78,
+        gradientOpacity: 0.65,
+        glow: 0.16,
+        flicker: 0.2,
+        softness: 0.52,
+        scale: 1,
+        flow: 0.55,
+        speed: 1,
+        grain: 0.06,
+        mouseInteraction: true,
+        scrambleRadius: 0.1,
+        clickEffect: 'wave',
+        lightMode: true,
+        intro: !instant,
+        introDuration: 0.9,
+      })
+    }
     setProgress(el, pct || 0)
     return el
   }
@@ -215,7 +292,7 @@
       ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 320) })])
       : Promise.resolve()
     var countDone = new Promise(function (resolve) {
-      animateProgress(el, startPct, 100, saved ? 680 : 820, resolve)
+      animateProgress(el, startPct, 100, saved ? 1050 : 1250, resolve)
     })
 
     Promise.all([fontsReady, countDone]).then(function () {
@@ -258,6 +335,7 @@
       var canvases = rootDoc.querySelectorAll('canvas')
       for (var i = 0; i < canvases.length; i++) {
         var c = canvases[i]
+        if (c.closest && c.closest('.velo-loader')) continue
         var gl = (c.getContext && (c.getContext('webgl2') || c.getContext('webgl'))) || null
         if (gl && !gl.isContextLost()) {
           var ext = gl.getExtension('WEBGL_lose_context')
@@ -358,45 +436,46 @@
     navPending = true
     var label = routeLabel(target)
     var el = buildLoader(label, target.pathname, 0, false)
+    var doneClosing = false
+    function closeLoader() {
+      if (doneClosing) return
+      doneClosing = true
+      removeLoader()
+    }
+    var markLoaded = runLoaderProgress(el, function () {
+      if (!loaderEl) {
+        navPending = false
+        return
+      }
+      el.classList.add('is-ready')
+      setTimeout(function () {
+        if (!loaderEl) {
+          navPending = false
+          return
+        }
+        el.classList.add('is-leaving')
+        setTimeout(closeLoader, 600)
+      }, 150)
+    })
+
     void el.offsetWidth
     requestAnimationFrame(function () {
       if (!loaderEl) return
       el.classList.add('is-open')
-      animateProgress(el, 0, 55, 420)
     })
 
     setTimeout(function () {
       var loadTokenSnapshot = shellLoadToken + 1
+      // Safety cap so slow/stalled routes cannot pin the overlay indefinitely
+      setTimeout(function () {
+        if (shellLoadToken === loadTokenSnapshot && loaderEl) closeLoader()
+      }, 4500)
       mountShellFrame(target.href, function () {
         if (!loaderEl) {
           navPending = false
           return
         }
-        var doneClosing = false
-        function closeLoader() {
-          if (doneClosing) return
-          doneClosing = true
-          removeLoader()
-        }
-        // Hard cap so heavy WebGL/React pages cannot pin the preloader overlay
-        setTimeout(function () {
-          if (shellLoadToken === loadTokenSnapshot && loaderEl) closeLoader()
-        }, 1250)
-        animateProgress(el, 55, 100, 260, function () {
-          if (!loaderEl) {
-            navPending = false
-            return
-          }
-          el.classList.add('is-ready')
-          setTimeout(function () {
-            if (!loaderEl) {
-              navPending = false
-              return
-            }
-            el.classList.add('is-leaving')
-            setTimeout(closeLoader, 560)
-          }, 90)
-        })
+        markLoaded()
       })
     }, 380)
   }
@@ -671,12 +750,225 @@
     })
   }
 
+  // ---------- Inertial Smooth Scroll + Gentle Proximity Section Snapping ----------
+  function setupSmoothScroll() {
+    if (reduce || soloMode) return
+    var isTouchOnly = window.matchMedia && window.matchMedia('(pointer: coarse)').matches
+    if (isTouchOnly) return
+
+    var currentY = window.scrollY || window.pageYOffset || 0
+    var targetY = currentY
+    var lastAppliedY = currentY
+    var rafId = 0
+    var snapTimer = 0
+    var lastTime = 0
+    var programmatic = false
+    var wheelActive = false
+    var activeRate = 11.5
+    var lastSnappedY = -1
+    var lastWheelStamp = 0
+
+    function maxScrollY() {
+      return Math.max(0, doc.scrollHeight - window.innerHeight)
+    }
+
+    function isPageScrollable() {
+      if (doc.classList.contains('velo-shell')) return false
+      if (loaderEl) return false
+      if (maxScrollY() <= 4) return false
+      var bodyStyle = document.body ? getComputedStyle(document.body) : null
+      if (getComputedStyle(doc).overflowY === 'hidden') return false
+      if (bodyStyle && bodyStyle.overflowY === 'hidden') return false
+      return true
+    }
+
+    function hasScrollableAncestor(node, dy) {
+      for (var el = node; el && el !== document.body && el !== doc; el = el.parentElement) {
+        if (el.hasAttribute && el.hasAttribute('data-no-smooth-scroll')) return true
+        var style = getComputedStyle(el)
+        var oy = style.overflowY
+        if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 2) {
+          if (dy > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) return true
+          if (dy < 0 && el.scrollTop > 1) return true
+        }
+      }
+      return false
+    }
+
+    function applyScrollY(y) {
+      programmatic = true
+      lastAppliedY = y
+      var prevBehavior = doc.style.scrollBehavior
+      doc.style.scrollBehavior = 'auto'
+      try {
+        window.scrollTo({ top: y, behavior: 'instant' })
+      } catch (err) {
+        window.scrollTo(0, y)
+      }
+      doc.style.scrollBehavior = prevBehavior
+      programmatic = false
+    }
+
+    function getSnapOffset() {
+      var pad = parseFloat(getComputedStyle(doc).scrollPaddingTop)
+      return isFinite(pad) && pad > 0 ? pad : 88
+    }
+
+    function getSnapTargets() {
+      var maxY = maxScrollY()
+      var offset = getSnapOffset()
+      var nodes = document.querySelectorAll('header.hero, main > section, section.section, section.band, footer.site-foot')
+      var targets = [0]
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i]
+        if (!el.getClientRects().length || el.offsetHeight < 180) continue
+        var rect = el.getBoundingClientRect()
+        var y = el.matches('header.hero')
+          ? 0
+          : Math.max(0, Math.min(maxY, Math.round(rect.top + (window.scrollY || 0) - offset)))
+        if (targets.indexOf(y) < 0) targets.push(y)
+      }
+      if (targets.indexOf(maxY) < 0) targets.push(maxY)
+      return targets
+    }
+
+    function scheduleSnap() {
+      clearTimeout(snapTimer)
+      snapTimer = setTimeout(function () {
+        if (!isPageScrollable()) return
+        if (Date.now() - lastWheelStamp < 140) {
+          scheduleSnap()
+          return
+        }
+        var maxY = maxScrollY()
+        var threshold = Math.min(130, window.innerHeight * 0.16)
+        var targets = getSnapTargets()
+        var bestY = -1
+        var bestDist = Infinity
+        for (var i = 0; i < targets.length; i++) {
+          var dist = Math.abs(targetY - targets[i])
+          if (dist < bestDist) {
+            bestDist = dist
+            bestY = targets[i]
+          }
+        }
+        if (bestY >= 0 && bestDist > 2 && bestDist <= threshold && Math.abs(bestY - lastSnappedY) > 4) {
+          lastSnappedY = bestY
+          targetY = Math.max(0, Math.min(maxY, bestY))
+          activeRate = 9
+          startLoop()
+        }
+      }, 170)
+    }
+
+    function tick(now) {
+      rafId = 0
+      var dt = lastTime ? Math.min(0.05, Math.max(0.001, (now - lastTime) / 1000)) : 1 / 60
+      lastTime = now
+      var diff = targetY - currentY
+      if (Math.abs(diff) < 0.4) {
+        currentY = targetY
+        applyScrollY(currentY)
+        lastTime = 0
+        wheelActive = false
+        return
+      }
+      currentY += diff * (1 - Math.exp(-dt * activeRate))
+      applyScrollY(currentY)
+      rafId = requestAnimationFrame(tick)
+    }
+
+    function startLoop() {
+      if (!rafId) {
+        lastTime = 0
+        rafId = requestAnimationFrame(tick)
+      }
+    }
+
+    function scrollToY(y, rate) {
+      clearTimeout(snapTimer)
+      if (!rafId) currentY = window.scrollY || window.pageYOffset || 0
+      targetY = Math.max(0, Math.min(maxScrollY(), y))
+      activeRate = rate || 9.5
+      lastSnappedY = targetY
+      startLoop()
+    }
+
+    window.addEventListener('wheel', function (e) {
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey) return
+      if (!isPageScrollable()) return
+      var dy = e.deltaY
+      if (!dy) return
+      if (e.deltaMode === 1) dy *= 18
+      else if (e.deltaMode === 2) dy *= window.innerHeight * 0.85
+      if (hasScrollableAncestor(e.target, dy)) return
+
+      e.preventDefault()
+      if (!wheelActive) {
+        currentY = window.scrollY || window.pageYOffset || 0
+        targetY = currentY
+        wheelActive = true
+      }
+      targetY = Math.max(0, Math.min(maxScrollY(), targetY + dy))
+      if (lastSnappedY >= 0 && Math.abs(targetY - lastSnappedY) > 64) lastSnappedY = -1
+      activeRate = 11.5
+      lastWheelStamp = Date.now()
+      startLoop()
+      scheduleSnap()
+    }, { passive: false })
+
+    window.addEventListener('scroll', function () {
+      if (programmatic) return
+      var y = window.scrollY || window.pageYOffset || 0
+      if (rafId && Math.abs(y - lastAppliedY) <= 3) return
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+        rafId = 0
+      }
+      clearTimeout(snapTimer)
+      wheelActive = false
+      currentY = y
+      targetY = y
+      lastAppliedY = y
+    }, { passive: true })
+
+    window.addEventListener('resize', function () {
+      var maxY = maxScrollY()
+      currentY = Math.min(currentY, maxY)
+      targetY = Math.min(targetY, maxY)
+    }, { passive: true })
+
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null
+      if (!a || !isPageScrollable()) return
+      var href = a.getAttribute('href') || ''
+      if (!href) return
+      if (href === '#') {
+        e.preventDefault()
+        scrollToY(0, 9.5)
+        return
+      }
+      var id = ''
+      try { id = decodeURIComponent(href.slice(1)) } catch (err) { id = href.slice(1) }
+      var targetEl = id ? document.getElementById(id) : null
+      if (!targetEl) return
+      e.preventDefault()
+      var y = id === 'top' || targetEl.matches('header.hero')
+        ? 0
+        : Math.round(targetEl.getBoundingClientRect().top + (window.scrollY || 0) - getSnapOffset())
+      scrollToY(y, 9.5)
+      try { history.pushState(null, '', href) } catch (err) {}
+    })
+  }
+
   function start() {
     window.VeloMotion.scan(document.body)
     syncRouteUi(location.pathname)
     playEnterPreload()
     mountBgmButton()
     tryStartBgm()
+    setupSmoothScroll()
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start)
   else start()

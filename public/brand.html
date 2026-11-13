@@ -9,6 +9,7 @@
 <link rel="icon" type="image/png" href="/assets/Logo.png?v=velo-logo-2">
 <link rel="stylesheet" href="/tokens.css">
 <link rel="stylesheet" href="/motion.css">
+<script src="/gradient-ascii.js" defer></script>
 <script src="/motion.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -19,11 +20,11 @@ a{color:inherit;text-decoration:none}
 .wrap{max-width:var(--page-max);margin-inline:auto;padding-inline:var(--space-24)}
 .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--white);padding:var(--space-8) var(--space-16);z-index:100;font-weight:400;border-radius:var(--radius-pill)}
 .skip-link:focus{left:var(--space-8);top:var(--space-8)}
-.btn{display:inline-flex;align-items:center;gap:var(--space-8);font-family:var(--sans);font-weight:400;font-size:var(--text-body);color:var(--btn-glass-violet-text);background:var(--btn-glass-violet);border:1px solid transparent;backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);box-shadow:var(--btn-glass-shadow-violet);border-radius:var(--radius-pill);padding:calc(var(--space-10) - 1px) calc(var(--space-20) - 1px);cursor:pointer;transition:background-color .2s,box-shadow .2s,transform .2s}
-.btn:hover{background:color-mix(in srgb,var(--btn-glass-violet),var(--violet) 12%);box-shadow:var(--btn-glass-shadow-hover)}
-.btn:active{transform:scale(.98)}
-.btn--ink{background:var(--btn-glass-ink);color:var(--white);box-shadow:var(--btn-glass-shadow)}
-.btn--ink:hover{background:color-mix(in srgb,var(--btn-glass-ink),var(--ink) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-8);font-family:var(--sans);font-weight:500;font-size:var(--text-body);color:var(--btn-glass-violet-text);background-color:var(--btn-glass-violet);border:1px solid transparent;box-shadow:var(--btn-glass-shadow-violet);border-radius:var(--btn-solid-radius);padding:calc(var(--space-10) - 1px) calc(var(--space-20) - 1px);cursor:pointer;transition:background-color .2s,box-shadow .2s,transform .2s}
+.btn:hover{background-color:var(--btn-glass-violet-hover);box-shadow:var(--btn-glass-shadow-violet-hover)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn--ink{background-color:var(--btn-glass-ink);color:var(--white);box-shadow:var(--btn-glass-shadow-ink)}
+.btn--ink:hover{background-color:var(--btn-glass-ink-hover);box-shadow:var(--btn-glass-shadow-ink-hover)}
 
 /* floating nav */
 .nav{position:sticky;top:var(--space-16);z-index:50;margin:var(--space-16) auto 0;width:min(var(--page-max),calc(100% - var(--space-32)));pointer-events:none}
@@ -58,8 +59,8 @@ h1 b{font-weight:600;color:var(--violet)}
 .tile__meta b{font-size:var(--text-body);font-weight:400}
 .tile__meta .hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;letter-spacing:.08em;color:var(--ash)}
 .dl{display:flex;gap:var(--space-8);flex-wrap:wrap}
-.dl a{font-size:var(--text-small);font-weight:400;border:1px solid transparent;box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border-radius:var(--radius-pill);padding:calc(var(--space-4) - 1px) calc(var(--space-12) - 1px);background:var(--btn-glass-clear);color:var(--ink);transition:background-color .2s,box-shadow .2s,transform .2s}
-.dl a:hover,.mark__meta a:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+.dl a{font-size:var(--text-small);font-weight:400;border:1px solid transparent;box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border-radius:var(--radius-pill);padding:calc(var(--space-4) - 1px) calc(var(--space-12) - 1px);background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);color:var(--ink);transition:background-color .2s,box-shadow .2s,transform .2s}
+.dl a:hover,.mark__meta a:hover{background-color:var(--btn-glass-clear-hover);box-shadow:var(--btn-glass-shadow-hover)}
 .dl a:active,.mark__meta a:active{transform:scale(.98)}
 
 /* mark row */
@@ -69,7 +70,7 @@ h1 b{font-weight:600;color:var(--violet)}
 .mark__stage img{width:56px;height:56px;object-fit:contain}
 .mark__meta{padding:var(--space-12) var(--space-16);display:flex;justify-content:space-between;align-items:center;gap:var(--space-8)}
 .mark__meta b{font-size:var(--text-small);font-weight:400}
-.mark__meta a{font-size:var(--text-caption);font-weight:400;border:1px solid transparent;box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border-radius:var(--radius-pill);padding:calc(var(--space-2) - 1px) calc(var(--space-10) - 1px);background:var(--btn-glass-clear);transition:background-color .2s,box-shadow .2s,transform .2s}
+.mark__meta a{font-size:var(--text-caption);font-weight:400;border:1px solid transparent;box-shadow:var(--btn-glass-shadow);backdrop-filter:var(--btn-glass-blur);-webkit-backdrop-filter:var(--btn-glass-blur);border-radius:var(--radius-pill);padding:calc(var(--space-2) - 1px) calc(var(--space-10) - 1px);background-image:var(--btn-glass-sheen-clear);background-color:var(--btn-glass-clear);transition:background-color .2s,box-shadow .2s,transform .2s}
 
 /* sections */
 .sec-title,.type__serif{font-variant-numeric:lining-nums}
@@ -116,8 +117,8 @@ h1 b{font-weight:600;color:var(--violet)}
 .rules-list{list-style:none}
 .rules-list li{padding-left:var(--space-24);position:relative;margin-top:var(--space-8);font-size:var(--text-body);line-height:1.5;color:var(--white)}
 .rules-list li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:50%;background:var(--mint)}
-.band .btn{margin-top:var(--space-32);background:var(--btn-glass-on-color);color:var(--white);box-shadow:var(--btn-glass-shadow)}
-.band .btn:hover{background:color-mix(in srgb,var(--btn-glass-on-color),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+.band .btn{margin-top:var(--space-32);border-radius:var(--btn-solid-radius);background-color:var(--btn-glass-on-color);color:var(--white);box-shadow:var(--btn-glass-shadow-ink)}
+.band .btn:hover{background-color:var(--btn-glass-on-color-hover);box-shadow:var(--btn-glass-shadow-ink-hover)}
 .band .cta{text-align:center}
 
 footer{background:var(--violet);color:var(--white);padding:var(--space-64) 0 var(--space-48);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--white) 45%,transparent)}
