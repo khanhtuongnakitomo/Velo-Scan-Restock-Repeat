@@ -1,0 +1,508 @@
+{
+  "landing@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 15,
+    "smallSample": [
+      "skip-link",
+      "brand",
+      "nav__toggle",
+      "btn",
+      "link",
+      "A"
+    ],
+    "overflowers": [
+      "circle",
+      "circle",
+      "div.mq-track",
+      "div.mq-seq",
+      "span",
+      "span",
+      "span",
+      "span"
+    ]
+  },
+  "brand@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 12,
+    "smallSample": [
+      "skip-link",
+      "brand",
+      "btn",
+      "A"
+    ],
+    "overflowers": []
+  },
+  "strategy@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 16,
+    "smallSample": [
+      "brand",
+      "A",
+      "print-btn",
+      "INPUT"
+    ],
+    "overflowers": [
+      "a",
+      "a",
+      "a",
+      "a",
+      "a"
+    ]
+  },
+  "demo-player@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 19,
+    "smallSample": [
+      "st-brand",
+      "on",
+      "A",
+      "ph-me",
+      "ph-task",
+      "v-btn",
+      "ph-tab"
+    ],
+    "overflowers": []
+  },
+  "demo-app@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 3,
+    "smallSample": [
+      "ph-me",
+      "v-btn"
+    ],
+    "overflowers": []
+  },
+  "screens@390": {
+    "scrollW": 1560,
+    "innerW": 390,
+    "hscroll": true,
+    "smallTargets": 129,
+    "smallSample": [
+      "A",
+      "ph-me",
+      "v-btn",
+      "v-chip",
+      "BUTTON",
+      "rsb",
+      "on"
+    ],
+    "overflowers": [
+      "header.bd-head",
+      "p.rv",
+      "a",
+      "code",
+      "code",
+      "h2.bd-h2",
+      "div.row",
+      "figure"
+    ]
+  },
+  "dash-stock@390": {
+    "scrollW": 1456,
+    "innerW": 390,
+    "hscroll": true,
+    "smallTargets": 6,
+    "smallSample": [
+      "A",
+      "on"
+    ],
+    "overflowers": [
+      "div.dashes",
+      "figure.rv",
+      "div.db",
+      "div.db-chrome",
+      "span.db-url",
+      "b",
+      "div.db-app",
+      "main.db-main"
+    ]
+  },
+  "dash-queue@390": {
+    "scrollW": 1456,
+    "innerW": 390,
+    "hscroll": true,
+    "smallTargets": 11,
+    "smallSample": [
+      "A",
+      "on",
+      "v-btn"
+    ],
+    "overflowers": [
+      "div.dashes",
+      "figure.rv",
+      "div.db",
+      "div.db-chrome",
+      "span.db-url",
+      "b",
+      "div.db-app",
+      "main.db-main"
+    ]
+  },
+  "phone-count@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 6,
+    "smallSample": [
+      "ph-me",
+      "BUTTON",
+      "v-btn"
+    ],
+    "overflowers": []
+  },
+  "phone-flag@390": {
+    "scrollW": 390,
+    "innerW": 390,
+    "hscroll": false,
+    "smallTargets": 8,
+    "smallSample": [
+      "ph-me",
+      "rsb",
+      "v-btn"
+    ],
+    "overflowers": []
+  },
+  "landing@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 15,
+    "smallSample": [
+      "skip-link",
+      "brand",
+      "nav__toggle",
+      "btn",
+      "link",
+      "A"
+    ],
+    "overflowers": [
+      "circle",
+      "circle",
+      "div.mq-track",
+      "div.mq-seq",
+      "span",
+      "span",
+      "span",
+      "span"
+    ]
+  },
+  "brand@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 12,
+    "smallSample": [
+      "skip-link",
+      "brand",
+      "btn",
+      "A"
+    ],
+    "overflowers": []
+  },
+  "strategy@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 16,
+    "smallSample": [
+      "brand",
+      "A",
+      "print-btn",
+      "INPUT"
+    ],
+    "overflowers": []
+  },
+  "demo-player@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 19,
+    "smallSample": [
+      "st-brand",
+      "on",
+      "A",
+      "ph-me",
+      "ph-task",
+      "v-btn",
+      "ph-tab"
+    ],
+    "overflowers": []
+  },
+  "demo-app@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 6,
+    "smallSample": [
+      "v-btn",
+      "ph-me"
+    ],
+    "overflowers": []
+  },
+  "screens@768": {
+    "scrollW": 1560,
+    "innerW": 768,
+    "hscroll": true,
+    "smallTargets": 129,
+    "smallSample": [
+      "A",
+      "ph-me",
+      "v-btn",
+      "v-chip",
+      "BUTTON",
+      "rsb",
+      "on"
+    ],
+    "overflowers": [
+      "header.bd-head",
+      "p.rv",
+      "a",
+      "code",
+      "code",
+      "h2.bd-h2",
+      "div.row",
+      "figure"
+    ]
+  },
+  "dash-stock@768": {
+    "scrollW": 1480,
+    "innerW": 768,
+    "hscroll": true,
+    "smallTargets": 6,
+    "smallSample": [
+      "A",
+      "on"
+    ],
+    "overflowers": [
+      "div.dashes",
+      "figure.rv",
+      "div.db",
+      "div.db-chrome",
+      "span.db-url",
+      "div.db-app",
+      "main.db-main",
+      "header.db-head"
+    ]
+  },
+  "dash-queue@768": {
+    "scrollW": 1480,
+    "innerW": 768,
+    "hscroll": true,
+    "smallTargets": 11,
+    "smallSample": [
+      "A",
+      "on",
+      "v-btn"
+    ],
+    "overflowers": [
+      "div.dashes",
+      "figure.rv",
+      "div.db",
+      "div.db-chrome",
+      "span.db-url",
+      "div.db-app",
+      "main.db-main",
+      "header.db-head"
+    ]
+  },
+  "phone-count@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 6,
+    "smallSample": [
+      "ph-me",
+      "BUTTON",
+      "v-btn"
+    ],
+    "overflowers": []
+  },
+  "phone-flag@768": {
+    "scrollW": 768,
+    "innerW": 768,
+    "hscroll": false,
+    "smallTargets": 8,
+    "smallSample": [
+      "ph-me",
+      "rsb",
+      "v-btn"
+    ],
+    "overflowers": []
+  },
+  "landing@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 20,
+    "smallSample": [
+      "skip-link",
+      "brand",
+      "A",
+      "btn",
+      "link"
+    ],
+    "overflowers": [
+      "circle",
+      "circle",
+      "div.mq-track",
+      "div.mq-seq",
+      "div.mq-seq",
+      "span",
+      "span",
+      "span"
+    ]
+  },
+  "brand@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 12,
+    "smallSample": [
+      "skip-link",
+      "brand",
+      "btn",
+      "A"
+    ],
+    "overflowers": []
+  },
+  "strategy@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 16,
+    "smallSample": [
+      "brand",
+      "A",
+      "print-btn",
+      "INPUT"
+    ],
+    "overflowers": []
+  },
+  "demo-player@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 28,
+    "smallSample": [
+      "st-brand",
+      "on",
+      "A",
+      "ph-me",
+      "v-btn",
+      "ph-tab",
+      "BUTTON"
+    ],
+    "overflowers": []
+  },
+  "demo-app@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 6,
+    "smallSample": [
+      "v-btn",
+      "ph-me"
+    ],
+    "overflowers": []
+  },
+  "screens@1440": {
+    "scrollW": 1560,
+    "innerW": 1440,
+    "hscroll": true,
+    "smallTargets": 129,
+    "smallSample": [
+      "A",
+      "ph-me",
+      "v-btn",
+      "v-chip",
+      "BUTTON",
+      "rsb",
+      "on"
+    ],
+    "overflowers": [
+      "header.bd-head",
+      "p.rv",
+      "h2.bd-h2",
+      "div.row",
+      "h2.bd-h2",
+      "div.dashes",
+      "figure.rv",
+      "div.db"
+    ]
+  },
+  "dash-stock@1440": {
+    "scrollW": 1480,
+    "innerW": 1440,
+    "hscroll": true,
+    "smallTargets": 6,
+    "smallSample": [
+      "A",
+      "on"
+    ],
+    "overflowers": [
+      "div.dashes",
+      "figure.rv",
+      "div.db",
+      "div.db-chrome",
+      "div.db-app",
+      "main.db-main",
+      "header.db-head",
+      "span.db-user"
+    ]
+  },
+  "dash-queue@1440": {
+    "scrollW": 1480,
+    "innerW": 1440,
+    "hscroll": true,
+    "smallTargets": 11,
+    "smallSample": [
+      "A",
+      "on",
+      "v-btn"
+    ],
+    "overflowers": [
+      "div.dashes",
+      "figure.rv",
+      "div.db",
+      "div.db-chrome",
+      "div.db-app",
+      "main.db-main",
+      "header.db-head",
+      "span.db-user"
+    ]
+  },
+  "phone-count@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 6,
+    "smallSample": [
+      "ph-me",
+      "BUTTON",
+      "v-btn"
+    ],
+    "overflowers": []
+  },
+  "phone-flag@1440": {
+    "scrollW": 1440,
+    "innerW": 1440,
+    "hscroll": false,
+    "smallTargets": 8,
+    "smallSample": [
+      "ph-me",
+      "rsb",
+      "v-btn"
+    ],
+    "overflowers": []
+  }
+}
