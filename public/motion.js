@@ -279,8 +279,6 @@
     }
     if (!shellFrame) {
       releaseWebGL(document)
-      var staleAnnotate = doc.querySelector('[data-annotate-ui]')
-      if (staleAnnotate && staleAnnotate.parentNode) staleAnnotate.parentNode.removeChild(staleAnnotate)
       shellFrame = document.createElement('iframe')
       shellFrame.className = 'velo-frame'
       shellFrame.setAttribute('title', 'VELO')

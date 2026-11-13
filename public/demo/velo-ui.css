@@ -18,9 +18,7 @@ svg{display:block}
 .v-chip--alert{background:var(--alert);border-color:var(--alert);color:var(--white)}
 .v-chip--ok{background:var(--white);border-color:var(--success);color:var(--success)}
 .v-lbl{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;line-height:1.4;color:var(--slate);font-feature-settings:normal}
-.v-btn{display:flex;align-items:center;justify-content:center;gap:var(--space-8);width:100%;font-family:var(--sans);font-weight:500;font-size:var(--text-body);color:var(--ink);border:var(--hairline-strong);border-radius:var(--radius-pill);background:var(--white);padding:var(--space-10) var(--space-20);transition:transform .15s ease,opacity .15s ease}
-.v-btn--fill{background:var(--violet);border-color:var(--violet);color:var(--white)}
-.v-btn--ink{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.v-btn{display:flex;align-items:center;justify-content:center;gap:var(--space-8);width:100%;font-family:var(--sans);font-weight:500;font-size:var(--text-body);color:var(--ink);border-radius:var(--radius-pill);padding:var(--space-10) var(--space-20);transition:transform .15s ease,opacity .15s ease}
 .v-btn--link{border-color:transparent;background:none;text-decoration:underline;text-underline-offset:3px;padding:var(--space-8);font-size:var(--text-small);color:var(--ash)}
 .v-btn--sm{width:auto;padding:var(--space-8) var(--space-16);font-size:var(--text-small)}
 .v-ok{display:grid;place-items:center;width:28px;height:28px;flex:none;background:var(--success);color:var(--white);font-weight:400;font-size:var(--text-small);border-radius:50%}
@@ -32,7 +30,7 @@ svg{display:block}
 @keyframes v-drop{from{opacity:0;transform:translateY(-28px)}to{opacity:1;transform:none}}
 @keyframes v-beam{0%,100%{transform:translateY(0)}50%{transform:translateY(96px)}}
 @keyframes v-ring{from{transform:scale(1);opacity:1}to{transform:scale(1.35,1.6);opacity:0}}
-@keyframes v-flash{from{background:var(--tint)}to{background:var(--fog)}}
+@keyframes v-flash{from{background-color:var(--glass-tint)}to{background-color:var(--glass-fill-strong)}}
 @keyframes v-blink{50%{opacity:0}}
 @keyframes v-dot{0%,80%,100%{opacity:.2}40%{opacity:1}}
 @keyframes v-tap{0%{transform:scale(.4);opacity:.95}60%{transform:scale(1);opacity:.85}100%{transform:scale(1.25);opacity:0}}
@@ -57,7 +55,7 @@ svg{display:block}
 .ph-brand{display:flex;align-items:center;gap:var(--space-6);margin-right:auto;font-size:var(--text-body);font-weight:600;letter-spacing:-.017em;color:var(--ink)}
 .ph-brand img{width:22px;height:22px;object-fit:contain}
 .ph-me{display:inline-flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-10);border-radius:var(--radius-pill);background:var(--tint);border:1px solid var(--violet);font-size:var(--text-caption);font-weight:500;color:var(--ink)}
-.ph-back{display:grid;place-items:center;width:32px;height:32px;margin-right:var(--space-2);border:var(--hairline-strong);border-radius:50%;background:var(--white);font-weight:400;font-size:var(--text-body);color:var(--ink)}
+.ph-back{display:grid;place-items:center;width:32px;height:32px;margin-right:var(--space-2);border-radius:50%;font-weight:400;font-size:var(--text-body);color:var(--ink)}
 
 /* Compact workflow ribbon inside phone */
 .ph-prog{flex:none;display:grid;grid-template-columns:repeat(5,1fr);gap:var(--space-4);padding:var(--space-6) var(--space-14);background:var(--fog);border-bottom:var(--hairline)}
@@ -73,18 +71,18 @@ svg{display:block}
 .sheet-act{margin-top:var(--space-12)}
 .v-btn:active,.ph-task[data-act]:active{transform:scale(.98)}
 .ph-task[data-act],.ph-cam[data-act]{cursor:pointer}
-.v-btn--locked{opacity:.62;background:var(--fog);border-color:var(--mist);color:var(--ash)}
+.v-btn--locked{opacity:.62}
 button.ph-tab{width:100%;color:var(--slate);font-family:var(--sans)}
 button.ph-tab.on{color:var(--violet)}
 button.ph-tab.is-dim{opacity:.42}
 
 .ph-main{flex:1;min-height:0;position:relative;display:flex;flex-direction:column;overflow:hidden}
 .ph-pad{padding:var(--space-16)}
-.ph-tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:var(--hairline);background:var(--white);padding-bottom:22px}
+.ph-tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:var(--hairline);background:var(--white)}
 .ph-tab{display:flex;flex-direction:column;align-items:center;gap:var(--space-4);padding:var(--space-10) 0 var(--space-6);font-size:11px;font-weight:400;letter-spacing:-.017em;position:relative}
 .ph-tab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .ph-tab.on{color:var(--violet)}
-.ph-tab.on::before{content:"";position:absolute;top:-1px;left:26%;right:26%;height:3px;background:var(--violet);border-radius:var(--radius-pill)}
+.ph-tab.on::before{content:"";position:absolute;z-index:-1;inset:var(--space-4) var(--space-8);background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge);border-radius:var(--radius-pill)}
 .ph-home{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;background:var(--ink);border-radius:3px;z-index:5}
 
 /* tasks */
@@ -303,8 +301,7 @@ button.ph-tab.is-dim{opacity:.42}
 .stp{border:var(--hairline);border-radius:20px;padding:var(--space-6) var(--space-10) var(--space-8);background:var(--fog)}
 .stp > div{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;margin-top:var(--space-2)}
 .stp b{text-align:center;font-size:var(--text-heading-sm);font-weight:400;letter-spacing:-.02em;color:var(--ink)}
-.stp button{width:34px;height:34px;border:var(--hairline-strong);border-radius:50%;background:var(--white);font-size:var(--text-lead);line-height:1;color:var(--ink)}
-.stp button:active{background:var(--tint)}
+.stp button{width:34px;height:34px;border-radius:50%;font-size:var(--text-lead);line-height:1;color:var(--ink)}
 .fb{margin-top:var(--space-10)}
 .fb__row{display:flex;flex-wrap:wrap;gap:var(--space-6);margin-top:var(--space-6)}
 .fb__row .v-chip{cursor:pointer;background:var(--white)}
@@ -333,7 +330,7 @@ button.ph-tab.is-dim{opacity:.42}
 .rsb{font-size:var(--text-caption);font-weight:400;letter-spacing:-.017em;border:var(--hairline-strong);border-radius:var(--radius-pill);padding:var(--space-6) var(--space-12);background:var(--white);color:var(--ink)}
 .rsb.on{background:var(--ink);border-color:var(--ink);color:var(--white)}
 .ev{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--space-6)}
-.ev-add{padding:var(--space-14);border:1px dashed var(--ink);border-radius:var(--radius-card);background:var(--white);font-weight:400;font-size:var(--text-small);color:var(--ink)}
+.ev-add{padding:var(--space-14);border-radius:var(--radius-card);font-weight:400;font-size:var(--text-small);color:var(--ink)}
 .photo{display:grid;grid-template-columns:88px 1fr;gap:var(--space-10);align-items:center;padding:var(--space-6);border:var(--hairline);border-radius:20px;background:var(--fog)}
 .photo__img{position:relative;height:60px;border-radius:var(--radius-input);background:var(--fog);display:flex;align-items:flex-end;justify-content:center;gap:var(--space-4);padding:var(--space-8);overflow:hidden}
 .photo__img i{display:block;width:12px;height:26px;border:2px solid var(--ink);border-radius:var(--space-4);background:var(--white);transform:rotate(-12deg) scaleY(.7)}
@@ -346,9 +343,9 @@ button.ph-tab.is-dim{opacity:.42}
 .drv p{margin:var(--space-4) 0 var(--space-8);font-size:var(--text-caption);line-height:1.5;color:var(--ash)}
 .drv.is-ok{background:var(--white)}
 .drv .ok-row{margin-top:var(--space-6)}
-.drv .v-btn{padding:var(--space-8) var(--space-16);font-size:var(--text-small);background:var(--white)}
+.drv .v-btn{padding:var(--space-8) var(--space-16);font-size:var(--text-small)}
 .act2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-top:var(--space-2)}
-.act2 .v-btn{padding:var(--space-6) var(--space-8);font-size:var(--text-caption);font-weight:400;color:var(--ash);background:var(--fog);border-color:var(--fog)}
+.act2 .v-btn{padding:var(--space-6) var(--space-8);font-size:var(--text-caption);font-weight:400;color:var(--ash)}
 
 /* receipt on the phone */
 .rc{margin-top:var(--space-12);border:var(--hairline);border-radius:20px;background:var(--fog);overflow:hidden}
@@ -430,3 +427,193 @@ button.ph-tab.is-dim{opacity:.42}
   pointer-events:none;
   z-index:4;
 }
+
+/* =====================================================================================================
+   Liquid glass layer (overrides the flat rules above; same palette, material from tokens.css).
+   Reference: iOS 26 Liquid Glass Buttons. Near-clear fills, the look comes from the lens rim (shadows only,
+   so layout never changes). Controls: --glass-fill + --glass-rim-control, capsule shaped. Violet/ink controls:
+   --glass-violet / --glass-ink + --glass-rim-control-tinted. Surfaces: --glass-fill + --glass-shadow;
+   --glass-fill-strong only behind small slate text that would fall under 4.5:1 on the ambient colour.
+   ===================================================================================================== */
+:root{
+  --ui-tint-edge:1px solid color-mix(in srgb,var(--violet) 38%,transparent);
+  --ui-alert-edge:1px solid color-mix(in srgb,var(--alert) 38%,transparent);
+  --ui-ok-edge:1px solid color-mix(in srgb,var(--success) 38%,transparent);
+  /* --glass-violet on its own gives white text ~4.3:1 over the white page; a thin --glass-ink underlay lifts it to >=4.5:1 and keeps the glass look. Use as: background:var(--glass-sheen),var(--ui-violet-lens). */
+  --ui-violet-lens:linear-gradient(var(--glass-violet),var(--glass-violet)),linear-gradient(var(--glass-ink),var(--glass-ink));
+  /* ambient field in px so it scales with the 414px phone, the 1440px dashboard and the 1920px stage (same hues as --ambient) */
+  --ui-ambient:
+    radial-gradient(760px 600px at 6% -8%,color-mix(in srgb,var(--tint) 95%,transparent),transparent 62%),
+    radial-gradient(700px 560px at 100% 28%,color-mix(in srgb,var(--violet) 24%,transparent),transparent 62%),
+    radial-gradient(720px 560px at 36% 112%,color-mix(in srgb,var(--mint) 18%,transparent),transparent 62%),
+    radial-gradient(560px 440px at 92% 104%,color-mix(in srgb,var(--tint) 80%,transparent),transparent 62%),
+    radial-gradient(620px 300px at 80% -4%,color-mix(in srgb,var(--tint) 85%,transparent),transparent 64%);
+  --ph-ambient:
+    radial-gradient(360px 300px at 0% -4%,color-mix(in srgb,var(--tint) 95%,transparent),transparent 64%),
+    radial-gradient(320px 280px at 104% 34%,color-mix(in srgb,var(--violet) 24%,transparent),transparent 64%),
+    radial-gradient(340px 280px at 30% 104%,color-mix(in srgb,var(--mint) 18%,transparent),transparent 64%);
+}
+html,body{background:var(--ui-ambient),var(--white);background-attachment:fixed}
+
+/* ---- surfaces: one recipe for every container-level panel ---- */
+.ph-stats,.flow-mini,.kv,.steps,.ok-row,.stp,.xl,.ml,.photo,.drv,.rc,.q-ai,.db-appr__kv,.db-sov,.db-store,.app-scenario{
+  background:var(--glass-sheen),var(--glass-fill);
+  -webkit-backdrop-filter:var(--glass-blur-soft);backdrop-filter:var(--glass-blur-soft);
+  border:var(--glass-border);box-shadow:var(--glass-shadow);
+}
+/* dense rows of small slate text keep the stronger fill */
+.ph-stats,.kv,.steps,.xl,.ml,.drv,.rc,.q-ai,.db-appr__kv,.db-sov{background:var(--glass-sheen),var(--glass-fill-strong)}
+.ph-top,.ph-actions,.ph-sheet,.db-chrome,.db-side,.db-head{
+  background:var(--glass-sheen),var(--glass-fill);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+}
+.ph-sheet{background:var(--glass-sheen),var(--glass-fill-strong)}
+.ph-task{background:var(--glass-sheen),var(--glass-fill-strong);border:var(--glass-border);border-radius:22px;box-shadow:var(--glass-shadow)}
+.ph-prog{background:var(--glass-fill-fog);border-bottom:1px solid var(--glass-edge-dark)}
+.ph-top{border-bottom:1px solid var(--glass-edge-dark)}
+.ph-actions,.ph-sheet{border-top:1px solid var(--glass-edge-dark);box-shadow:var(--glass-rim)}
+.ph-stats div+div,.kv div:nth-child(even),.db-appr__kv div+div,.m3 div+div{border-left:1px solid var(--glass-edge-dark)}
+.kv div:nth-child(n+3),.steps li+li{border-top:1px solid var(--glass-edge-dark)}
+.kv{border:var(--glass-border)}
+.rc__meta,.rc__row{border-bottom:1px solid var(--glass-edge-dark)}
+.rc__row--claim{background:var(--glass-fill)}
+.ph-stats,.kv,.steps,.ok-row,.xl,.ml,.photo,.drv,.rc,.stp{border-radius:22px}
+.flow-mini div,.m3{background:var(--glass-fill)}
+.flow-mini{border-radius:20px}
+/* ---- phone shell ---- */
+.phone{box-shadow:var(--shadow-float),var(--glass-rim)}
+.ph-screen{background:var(--ph-ambient),var(--white)}
+.ph-top{border-radius:0 0 22px 22px;position:relative;z-index:2}
+.ph-back{transition:transform .15s ease,box-shadow .2s ease,background-color .2s ease}
+
+/* floating tab bar (iOS 26): the glass capsule is a pseudo layer so the tab geometry is unchanged */
+.ph-tabs{--tabs-pb:22px;position:relative;isolation:isolate;border-top:0;background:none;padding-bottom:var(--tabs-pb)}
+.ph-tabs::before{content:"";position:absolute;z-index:-1;left:var(--space-12);right:var(--space-12);top:var(--space-4);bottom:calc(var(--tabs-pb) - 4px);border-radius:var(--radius-pill);background:var(--glass-sheen),var(--glass-fill);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:var(--glass-border);box-shadow:var(--glass-rim-control)}
+.ph-tab{transition:color .2s ease,transform .15s ease}
+.ph-tab:active{transform:scale(.98)}
+.ph-tab:focus-visible{outline:2px solid var(--violet);outline-offset:-4px;border-radius:var(--radius-pill)}
+.ph-tab.on::before{background:var(--glass-sheen),var(--glass-tint);box-shadow:var(--glass-rim)}
+
+/* ---- buttons: liquid glass (fill-less wash + blur + soft symmetric inner highlight; see --btn-glass-* in tokens.css) ---- */
+.v-btn,.ph-back,.stp button,.ev-add{background:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow)}
+.v-btn{border-radius:var(--radius-pill);transition:transform .15s ease,box-shadow .2s ease,background-color .2s ease,opacity .15s ease}
+.v-btn--fill{background:var(--btn-glass-violet);box-shadow:var(--btn-glass-shadow-violet);color:var(--btn-glass-violet-text)}
+.v-btn--ink{background:var(--btn-glass-ink);color:var(--white)}
+.v-btn--link{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.v-btn--locked{color:var(--ash)}
+.v-btn:focus-visible,.ph-task[data-act]:focus-visible,.xl:focus-visible,.rsb:focus-visible,.stp button:focus-visible,.cam-mode span:focus-visible,.ev-add:focus-visible,.ph-back:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+@media (hover:hover){
+  /* hover: slightly denser fill + the lifted glass shadow */
+  .v-btn:not(:disabled):not(.v-btn--link):not(.v-btn--locked):not(.v-btn--fill):not(.v-btn--ink):hover,.ph-back:hover,.stp button:hover,.ev-add:hover,.fb__row .v-chip:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .v-btn--fill:not(:disabled):hover{background:color-mix(in srgb,var(--btn-glass-violet),var(--violet) 12%);box-shadow:var(--btn-glass-shadow-hover)}
+  .v-btn--ink:not(:disabled):hover{background:color-mix(in srgb,var(--btn-glass-ink),var(--ink) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  .v-btn--link:hover{color:var(--ink)}
+  .rsb:not(.on):hover{background:var(--glass-sheen),var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-rim-control),inset 0 0 0 1px var(--glass-edge)}
+  .ph-task[data-act]:hover,.xl:hover{box-shadow:var(--glass-shadow),inset 0 0 0 1px var(--glass-edge)}
+}
+.v-btn:not(:disabled):active,.ph-task[data-act]:active,.xl:active,.ph-back:active,.ev-add:active{transform:scale(.98)}
+.v-btn--locked:active{transform:none}
+
+/* ---- chips: clear glass labels (fill + rim, no blur) ---- */
+.v-chip{background:var(--glass-sheen),var(--glass-fill);border:var(--glass-border);box-shadow:var(--glass-rim)}
+.v-chip--pastel{background:var(--glass-sheen),var(--glass-tint);border:var(--glass-border)}
+.v-chip--deep,.v-chip--attn{background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge)}
+.v-chip--ink{background:var(--glass-sheen),linear-gradient(var(--glass-ink),var(--glass-ink)),var(--glass-ink);border:var(--glass-border-on-tint);box-shadow:var(--glass-rim-control-tinted);color:var(--white)}
+.v-chip--alert{background:var(--glass-sheen),linear-gradient(var(--glass-alert),var(--glass-alert)),var(--glass-edge);border:var(--ui-alert-edge);color:var(--alert)}
+.v-chip--ok{background:var(--glass-sheen),linear-gradient(var(--glass-success),var(--glass-success)),var(--glass-edge);border:var(--ui-ok-edge);color:var(--success)}
+.ph-task.is-now div span,.steps li.is-now span,.db-table tr.is-cur td small{color:var(--ash)}
+.cam-top .v-chip:not(.v-chip--ink){background:var(--glass-sheen),var(--glass-fill-strong)}
+.db-feed li.is-hot .v-chip{background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge);color:var(--ink)}
+.v-ok{background:var(--glass-sheen),var(--success);box-shadow:var(--glass-rim)}
+.v-tap{border:2px solid var(--glass-edge);background:var(--glass-violet);box-shadow:var(--glass-shadow-tinted)}
+
+/* ---- phone content ---- */
+.ph-task__n{background:var(--glass-fill-strong);box-shadow:var(--glass-rim)}
+.ph-task.is-now{background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge)}
+.ph-task.is-now .ph-task__n{background:var(--glass-sheen),var(--ui-violet-lens);box-shadow:var(--glass-shadow-tinted)}
+.ph-task.is-done{background:var(--glass-sheen),var(--glass-fill);border:var(--glass-border)}
+.ph-task.is-done .ph-task__n{background:var(--success)}
+.steps li i{background:var(--glass-fill-strong);box-shadow:var(--glass-rim)}
+.steps li.is-now{background:var(--glass-tint)}
+.steps li.is-done i{background:var(--success)}
+.steps li.is-now i{background:var(--ui-violet-lens)}
+.ph-prog span i{background:var(--glass-edge-dark);opacity:1}
+.ph-prog span.is-done i{background:var(--success)}
+.ph-prog span.is-now i{background:var(--violet);box-shadow:0 0 8px color-mix(in srgb,var(--violet) 45%,transparent)}
+
+.cam-mode{background:var(--glass-ink);-webkit-backdrop-filter:var(--glass-blur-soft);backdrop-filter:var(--glass-blur-soft);border:var(--glass-border-on-tint);box-shadow:var(--glass-rim-control-tinted)}
+.cam-mode span.on{background:var(--glass-sheen),var(--glass-fill-strong);box-shadow:var(--glass-rim)}
+.cam-label,.cam-note{box-shadow:var(--shadow-float)}
+.cam-hit{background:var(--glass-sheen),var(--ui-violet-lens);border:var(--glass-border-on-tint);box-shadow:var(--glass-shadow-tinted)}
+
+.xl.is-on{background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge)}
+.xl__chk{background:var(--glass-fill-strong);border:var(--ui-tint-edge)}
+.xl.is-on .xl__chk{background:var(--glass-sheen),var(--ui-violet-lens);border:var(--glass-border-on-tint)}
+.conf,.acc__bar{background:var(--glass-fill-fog);box-shadow:inset 0 1px 2px var(--glass-edge-dark)}
+.cnt-sum{background:var(--glass-sheen),var(--glass-tint);border:var(--glass-border);border-radius:var(--radius-card)}
+.stp button{transition:transform .15s ease,background-color .2s ease,box-shadow .2s ease}
+.stp button:active{transform:scale(.98)}
+.fb__row .v-chip{background:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);transition:transform .15s ease,box-shadow .2s ease,background-color .2s ease}
+.fb__row .v-chip:active{transform:scale(.98)}
+.ml--match{border:var(--ui-ok-edge)}
+.ml--attn{border:var(--ui-tint-edge)}
+.ml--miss{border:var(--ui-alert-edge)}
+.ml--miss{background:var(--glass-sheen),var(--glass-fill-strong)}
+.rsb{background:var(--glass-sheen),var(--glass-fill);border:var(--glass-border);box-shadow:var(--glass-rim-control);transition:transform .15s ease,background-color .2s ease,box-shadow .2s ease}
+.rsb.on{background:var(--glass-sheen),var(--glass-ink);border:var(--glass-border-on-tint);box-shadow:var(--glass-rim-control-tinted);color:var(--white)}
+.rsb:active{transform:scale(.98)}
+.ev-add{-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border-radius:var(--radius-pill);transition:transform .15s ease,box-shadow .2s ease,background-color .2s ease}
+.photo__img{background:var(--glass-fill-fog);box-shadow:inset 0 0 0 1px var(--glass-edge-dark)}
+.photo__img i{background:var(--glass-fill-strong)}
+.drv.is-ok{background:var(--glass-sheen),var(--glass-success)}
+.rc__hd{background:var(--glass-sheen),var(--glass-tint)}
+.rc{overflow:hidden}
+
+/* ---- dashboard ---- */
+.db{background:var(--ui-ambient),var(--white);border:var(--glass-border);border-radius:28px;box-shadow:var(--glass-shadow-raised)}
+.db-chrome{border-bottom:1px solid var(--glass-edge-dark)}
+.db-chrome > i{background:var(--glass-fill-fog);box-shadow:inset 0 0 0 1px var(--glass-edge-dark)}
+.db-url{background:var(--glass-fill-fog);box-shadow:inset 0 1px 2px var(--glass-edge-dark)}
+.db-url b{background:var(--glass-ink)}
+.db-side{border-right:1px solid var(--glass-edge-dark)}
+.db-nav a{transition:background-color .2s ease,color .2s ease,box-shadow .2s ease}
+.db-nav a:hover{background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-rim)}
+.db-nav a.on{background:var(--glass-sheen),var(--glass-tint);box-shadow:var(--glass-rim-control)}
+.db-nav a em{background:var(--glass-fill-fog)}
+.db-crew li i{background:var(--glass-sheen),var(--glass-fill-strong);box-shadow:var(--glass-rim)}
+.db-main{background:none}
+.db-head{border-bottom:1px solid var(--glass-edge-dark)}
+.db-user i{background:var(--glass-sheen),var(--glass-tint);box-shadow:var(--glass-rim)}
+.db-kpi{background:var(--glass-sheen),var(--glass-fill);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:var(--glass-border);border-radius:26px;box-shadow:var(--glass-shadow)}
+.db-card{background:var(--glass-sheen),var(--glass-fill-strong);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:var(--glass-border);border-radius:26px;box-shadow:var(--glass-shadow)}
+.db-card__hd{border-bottom:1px solid var(--glass-edge-dark)}
+.db-table th{background:var(--glass-fill-fog);border-bottom:1px solid var(--glass-edge-dark)}
+.db-table td{border-bottom:1px solid var(--glass-edge-dark)}
+.db-table tr.is-cur td{background:var(--glass-tint)}
+.db-appr__act{background:var(--glass-fill-fog);border-left:1px solid var(--glass-edge-dark)}
+.db-appr__kv{border-radius:var(--radius-card)}
+.db-stamp{background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge);box-shadow:var(--glass-rim)}
+.db-feed li{border-bottom:1px solid var(--glass-edge-dark)}
+.rcd{border-right:1px solid var(--glass-edge-dark)}
+.rcd__hd{background:var(--glass-sheen),var(--glass-tint);box-shadow:var(--glass-rim);border:var(--glass-border)}
+.rcd .db-table{border:var(--glass-border)}
+.rcd__sig{border-top:1px dashed var(--mist)}
+.au li,.al li{border-bottom:1px solid var(--glass-edge-dark)}
+.al li:last-child{border-bottom:0}
+
+/* reduced motion: no transitions or lifts */
+@media (prefers-reduced-motion:reduce){
+  .v-btn,.ph-tab,.stp button,.rsb,.db-nav a{transition:none}
+  .v-btn:hover,.v-btn:active,.ph-task:active,.xl:active,.rsb:active,.ph-tab:active,.stp button:active{transform:none!important}
+}
+
+/* 44px tap targets without changing layout: negative block margin cancels the extra height */
+.ph-me{position:relative;isolation:isolate;min-height:44px;margin-block:-8px;background:none;border:0}
+.ph-me::before{content:"";position:absolute;z-index:-1;inset:8px 0;border-radius:var(--radius-pill);background:var(--glass-sheen),var(--glass-tint);border:var(--ui-tint-edge);box-shadow:var(--glass-rim)}
+.stp button{width:44px;height:44px;margin:-5px}
+.v-btn--link{min-height:44px;margin-block:-3px}
+.rsb{display:inline-flex;align-items:center;min-height:44px;margin-block:-6px}
+.cam-mode span[data-act]{display:flex;align-items:center;min-height:44px;margin-block:-7px}
+.fb__row .v-chip{display:inline-flex;align-items:center;min-height:44px;margin-block:-11px}
+.drv .v-btn{min-height:44px;margin-block:-3px}
+.act2 .v-btn{min-height:44px}

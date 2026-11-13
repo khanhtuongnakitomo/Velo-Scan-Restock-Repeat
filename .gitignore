@@ -20,7 +20,7 @@ logs/
 /.plugins/
 /.opencode-skills/
 
-# Local agent state (annotations from the dev overlay)
+# Local agent state
 /.omp/
 
 # Python artifacts (pitch-deck chart scripts)

@@ -17,12 +17,15 @@
   .bd-head h1 b{color:var(--violet);font-style:normal;font-weight:600}
   .bd-head p{font-family:var(--sans);font-size:var(--text-body);line-height:1.6;font-weight:400;max-width:62ch;margin-left:auto;color:var(--slate)}
   .bd-head a{color:var(--violet);font-weight:500}
-  .bd-head code{font-family:var(--mono);font-size:var(--text-caption);background:var(--fog);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-8)}
+  .bd-head code{font-family:var(--mono);font-size:var(--text-caption);background:var(--glass-sheen),var(--glass-fill);border:var(--glass-border);box-shadow:var(--glass-rim);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-8)}
   .bd-h2{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;margin:0 0 var(--space-20);color:var(--slate)}
   .row{display:flex;flex-wrap:wrap;gap:var(--space-40) var(--space-40);margin-bottom:var(--space-60)}
   figure{display:flex;flex-direction:column;gap:var(--space-12)}
   figcaption{display:flex;gap:var(--space-8);align-items:center;font-size:var(--text-small);font-weight:400;color:var(--slate)}
-  figcaption a{color:inherit;background:var(--fog);color:var(--ink);border-radius:var(--radius-pill);padding:var(--space-4) var(--space-12);text-decoration:none}
+  figcaption a{color:var(--ink);background:var(--btn-glass-clear);-webkit-backdrop-filter:var(--btn-glass-blur);backdrop-filter:var(--btn-glass-blur);border:1px solid transparent;box-shadow:var(--btn-glass-shadow);border-radius:var(--radius-pill);padding:var(--space-4) var(--space-12);text-decoration:none;transition:box-shadow .2s ease,transform .15s ease,background-color .2s ease}
+  figcaption a:hover{background:color-mix(in srgb,var(--btn-glass-clear),var(--white) 20%);box-shadow:var(--btn-glass-shadow-hover)}
+  figcaption a:active{transform:scale(.98)}
+  figcaption a:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
   .dashes{display:flex;flex-direction:column;gap:var(--space-48)}
   .solo{padding:40px;min-width:0;display:grid;place-items:center;min-height:100vh}
   .solo .bd-head,.solo .bd-h2,.solo figcaption{display:none}
