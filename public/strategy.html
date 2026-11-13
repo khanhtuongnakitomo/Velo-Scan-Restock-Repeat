@@ -196,6 +196,29 @@
   footer p{margin:0;font-size:var(--text-small);color:var(--tint);max-width:900px;line-height:1.5}
   footer p.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--white)}
 
+  /* 44px hit areas: grow the box, cancel it with a negative margin so the desktop layout does not move */
+  :root{--tap:44px}
+  .brand{display:block;padding-block:calc((var(--tap) - 1lh) / 2);margin-block:calc((1lh - var(--tap)) / 2)}
+  .nav{margin-block:calc((30.1875px - var(--tap)) / 2)} /* 30.1875 = original link height (13px × 1.4 line-height snapped to 1/64 + 12px padding) */
+  .nav a{position:relative;isolation:isolate;display:inline-flex;align-items:center;min-height:var(--tap);padding-block:0}
+  .nav a.on{background:transparent}
+  .nav a.on::before{content:"";position:absolute;inset:calc((var(--tap) - 30px) / 2) 0;z-index:-1;border-radius:var(--radius-pill);background:var(--fog)}
+  .print-btn{position:relative;isolation:isolate;min-height:var(--tap);background:transparent;box-shadow:none}
+  .print-btn::before{content:"";position:absolute;inset:calc((var(--tap) - 37px) / 2) 0;z-index:-1;border-radius:var(--radius-pill);background:var(--violet);box-shadow:0 0 0 2px var(--white),var(--shadow-float);transition:background-color .15s}
+  .print-btn:hover{background:transparent}
+  .print-btn:hover::before{background:var(--ink)}
+
+  /* data tables become stacked cards below 768px; every cell carries its column header as data-label */
+  @media(max-width:767px){
+    .tbl{background:transparent;border-radius:0;overflow:visible}
+    .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block}
+    .tbl .th-row{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+    .tbl tr{background:var(--white);border:var(--hairline);border-radius:var(--radius-card);padding:var(--space-4) var(--space-16);margin-bottom:var(--space-12)}
+    .tbl tbody tr td{display:grid;grid-template-columns:minmax(0,7rem) minmax(0,1fr);gap:var(--space-12);padding:var(--space-10) 0;border-top:var(--hairline)}
+    .tbl tbody tr td:first-child{border-top:0}
+    .tbl td::before{content:attr(data-label);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);padding-top:var(--space-2)}
+  }
+
   @media(max-width:1000px){
     .topbar{grid-template-columns:minmax(0,1fr) auto}
     .pill{grid-column:1;justify-self:center}
@@ -378,11 +401,11 @@
       <div class="card">
         <h3>People in the flow</h3>
         <div class="tbl"><table>
-          <tr><th>Person</th><th>Role in VELO</th></tr>
-          <tr><td><strong>Receiver</strong></td><td>Runs receiving on phone: scans, counts, photographs, confirms</td></tr>
-          <tr><td><strong>Manager</strong></td><td>Approves discrepancies, monitors stock &amp; supplier accuracy</td></tr>
-          <tr><td><strong>Owner / finance</strong></td><td>Uses documented receipts to approve supplier payment</td></tr>
-          <tr><td><strong>Driver</strong> (participant)</td><td>Co-confirms discrepancies at the dock, on the spot</td></tr>
+          <tr class="th-row"><th>Person</th><th>Role in VELO</th></tr>
+          <tr><td data-label="Person"><strong>Receiver</strong></td><td data-label="Role in VELO">Runs receiving on phone: scans, counts, photographs, confirms</td></tr>
+          <tr><td data-label="Person"><strong>Manager</strong></td><td data-label="Role in VELO">Approves discrepancies, monitors stock &amp; supplier accuracy</td></tr>
+          <tr><td data-label="Person"><strong>Owner / finance</strong></td><td data-label="Role in VELO">Uses documented receipts to approve supplier payment</td></tr>
+          <tr><td data-label="Person"><span><strong>Driver</strong> (participant)</span></td><td data-label="Role in VELO">Co-confirms discrepancies at the dock, on the spot</td></tr>
         </table></div>
       </div>
     </div>
@@ -546,13 +569,13 @@
 
     <h3 class="label" style="margin:var(--space-32) 0 var(--space-12);">Pilot targets — hypotheses to test in 4–8 weeks, NOT results</h3>
     <div class="tbl"><table>
-      <tr><th>Indicator</th><th>How measured</th><th>Illustrative target</th></tr>
-      <tr><td>Documentation completeness</td><td>% deliveries with complete digital record</td><td>≥ 95%</td></tr>
-      <tr><td>Discrepancy capture at receiving</td><td>Recorded in VELO ÷ found by later spot-audit</td><td>≥ 90%</td></tr>
-      <tr><td>Time to trusted stock figure</td><td>Delivery done → stock visible</td><td>Same session (vs hours–days)</td></tr>
-      <tr><td>Receiving effort</td><td>Person-minutes per delivery vs paper baseline</td><td>No slower; −20–30% after week 2</td></tr>
-      <tr><td>Inventory record accuracy</td><td>Cycle-count agreement, VELO-managed SKUs</td><td>≥ 98%</td></tr>
-      <tr><td>Supplier claim resolution</td><td>Days, discrepancy → agreed resolution</td><td>Measurable reduction</td></tr>
+      <tr class="th-row"><th>Indicator</th><th>How measured</th><th>Illustrative target</th></tr>
+      <tr><td data-label="Indicator">Documentation completeness</td><td data-label="How measured">% deliveries with complete digital record</td><td data-label="Illustrative target">≥ 95%</td></tr>
+      <tr><td data-label="Indicator">Discrepancy capture at receiving</td><td data-label="How measured">Recorded in VELO ÷ found by later spot-audit</td><td data-label="Illustrative target">≥ 90%</td></tr>
+      <tr><td data-label="Indicator">Time to trusted stock figure</td><td data-label="How measured">Delivery done → stock visible</td><td data-label="Illustrative target">Same session (vs hours–days)</td></tr>
+      <tr><td data-label="Indicator">Receiving effort</td><td data-label="How measured">Person-minutes per delivery vs paper baseline</td><td data-label="Illustrative target">No slower; −20–30% after week 2</td></tr>
+      <tr><td data-label="Indicator">Inventory record accuracy</td><td data-label="How measured">Cycle-count agreement, VELO-managed SKUs</td><td data-label="Illustrative target">≥ 98%</td></tr>
+      <tr><td data-label="Indicator">Supplier claim resolution</td><td data-label="How measured">Days, discrepancy → agreed resolution</td><td data-label="Illustrative target">Measurable reduction</td></tr>
     </table></div>
 
     <h3 class="label" style="margin:var(--space-28) 0 var(--space-12);">Business value per warehouse / month (fill with real baseline)</h3>

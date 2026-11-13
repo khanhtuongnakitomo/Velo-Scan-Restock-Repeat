@@ -50,10 +50,16 @@
   .ov-sheet .kv{margin-top:var(--space-12)}
   .ov-sheet .v-btn+.v-btn{margin-top:var(--space-8)}
   .ov-sheet__hd{display:flex;justify-content:space-between;align-items:center}
-  .ov-sheet__x{width:32px;height:32px;border:var(--hairline-strong);border-radius:50%;font-weight:400;color:var(--ink)}
+  .ov-sheet__x{width:44px;height:44px;border:var(--hairline-strong);border-radius:50%;font-weight:400;color:var(--ink)}
   .ov-sheet__acts{margin-top:var(--space-16)}
   @keyframes v-up{from{transform:translateY(100%)}to{transform:none}}
   @keyframes v-fade{from{opacity:0}to{opacity:1}}
+
+  /* desktop: fit() scales the phone by --k; grow controls so the rendered hit area stays >= 44px */
+  @media (min-width:561px){
+    .ph-screen :is(button,a,input,label.rsb){min-height:calc(44px / var(--k,1))}
+    .ph-me,.ph-back{width:calc(44px / var(--k,1));height:calc(44px / var(--k,1))}
+  }
 
   /* phone sized screens: the app takes the whole viewport */
   @media (max-width:560px){
@@ -70,7 +76,7 @@
     .ph-tabs{padding-bottom:calc(6px + env(safe-area-inset-bottom))}
     .ph-tab{padding-top:10px}
     .ov-toast{top:calc(62px + env(safe-area-inset-top))}
-    .ph-cam{min-height:260px}
+    .ph-cam{min-height:280px}
   }
   @media (max-width:560px) and (max-height:700px){
     .ph-hello p,.ph-stats{display:none}
@@ -106,7 +112,7 @@
 (function () {
   'use strict'
 
-  const { phone, matchOf, D } = VeloUI
+  const { phone, matchOf, D, countCheck, countHint, flagCheck, summary } = VeloUI
   const screen = document.getElementById('screen')
 
   const fresh = () => ({
@@ -114,10 +120,11 @@
     good: [96, 20], dmg: [4, 0], saved: [false, false],
     reasons: [], photo: false, driver: false, submitted: false, approved: false, issued: false,
     sheet: null, toast: '',
+    err: {}, raw: {}, attempt: false, saving: false, uploading: false, submitting: false,
   })
   let S = fresh()
   let lastKey = ''
-  let toastTimer = 0, readTimer = 0
+  let toastTimer = 0, readTimer = 0, busyTimer = 0, rendering = false
 
   /* ---------- views ---------- */
   function view() {
@@ -125,9 +132,13 @@
     switch (S.view) {
       case 'note': return phone('note', S.note, { back: true, tapHint: true })
       case 'extract': return phone('extract', 'review', { back: true, checked: S.ext })
-      case 'count': return phone('count', S.scanned ? 'counted' : 'aim', { back: true, tapHint: true, line: S.line, good: S.good[S.line], dmg: S.dmg[S.line] })
+      case 'count': return phone('count', S.scanned ? 'counted' : 'aim', {
+        back: true, tapHint: true, line: S.line,
+        good: 'good' in S.err ? S.raw.good : S.good[S.line], dmg: 'dmg' in S.err ? S.raw.dmg : S.dmg[S.line],
+        errors: S.err, saving: S.saving, summary: S.attempt ? summary('save', Object.keys(S.err)) : '',
+      })
       case 'match': return phone('match', 'live', { back: true, good: S.good, dmg: S.dmg })
-      case 'flag': return phone('flag', 'form', { back: true, reasons: S.reasons, photo: S.photo, driver: S.driver, d: S.dmg[0] })
+      case 'flag': return phone('flag', 'form', { back: true, reasons: S.reasons, photo: S.photo, driver: S.driver, d: S.dmg[0], errors: S.err, uploading: S.uploading, submitting: S.submitting })
       case 'submitted': return phone('submitted', 'waiting', { demo: true })
       case 'receipt': return phone('receipt', 'issued', { next: true })
       default: return phone('deliveries', S.issued ? 'done' : 'today')
@@ -173,14 +184,70 @@
     const same = key === lastKey
     const main = screen.querySelector('.ph-main')
     const keep = same && main ? main.scrollTop : 0
+    const ae = document.activeElement
+    const focusKey = same && ae && screen.contains(ae) ? (ae.id ? '#' + ae.id : ae.dataset.act ? `[data-act="${ae.dataset.act}"]` : '') : ''
     screen.classList.toggle('no-anim', same)
+    rendering = true
     screen.innerHTML = view() + overlays()
+    rendering = false
     lastKey = key
     const m = screen.querySelector('.ph-main')
     if (m) { m.classList.add('is-scroll'); m.scrollTop = keep }
     const t = screen.querySelector('.ph-status b')
     if (t) t.textContent = new Date().toTimeString().slice(0, 5)
+    if (focusKey) { const f = screen.querySelector(focusKey); if (f && !f.disabled) f.focus({ preventScroll: true }) }
     syncSteps()
+  }
+
+  /* ---------- form: validation runs on blur / change / action, never while typing ---------- */
+  const clearForm = () => { S.err = {}; S.raw = {}; S.attempt = false }
+  const sumText = () => (S.attempt ? summary('save', Object.keys(S.err)) : '')
+
+  /* Update one count field in place, so a blur never rebuilds the screen and steals focus from the next field. */
+  function paintCount() {
+    ;['good', 'dmg'].forEach((k) => {
+      const f = screen.querySelector(`[data-fld="${k}"]`)
+      if (!f) return
+      const msg = S.err[k] || ''
+      f.classList.toggle('has-err', !!msg)
+      const inp = f.querySelector('input')
+      if (msg) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid')
+      f.querySelector('.v-err').textContent = msg
+    })
+    const hint = screen.querySelector('#ph-hint')
+    if (hint) hint.textContent = countHint(S.line, S.good[S.line], S.dmg[S.line])
+    const sum = screen.querySelector('#ph-sum')
+    if (sum) sum.textContent = sumText()
+  }
+
+  /* Validate one count input. Invalid text never reaches S: the last valid number stays, the error shows. */
+  function commitCount(inp) {
+    const key = inp.dataset.act.split(':')[1]
+    const raw = inp.value
+    const msg = countCheck(S.line, key, raw, inp.validity.badInput)
+    if (msg) { S.err[key] = msg; S.raw[key] = raw }
+    else { delete S.err[key]; delete S.raw[key]; S[key][S.line] = Number(raw) }
+    paintCount()
+  }
+
+  /* After a reason / photo / driver change: refresh messages that are already showing, so fixed ones clear and still-bad ones update. */
+  function refreshFlag(forceReasons) {
+    const now = flagCheck({ reasons: S.reasons, photo: S.photo, driver: S.driver })
+    const next = {}
+    Object.keys(now).forEach((k) => { if (k in S.err || (forceReasons && k === 'reasons')) next[k] = now[k] })
+    S.err = next
+  }
+
+  function focusFirstInvalid() {
+    const f = [...screen.querySelectorAll('[data-fld]')].find((n) => n.querySelector('.v-err:not(:empty)'))
+    const t = f && f.querySelector('input:not(:disabled),button:not(:disabled)')
+    if (t) t.focus()
+  }
+
+  function busyFor(prop, fn) {
+    S[prop] = true
+    render()
+    busyTimer = setTimeout(() => { S[prop] = false; fn(); render() }, 700)
   }
 
   function toast(msg) {
@@ -192,6 +259,7 @@
   function go(v) {
     S.view = v
     S.sheet = null
+    clearForm()
   }
 
   const claimedIssues = () => {
@@ -202,6 +270,7 @@
 
   /* ---------- actions ---------- */
   function act(a) {
+    if (S.saving || S.uploading || S.submitting) return
     const [k, v] = a.split(':')
     switch (k) {
       case 'start': go('note'); S.note = 'aim'; break
@@ -219,18 +288,35 @@
       case 'inc': case 'dec': {
         const arr = S[v], d = k === 'inc' ? 1 : -1
         arr[S.line] = Math.max(0, Math.min(999, arr[S.line] + d))
+        delete S.err[v]; delete S.raw[v]
         break
       }
+      case 'set': break
       case 'fallback': toast({ search: '<b>Search by name or code</b> finds the product when no barcode scans.', photo: '<b>Photo of the product and label</b> is kept as identification evidence.', qr: '<b>Internal QR label</b> printed at receiving makes the goods trackable from now on.' }[v]); break
       case 'save-line':
-        S.saved[S.line] = true
-        if (S.line === 0) { S.line = 1; S.scanned = false } else go('match')
-        break
-      case 'flag': S.reasons = claimedIssues(); S.photo = false; S.driver = false; go('flag'); break
-      case 'reason': { const i = S.reasons.indexOf(v); i >= 0 ? S.reasons.splice(i, 1) : S.reasons.push(v); break }
-      case 'photo': S.photo = true; navigator.vibrate?.(40); break
-      case 'driver': S.driver = true; navigator.vibrate?.(40); break
-      case 'submit': S.submitted = true; go('submitted'); break
+        screen.querySelectorAll('input[data-act^="set:"]').forEach(commitCount)
+        if (Object.keys(S.err).length) {
+          S.attempt = true
+          render()
+          focusFirstInvalid()
+          return
+        }
+        S.attempt = false
+        busyFor('saving', () => {
+          S.saved[S.line] = true
+          clearForm()
+          if (S.line === 0) { S.line = 1; S.scanned = false } else go('match')
+        })
+        return
+      case 'flag': clearForm(); S.reasons = claimedIssues(); S.photo = false; S.driver = false; go('flag'); break
+      case 'reason': { const i = S.reasons.indexOf(v); i >= 0 ? S.reasons.splice(i, 1) : S.reasons.push(v); refreshFlag(true); break }
+      case 'photo': busyFor('uploading', () => { S.photo = true; navigator.vibrate?.(40); delete S.err.photo; refreshFlag() }); return
+      case 'driver': S.driver = true; navigator.vibrate?.(40); delete S.err.driver; refreshFlag(); break
+      case 'submit':
+        S.err = flagCheck({ reasons: S.reasons, photo: S.photo, driver: S.driver })
+        if (Object.keys(S.err).length) { render(); focusFirstInvalid(); return }
+        busyFor('submitting', () => { S.submitted = true; go('submitted') })
+        return
       case 'to-manager': S.role = 'manager'; S.sheet = null; break
       case 'approve': S.approved = true; navigator.vibrate?.(40); break
       case 'mgr-other': toast('Only <b>Accept ' + S.good[0] + (S.dmg[0] ? ', claim ' + S.dmg[0] : '') + '</b> is wired in this mockup. The others follow the same pattern.'); break
@@ -268,16 +354,20 @@
   }
 
   function reset() {
-    clearTimeout(toastTimer); clearTimeout(readTimer)
+    clearTimeout(toastTimer); clearTimeout(readTimer); clearTimeout(busyTimer)
     S = fresh(); lastKey = ''
     render()
   }
 
   screen.addEventListener('click', (e) => {
     const t = e.target.closest('[data-tab],[data-act]')
-    if (!t || !screen.contains(t) || t.disabled) return
+    if (!t || !screen.contains(t) || t.disabled || t.matches('input[type=number]')) return
     if (t.dataset.tab) { tab(t.dataset.tab); render(); return }
     act(t.dataset.act)
+  })
+  screen.addEventListener('focusout', (e) => {
+    if (rendering || !e.target.isConnected || !e.target.matches('input[type=number][data-act^="set:"]') || S.saving) return
+    commitCount(e.target)
   })
   screen.addEventListener('keydown', (e) => {
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-act][role=button]')) { e.preventDefault(); act(e.target.dataset.act) }
@@ -303,6 +393,7 @@
     device.style.height = `${868 * k}px`
     phoneFrame.style.transformOrigin = 'top left'
     phoneFrame.style.transform = `scale(${k})`
+    phoneFrame.style.setProperty('--k', k)
   }
   addEventListener('resize', fit)
   fit()

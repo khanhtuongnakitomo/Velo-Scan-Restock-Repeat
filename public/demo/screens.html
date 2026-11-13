@@ -11,7 +11,7 @@
 <script src="/motion.js" defer></script>
 <link rel="stylesheet" href="velo-ui.css">
 <style>
-  body{padding:48px 56px 80px;min-width:1560px}
+  body{padding:48px 56px 80px}
   .bd-head{display:flex;align-items:flex-end;gap:var(--space-24);padding-bottom:var(--space-24);margin-bottom:var(--space-40)}
   .bd-head h1{font-family:var(--sans);font-size:var(--text-heading-lg);line-height:1.1;font-weight:400;color:var(--ink);letter-spacing:-.02em}
   .bd-head h1 b{color:var(--violet);font-style:normal;font-weight:400}
@@ -22,14 +22,23 @@
   .row{display:flex;flex-wrap:wrap;gap:var(--space-40) var(--space-40);margin-bottom:var(--space-60)}
   figure{display:flex;flex-direction:column;gap:var(--space-12)}
   figcaption{display:flex;gap:var(--space-8);align-items:center;font-size:var(--text-small);font-weight:400;color:var(--slate)}
-  figcaption a{color:inherit;background:var(--fog);color:var(--ink);border-radius:var(--radius-pill);padding:var(--space-4) var(--space-12);text-decoration:none}
-  .dashes{display:flex;flex-direction:column;gap:var(--space-48)}
+  figcaption a{display:inline-flex;align-items:center;min-height:44px;color:inherit;background:var(--fog);color:var(--ink);border-radius:var(--radius-pill);padding:var(--space-4) var(--space-16);text-decoration:none}
+  .dashes{display:flex;flex-direction:column;gap:var(--space-48);width:100%;min-width:0}
+  .dashes figure{min-width:0}
+  .solo .dashes{width:100%}
   .solo{padding:40px;min-width:0;display:grid;place-items:center;min-height:100vh}
   .solo .bd-head,.solo .bd-h2,.solo figcaption{display:none}
   .solo .row,.solo .dashes{margin:0}
+  @media(max-width:900px){
+    body{padding:var(--space-24) var(--space-16) var(--space-64)}
+    .bd-head{flex-direction:column;align-items:flex-start;gap:var(--space-12)}
+    .bd-head p{margin-left:0}
+    .row{justify-content:center;gap:var(--space-32);margin-bottom:var(--space-40)}
+    .dashes{gap:var(--space-32)}
+  }
   @media(max-width:494px){
     .solo{padding:16px}
-    .solo .phone{width:min(414px,calc(100vw - 32px))}
+    .solo .phone,#phones .phone{width:min(414px,calc(100vw - 32px))}
   }
 </style>
 </head>
@@ -68,6 +77,10 @@
     ['phone-approved', 'approve', 'done', {}, '06 · Manager approved'],
     ['phone-receipt', 'receipt', 'issued', {}, '07 · Receipt issued'],
     ['phone-deliveries-done', 'deliveries', 'done', {}, '08 · Delivery received'],
+    ['phone-count-error', 'count', 'counted', { line: 0, good: '', dmg: 150, errors: { good: VeloUI.countCheck(0, 'good', '', true), dmg: VeloUI.countCheck(0, 'dmg', '150', false) }, summary: VeloUI.summary('save', ['good', 'dmg']) }, '03 · Count · field errors'],
+    ['phone-count-saving', 'count', 'counted', { line: 0, saving: true }, '03 · Count · saving'],
+    ['phone-flag-error', 'flag', 'form', { reasons: [], errors: VeloUI.flagCheck({ reasons: [], photo: false, driver: false }) }, '05 · Flag · missing reason'],
+    ['phone-flag-submitting', 'flag', 'driver', { submitting: true }, '05 · Flag · submitting'],
   ]
   const DASHES = [
     ['expected', '01 · Expected delivery from a PO'],

@@ -26,7 +26,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 ::selection { background: var(--tint); }
 
 .wrap { max-width: calc(var(--page-max) + 2 * var(--space-24)); margin-inline: auto; padding-inline: var(--space-24); }
-.skip-link { position: absolute; left: -9999px; top: var(--space-8); z-index: 100; background: var(--ink); color: var(--white); padding: var(--space-8) var(--space-16); border-radius: var(--radius-pill); }
+:root { --tap: 44px; }
+.skip-link { position: absolute; left: -9999px; top: var(--space-8); z-index: 100; background: var(--ink); color: var(--white); padding: var(--space-8) var(--space-16); border-radius: var(--radius-pill); display: inline-flex; align-items: center; min-height: var(--tap); }
 .skip-link:focus { left: var(--space-8); }
 .progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 60; background: var(--violet); transform: scaleX(0); transform-origin: 0 50%; }
 
@@ -78,6 +79,13 @@ h3 { font-size: var(--text-heading-sm); font-weight: 400; line-height: 1.2; lett
 .nav__mobile-demo, .nav__toggle { display: none; }
 .nav__cta { pointer-events: auto; position: absolute; right: 0; padding: var(--space-20) var(--space-28); }
 .nav__ink { display: none; }
+
+/* 44px hit areas without moving the desktop layout: grow the box, cancel it with negative block offsets */
+.brand { --h: 28px; min-height: var(--tap); margin-block: calc((var(--h) - var(--tap)) / 2); }
+.brand--white { --h: 34px; }
+.nav__links a:not(.nav__mobile-demo) { display: inline-flex; align-items: center; min-height: var(--tap); padding-inline: var(--space-16); margin: calc((1lh - var(--tap)) / 2) calc(-1 * var(--space-16)); }
+.btn--sm { --h: 34px; min-height: var(--tap); margin-block: calc((var(--h) - var(--tap)) / 2); }
+a.link, .foot-cols a, .foot-base a { display: inline-flex; align-items: center; min-width: var(--tap); min-height: var(--tap); margin-block: calc((1lh - var(--tap)) / 2); }
 
 /* ---------- hero ---------- */
 .hero { position: relative; min-height: 100vh; display: grid; place-items: center; padding-block: var(--space-120) var(--space-80); text-align: center; overflow: hidden; }
@@ -316,10 +324,10 @@ h3 { font-size: var(--text-heading-sm); font-weight: 400; line-height: 1.2; lett
   .nav { justify-content: space-between; }
   .nav__pill { flex: 1; justify-content: space-between; padding: var(--space-10) var(--space-10) var(--space-10) var(--space-20); }
   .nav__cta { display: none; }
-  .nav__toggle { display: block; position: relative; width: 40px; height: 40px; border-radius: 50%; background: var(--violet); }
-  .nav__toggle span { position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--white); transition: transform 0.2s ease; }
-  .nav__toggle span:first-child { top: 16px; }
-  .nav__toggle span:last-child { top: 22px; }
+  .nav__toggle { display: block; position: relative; width: var(--tap); height: var(--tap); border-radius: 50%; background: var(--violet); }
+  .nav__toggle span { position: absolute; left: var(--space-14); right: var(--space-14); height: 1.5px; background: var(--white); transition: transform 0.2s ease; }
+  .nav__toggle span:first-child { top: 18px; }
+  .nav__toggle span:last-child { top: 24px; }
   .nav__toggle[aria-expanded='true'] span:first-child { transform: translateY(3px) rotate(45deg); }
   .nav__toggle[aria-expanded='true'] span:last-child { transform: translateY(-3px) rotate(-45deg); }
   .nav__links {
@@ -328,7 +336,7 @@ h3 { font-size: var(--text-heading-sm); font-weight: 400; line-height: 1.2; lett
     opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease;
   }
   .nav__links.open { opacity: 1; transform: none; pointer-events: auto; }
-  .nav__links a { font-size: var(--text-body); color: var(--ink); padding: var(--space-12) var(--space-16); }
+  .nav__links a, .nav__links a:not(.nav__mobile-demo) { font-size: var(--text-body); color: var(--ink); padding: var(--space-12) var(--space-16); margin: 0; min-height: var(--tap); }
   .nav__mobile-demo { display: block; color: var(--violet) !important; }
   .cards3, .band__in, .foot-grid { grid-template-columns: 1fr; }
   .card { min-height: 0; }
@@ -336,6 +344,8 @@ h3 { font-size: var(--text-heading-sm); font-weight: 400; line-height: 1.2; lett
   .bench div + div { border-left: 0; border-top: 1px solid var(--line); }
   .panel__stats { grid-template-columns: 1fr; }
   .foot-cols { justify-self: start; }
+  .foot-cols ul { gap: 0; }
+  .foot-cols a, .foot-base a { margin-block: 0; }
   .shapes { justify-content: flex-start; }
 }
 

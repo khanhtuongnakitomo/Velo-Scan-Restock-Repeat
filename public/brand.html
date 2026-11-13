@@ -122,6 +122,17 @@ footer{background:var(--violet);color:var(--white);padding:var(--space-64) 0 var
 .foot-brand img{width:28px;height:28px;object-fit:contain}
 .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-10);font-size:var(--text-small);color:var(--tint)}
 
+/* 44px hit areas: grow the box, cancel it with a negative margin so the layout does not move */
+:root{--tap:44px}
+.skip-link{display:inline-flex;align-items:center;min-height:var(--tap)}
+.brand{min-height:var(--tap);margin-block:calc((28px - var(--tap)) / 2)}
+.nav__in .btn{min-height:var(--tap)}
+.band .cta .btn{--h:41px;min-height:var(--tap);margin-top:calc(var(--space-32) + (var(--h) - var(--tap)) / 2);margin-bottom:calc((var(--h) - var(--tap)) / 2)}
+.dl a,.mark__meta a{--v:calc(1lh + 2 * var(--space-4));position:relative;isolation:isolate;display:inline-flex;align-items:center;min-height:var(--tap);margin-block:calc((var(--v) - var(--tap)) / 2);background:transparent}
+.mark__meta a{--v:calc(1lh + 2 * var(--space-2))}
+.dl a::before,.mark__meta a::before{content:"";position:absolute;inset:calc((var(--tap) - var(--v)) / 2) 0;z-index:-1;border-radius:var(--radius-pill);background:var(--white);transition:background-color .15s}
+.dl a:hover,.mark__meta a:hover{background:transparent}
+.dl a:hover::before,.mark__meta a:hover::before{background:var(--tint)}
 @media (max-width:860px){.tiles,.marks,.type{grid-template-columns:1fr}.marks{grid-template-columns:repeat(2,1fr)}.pal{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:860px){.nav__in{grid-template-columns:minmax(0,1fr) auto}.pill{grid-column:1;justify-self:center}.nav__in .btn{grid-column:2}}
 @media (max-width:480px){.pill .label{display:none}.pill{padding-right:var(--space-16)}.nav__in .btn{padding:var(--space-8) var(--space-14)}}

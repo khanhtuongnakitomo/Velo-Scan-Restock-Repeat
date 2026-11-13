@@ -63,12 +63,18 @@
   @media (max-width:1100px){.site-back{display:inline-flex}}
   .st-ctl #play{min-width:112px}
   .dots{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--space-6);margin:0 var(--space-10)}
-  .dots button{position:relative;height:32px;border:1px solid var(--white);border-radius:var(--radius-pill);background:var(--white);overflow:hidden;font-size:var(--text-caption);font-weight:400;color:var(--ink);text-align:left;padding:0 var(--space-12);white-space:nowrap;text-overflow:ellipsis}
-  .dots button span{position:relative;z-index:1}
-  .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--tint)}
+  .dots button{position:relative;height:32px;border:1px solid var(--white);border-radius:var(--radius-pill);background:var(--white);font-size:var(--text-caption);font-weight:400;color:var(--ink);text-align:left;padding:0 var(--space-12);white-space:nowrap}
+  .dots button span{position:relative;z-index:1;display:block;overflow:hidden;text-overflow:ellipsis}
+  .dots button i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--tint);border-radius:inherit}
   .dots button.is-past i{width:100%;background:var(--tint)}
   .dots button[aria-current="step"]{background:var(--violet);border-color:var(--violet);color:var(--white)}
   .dots button[aria-current="step"] i{background:transparent}
+  /* The 1920px stage is scaled by --k. Hit areas are expanded (invisible ::after) so every control is at least 44 CSS px on screen. */
+  :root{--tap:44px}
+  @media(min-width:901px){
+    .st-brand,.st-ctl .v-btn,.dots button{position:relative}
+    .st-brand::after,.st-ctl .v-btn::after,.dots button::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,calc(var(--tap) / var(--k,1)));height:max(100%,calc(var(--tap) / var(--k,1)));transform:translate(-50%,-50%)}
+  }
   .st-count{font-size:var(--text-small);font-weight:400;min-width:70px;text-align:right;color:var(--ink)}
   .st-hint{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;letter-spacing:.08em;font-weight:400;color:var(--mist)}
   .stage.is-clean .st-ctl{transform:translateY(150%)}
@@ -93,9 +99,10 @@
     .st-devs-window{position:relative;width:100%;height:calc(880px * var(--mobile-scale));overflow:hidden}
     .st-devs{left:0;top:0;width:1360px;height:880px;transform-origin:top left;transform:scale(var(--mobile-scale))}
     .st-ctl{position:relative;left:auto;right:auto;bottom:auto;margin:var(--space-12);height:auto;padding:var(--space-16);border-radius:24px;gap:var(--space-8);flex-wrap:wrap}
-    .st-ctl .v-btn{min-height:44px;padding:var(--space-10) var(--space-12)}
+    .st-ctl .v-btn{min-height:44px;min-width:44px;padding:var(--space-10) var(--space-12)}
     .dots{order:2;flex-basis:100%;margin:0;grid-auto-flow:row;grid-template-columns:repeat(5,minmax(0,1fr))}
     .dots button{height:44px}
+    .st-brand{min-height:44px}
     .st-count{margin-left:auto;min-width:0}
     .st-hint{display:none}
     .stage.is-clean .st-ctl{transform:none}
@@ -301,6 +308,7 @@
     }
     const k = Math.min(innerWidth / 1920, innerHeight / 1080)
     stage.style.transform = `translate(-50%,-50%) scale(${k})`
+    stage.style.setProperty('--k', String(k))
   }
 
   $('dots').innerHTML = SCENES.map((s, j) => `<button title="${s.title}" aria-label="Step ${j + 1}: ${s.title}"><i></i><span>${String(j + 1).padStart(2, '0')} ${s.short}</span></button>`).join('')
