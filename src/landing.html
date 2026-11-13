@@ -22,8 +22,14 @@
       <h1 class="hero__title">Receive. Verify. Record.</h1>
       <p class="hero__sub">AI-assisted goods receiving for Vietnamese warehouses. Every delivery verified, every discrepancy evidenced, every item recorded.</p>
       <div class="cta">
-        <a class="btn btn--lg" href="/demo/app.html">Try the demo <span aria-hidden="true">→</span></a>
-        <a class="btn btn--lg btn--dark" href="/demo/index.html">Watch the walkthrough <span aria-hidden="true">↗</span></a>
+        <div class="demo-picker">
+          <button type="button" class="btn btn--lg" id="demoPickerBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="demoPickerMenu">Try the demo <span aria-hidden="true">→</span></button>
+          <div class="demo-menu" id="demoPickerMenu" role="menu" hidden>
+            <a href="/demo/app.html" role="menuitem"><b>Use it yourself</b><span>Receive DN-2481 on Lan's phone, then approve as Minh.</span></a>
+            <a href="/demo/index.html" role="menuitem"><b>Watch the demo unfold</b><span>The same delivery plays itself: phone, match, approval, receipt.</span></a>
+          </div>
+        </div>
+        <button type="button" class="btn btn--lg btn--dark" id="watchIntroBtn">Watch the introduction video <span aria-hidden="true">▸</span></button>
       </div>
       <p class="hero__meta"><i></i><span class="shiny">Prototype · LIKELION AI for Business Innovation 2026 · Team DNKTV</span></p>
     </div>
@@ -36,6 +42,23 @@
       <div class="mq-seq"><span>Purchase order</span><span>Delivery note</span><span>Physical count</span><span>Three-way match</span><span>Phiếu nhập kho</span><span>Batch &amp; expiry</span><span>Supplier claims</span><span>Audit trail</span></div>
     </div>
   </div>
+
+  <!-- ============ FILM: 74-second promo ============ -->
+  <section class="section section--film" id="film" aria-labelledby="filmTitle">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="filmTitle">One delivery, start to finish.</h2>
+        <p>Seventy-four seconds at the dock: the note is scanned, every line is counted, 96 tubes go into stock and 4 go into a claim.</p>
+      </div>
+      <figure class="film panel">
+        <video class="film__video" controls playsinline preload="none" poster="/assets/velo-promo-poster.jpg" width="1920" height="1080" aria-describedby="filmCaption">
+          <source src="/assets/velo-promo.mp4" type="video/mp4">
+          <a href="/assets/velo-promo.mp4">Download the VELO film (MP4, 1:14)</a>
+        </video>
+        <figcaption class="film__cap" id="filmCaption"><span>VELO · Receive. Verify. Record.</span><span>1:14 · sound on</span></figcaption>
+      </figure>
+    </div>
+  </section>
 
   <!-- ============ PRODUCT: THREE-WAY MATCH + FLOW MODEL ============ -->
   <section class="section" id="match">

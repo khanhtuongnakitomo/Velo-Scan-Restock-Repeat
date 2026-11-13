@@ -259,6 +259,38 @@ export default function App() {
     navLinks.forEach((a) => a.addEventListener('click', closeMenu))
     addEventListener('keydown', onKey)
 
+    // Hero: "Watch the introduction video" scrolls to the film and plays it (never under reduced motion).
+    const watchBtn = r.querySelector<HTMLButtonElement>('#watchIntroBtn')
+    const onWatch = () => {
+      const video = r.querySelector<HTMLVideoElement>('#film video')
+      if (!video) return
+      video.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' })
+      if (reduce) return
+      window.setTimeout(() => void video.play().catch(() => {}), 550)
+    }
+    watchBtn?.addEventListener('click', onWatch)
+
+    // Hero: "Try the demo" offers the two ways in — use it yourself, or watch it unfold.
+    const pickerBtn = r.querySelector<HTMLButtonElement>('#demoPickerBtn')
+    const pickerMenu = r.querySelector<HTMLElement>('#demoPickerMenu')
+    const setPicker = (open: boolean) => {
+      if (pickerMenu) pickerMenu.hidden = !open
+      pickerBtn?.setAttribute('aria-expanded', String(open))
+    }
+    const pickerOpen = () => pickerMenu?.hidden === false
+    const onPicker = () => setPicker(!pickerOpen())
+    const onPickerDoc = (e: MouseEvent) => {
+      if (pickerOpen() && !pickerBtn?.parentElement?.contains(e.target as Node)) setPicker(false)
+    }
+    const onPickerKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && pickerOpen()) { setPicker(false); pickerBtn?.focus() }
+    }
+    const onPickerLink = () => setPicker(false)
+    pickerBtn?.addEventListener('click', onPicker)
+    document.addEventListener('click', onPickerDoc)
+    document.addEventListener('keydown', onPickerKey)
+    pickerMenu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', onPickerLink))
+
     const onScroll = () => {
       const h = document.documentElement
       navEl?.classList.toggle('is-scrolled', scrollY > 12)
@@ -309,6 +341,11 @@ export default function App() {
       })
       removeEventListener('scroll', onScroll)
       removeEventListener('resize', onResize)
+      watchBtn?.removeEventListener('click', onWatch)
+      pickerBtn?.removeEventListener('click', onPicker)
+      document.removeEventListener('click', onPickerDoc)
+      document.removeEventListener('keydown', onPickerKey)
+      pickerMenu?.querySelectorAll('a').forEach((a) => a.removeEventListener('click', onPickerLink))
       removeEventListener('keydown', onKey)
       toggle?.removeEventListener('click', onToggle)
     }

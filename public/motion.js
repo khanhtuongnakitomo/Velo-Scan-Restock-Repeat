@@ -351,6 +351,7 @@
       if (onLoaded) onLoaded()
       return
     }
+    if (bgmState.mediaHold) setMediaHold(false) // the page with the playing video is being replaced
     if (bgmState.btn) {
       bgmState.btn.classList.remove('is-docked')
       if (bgmState.btn.parentNode !== body) body.appendChild(bgmState.btn)
@@ -521,9 +522,32 @@
 
   function targetBgmVolume(pathname) {
     // Soft ~26% volume across the website; ~18% on walkthrough so interaction SFX stays clear
+    // Silent while a page video (the promo film) is playing, so the two soundtracks never overlap.
+    if (bgmState.mediaHold) return 0
     var path = pathname || currentRoutePath || location.pathname
     return path.indexOf('/demo/index') >= 0 ? 0.18 : 0.26
   }
+
+  function setMediaHold(on) {
+    if (inFrame) {
+      try { window.parent.postMessage({ type: 'velo:media', playing: on }, location.origin) } catch (err) {}
+      return
+    }
+    bgmState.mediaHold = on
+    if (bgmState.audio && bgmState.running) fadeBgmVolume(targetBgmVolume(), on ? 280 : 950)
+  }
+
+  function onMediaEvent(e) {
+    var t = e.target
+    if (!t || t.tagName !== 'VIDEO') return
+    if (e.type === 'play') { setMediaHold(true); return }
+    var vids = document.querySelectorAll('video')
+    for (var i = 0; i < vids.length; i++) if (!vids[i].paused && !vids[i].ended) return
+    setMediaHold(false)
+  }
+  document.addEventListener('play', onMediaEvent, true)
+  document.addEventListener('pause', onMediaEvent, true)
+  document.addEventListener('ended', onMediaEvent, true)
 
   function applyBgmBtnState(b, pref, active, awaiting) {
     if (!b) return
@@ -727,6 +751,8 @@
         toggleBgm()
       } else if (e.data.type === 'velo:gesture') {
         if (bgmState.pref && !bgmState.running) tryStartBgm()
+      } else if (e.data.type === 'velo:media') {
+        setMediaHold(!!e.data.playing)
       }
     })
     addEventListener('popstate', function (e) {

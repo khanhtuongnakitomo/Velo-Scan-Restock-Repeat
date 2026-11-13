@@ -109,6 +109,16 @@ h3 { font-size: var(--text-heading-sm); font-weight: 600; line-height: 1.28; let
 .hero__sub { max-width: 54ch; margin-top: var(--space-28); }
 .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-12); margin-top: var(--space-32); }
 .hero .cta .btn { padding: var(--space-14) var(--space-24); font-size: var(--text-body); font-weight: 500; letter-spacing: -0.01em; }
+
+/* ---------- hero demo picker (two ways to try) ---------- */
+.demo-picker { position: relative; }
+.demo-menu { position: absolute; z-index: 30; top: calc(100% + var(--space-10)); left: 50%; transform: translateX(-50%); width: min(360px, calc(100vw - var(--space-32))); display: grid; gap: var(--space-4); padding: var(--space-8); text-align: left; border-radius: var(--radius-panel); background: var(--glass-sheen), var(--glass-fill-strong); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border); box-shadow: var(--glass-shadow-raised); }
+.demo-menu[hidden] { display: none; }
+.demo-menu a { display: block; padding: var(--space-12) var(--space-16); border-radius: var(--radius-card); text-decoration: none; }
+.demo-menu a:hover, .demo-menu a:focus-visible { background: var(--glass-tint); }
+.demo-menu b { display: block; font-size: var(--text-body); font-weight: 500; color: var(--ink); }
+.demo-menu span { display: block; margin-top: var(--space-2); font-size: var(--text-small); line-height: 1.5; color: var(--ash); }
+@media (max-width: 560px) { .demo-picker { width: 100%; } .demo-menu { left: 0; transform: none; width: 100%; } }
 .hero .cta .btn--dark {
   border-radius: var(--radius-pill);
   background-image: var(--btn-glass-sheen-clear); background-color: var(--btn-glass-clear); color: var(--ink);
@@ -142,6 +152,13 @@ h3 { font-size: var(--text-heading-sm); font-weight: 600; line-height: 1.28; let
 /* ---------- panel (flow model) ---------- */
 .panel { background: var(--glass-sheen), var(--glass-fill); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border); box-shadow: var(--glass-shadow); border-radius: var(--radius-panel); padding: var(--space-28); }
 .panel__top { display: flex; justify-content: space-between; align-items: center; gap: var(--space-16); margin-bottom: var(--space-16); }
+/* ---------- film (promo video) ---------- */
+.section--film { padding-bottom: 0; }
+.panel.film { margin: 0; padding: var(--space-12); }
+.film__video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: calc(var(--radius-panel) - var(--space-12)); background: var(--ink); object-fit: cover; }
+.film__cap { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-16); padding: var(--space-12) var(--space-8) var(--space-4); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ash); }
+.film__cap span:last-child { white-space: nowrap; }
+@media (max-width: 560px) { .panel.film { padding: var(--space-8); } .film__video { border-radius: calc(var(--radius-panel) - var(--space-8)); } .film__cap span:first-child { display: none; } .film__cap { justify-content: flex-end; } }
 .pill-on { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background: linear-gradient(var(--glass-violet), var(--glass-violet)), var(--glass-violet); box-shadow: var(--glass-rim-control-tinted); color: var(--white); padding: var(--space-8) var(--space-16); border-radius: var(--radius-pill); }
 .flow__grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: var(--space-24); }
 .flow__map { display: flex; flex-direction: column; gap: var(--space-12); }
